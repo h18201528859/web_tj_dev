@@ -74,6 +74,7 @@ export default {
     },
     getCurrentMenu() {
       window.addEventListener("hashchange", () => {
+        console.log("hashchange");
         this.updateCurrentBreads();
       });
       //禁止掉浏览器的后退行为

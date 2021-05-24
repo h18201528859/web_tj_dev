@@ -8,9 +8,7 @@
 export default {
   methods: {
     jumpToHome() {
-      this.$router.push({
-        path: "/checkall",
-      });
+      window, (location.href = "#/checkall");
     },
   },
 };

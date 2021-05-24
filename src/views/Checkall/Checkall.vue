@@ -13,7 +13,7 @@
     <div class="overview-section">
       <div class="overview-head">
         <p>稽核概况</p>
-        <a-radio-group>
+        <a-radio-group defaultValue="all">
           <a-radio-button value="all"> 全部 </a-radio-button>
           <a-radio-button value="year"> 近一年 </a-radio-button>
           <a-radio-button value="month"> 近三月 </a-radio-button>
@@ -99,7 +99,7 @@
         </a-table>
         <div class="pagination">
           <div class="left-pagination">
-            <span>共148条记录</span>
+            <span>共{{ totalPage }}条记录</span>
             <div style="margin-left: 16px">
               <span>每页显示</span>
               <a-select
@@ -157,9 +157,10 @@ export default {
       ],
       linechartOptions: linechartOptions,
       piechartOptions: piechartOptions,
-      checkallPieNumber: "1562",
+      checkallPieNumber: 0,
       checkallTableColumns: checkallCoulmns,
       checkallTableData: this.checkallTable,
+      totalPage: 15,
     };
   },
   methods: {
@@ -184,9 +185,13 @@ export default {
       const lineChart = this.$echarts.init(
         document.getElementById("linechart")
       );
+
       lineChart.setOption(this.linechartOptions);
       const piechart = this.$echarts.init(document.getElementById("piechart"));
       piechart.setOption(this.piechartOptions);
+      this.pieData.map((pie) => {
+        this.checkallPieNumber += pie.value;
+      });
     },
   },
 };
