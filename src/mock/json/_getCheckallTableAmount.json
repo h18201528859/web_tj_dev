@@ -4,7 +4,7 @@
     "data":[{
         "rank": "1",
         "type": "电费",
-        "ninetoten": "10",
+        "ninetoten": "9",
         "eightto9": "100",
         "sixto8": "20",
         "zerotosix": "100",
@@ -26,7 +26,7 @@
       },{
         "rank": "3",
         "type": "租费",
-        "ninetoten": "10",
+        "ninetoten": "8",
         "eightto9": "100",
         "sixto8": "20",
         "zerotosix": "100",

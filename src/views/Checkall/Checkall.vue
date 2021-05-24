@@ -85,7 +85,7 @@
       </div>
       <div class="table">
         <a-table
-          :columns="checkallTableColumns"
+          :columns="checkdetailTableColumns"
           :data-source="checkallTable"
           :rowKey="(record, index) => index"
           :pagination="false"
@@ -125,7 +125,8 @@ import {
   HeadItems,
   linechartOptions,
   piechartOptions,
-  checkallCoulmns,
+  checkallColumns,
+  checkdetailColumns,
 } from "./constants";
 import { mapActions, mapState } from "vuex";
 
@@ -158,8 +159,8 @@ export default {
       linechartOptions: linechartOptions,
       piechartOptions: piechartOptions,
       checkallPieNumber: 0,
-      checkallTableColumns: checkallCoulmns,
-      checkallTableData: this.checkallTable,
+      checkallTableColumns: checkallColumns,
+      checkdetailTableColumns: checkdetailColumns,
       totalPage: 15,
     };
   },
@@ -321,6 +322,9 @@ export default {
       }
     }
     .table {
+      .red {
+        color: #f24444;
+      }
       margin-top: 15px;
       .pagination {
         display: flex;
