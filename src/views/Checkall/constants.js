@@ -55,7 +55,8 @@ export const linechartOptions = {
 export const piechartOptions = {
     tooltip: {
         trigger: "item",
-        formatter: "{b} : {c} ({d}%)",
+        formatter:
+            "<div style='padding:16px;text-align:left;margin-top:-4px'><span style='font-size:16px'>{c}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>{d}%占比</span></div><hr style='margin:-4px 4px 16px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style='text-align:center;margin-bottom:8px'>全国{b}缴纳单</div>",
     },
     legend: {
         orient: "vertical",
@@ -93,7 +94,6 @@ export const piechartOptions = {
             center: ["130px", "50%"],
             radius: ["40%", "60%"],
             avoidLabelOverlap: false,
-            hoverAnimation: false,
             label: {
                 show: false,
             },

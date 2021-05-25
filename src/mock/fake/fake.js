@@ -1,6 +1,6 @@
 const faker = require("faker");
 const _ = require("lodash");
-faker.locale = "en";
+faker.locale = "zh_CN";
 
 module.exports = {
     customer: _.times(20, function(n) {
@@ -21,7 +21,26 @@ module.exports = {
             avatar: faker.internet.avatar(),
         };
     }),
-    getCheckallAmout: {},
+    getCheckallDetail: {
+        code: 200,
+        message: "SUCCESS",
+        total: 15,
+        body: _.times(15, function(n) {
+            return {
+                rank: n,
+                type: "铁塔服务费",
+                province: faker.random.word(),
+                ninetoten: faker.random.number(),
+                eightto9: faker.random.number(),
+                sixto8: faker.random.number(),
+                zerotosix: faker.random.number(),
+                total: faker.random.number(),
+                passtotal: faker.random.number(),
+                notpass: faker.random.number(),
+                notpassper: faker.random.number(),
+            };
+        }),
+    },
     getVNFTest: {
         code: 200,
         message: "SUCCESS",

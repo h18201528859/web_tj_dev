@@ -86,7 +86,7 @@
       <div class="table">
         <a-table
           :columns="checkdetailTableColumns"
-          :data-source="checkallTable"
+          :data-source="checkallDetail"
           :rowKey="(record, index) => index"
           :pagination="false"
         >
@@ -107,6 +107,7 @@
                 style="min-width: 50px; margin: 0 5px"
               >
                 <a-select-option value="10"> 10 </a-select-option>
+                <a-select-option value="15"> 15 </a-select-option>
                 <a-select-option value="20"> 20 </a-select-option>
               </a-select>
               <span>条</span>
@@ -137,6 +138,7 @@ export default {
   created() {
     this.handleHeadData();
     this.getCheckallTableData();
+    this.handleDetailData();
   },
   mounted() {
     this.drawLines();
@@ -145,6 +147,8 @@ export default {
     ...mapState({
       headData: (state) => state.checkall.headData,
       checkallTable: (state) => state.checkall.checkallTable,
+      checkallDetail: (state) => state.checkall.checkallDetail,
+      detailPage: (state) => state.checkall.detailPage,
     }),
   },
   data() {
@@ -161,11 +165,15 @@ export default {
       checkallPieNumber: 0,
       checkallTableColumns: checkallColumns,
       checkdetailTableColumns: checkdetailColumns,
-      totalPage: 15,
+      totalPage: 0,
     };
   },
   methods: {
-    ...mapActions("checkall", ["getHeadData", "getCheckallTableData"]),
+    ...mapActions("checkall", [
+      "getHeadData",
+      "getCheckallTableData",
+      "getCheckallDetailData",
+    ]),
     JumpToDetail() {
       this.$store.dispatch("setCurrentBread", [
         {
@@ -181,6 +189,10 @@ export default {
       this.linechartOptions.series[0].data = this.lineData;
       this.piechartOptions.series[0].data = this.pieData;
       this.getHeadData();
+    },
+    handleDetailData() {
+      this.getCheckallDetailData({ page: 1, pageSize: 10 });
+      this.totalPage = this.detailPage || 0;
     },
     drawLines() {
       const lineChart = this.$echarts.init(
