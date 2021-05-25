@@ -5,5 +5,13 @@ const mutations = {
     updateCheckAllTable(state, data) {
         state.checkallTable = data;
     },
+    updateCheckAllDetail(state, data) {
+        state.checkallDetail = data.body;
+        state.detailTotal = data.total;
+    },
+    updateCurrentPage(state, data) {
+        state.detailPage = data.page;
+        state.detailPagesize = data.pageSize;
+    },
 };
 export default mutations;

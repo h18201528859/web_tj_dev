@@ -86,7 +86,7 @@
       <div class="table">
         <a-table
           :columns="checkdetailTableColumns"
-          :data-source="checkallTable"
+          :data-source="checkallDetail"
           :rowKey="(record, index) => index"
           :pagination="false"
         >
@@ -105,14 +105,24 @@
               <a-select
                 default-value="10"
                 style="min-width: 50px; margin: 0 5px"
+                @change="handleDetailPagesize"
               >
+                <a-select-option value="5"> 5</a-select-option>
                 <a-select-option value="10"> 10 </a-select-option>
+                <a-select-option value="15"> 15 </a-select-option>
                 <a-select-option value="20"> 20 </a-select-option>
               </a-select>
               <span>条</span>
             </div>
           </div>
-          <a-pagination show-quick-jumper :default-current="1" :total="15" />
+          <a-pagination
+            show-quick-jumper
+            :default-current="1"
+            :total="totalPage"
+            :current="detailPage"
+            :pageSize="detailPagesize"
+            @change="handlePaginationChange"
+          />
         </div>
       </div>
     </div>
@@ -137,14 +147,24 @@ export default {
   created() {
     this.handleHeadData();
     this.getCheckallTableData();
+    this.handleDetailData({ page: 1, pageSize: 10 });
   },
   mounted() {
     this.drawLines();
+  },
+  watch: {
+    detailTotal(newValue) {
+      this.totalPage = newValue;
+    },
   },
   computed: {
     ...mapState({
       headData: (state) => state.checkall.headData,
       checkallTable: (state) => state.checkall.checkallTable,
+      checkallDetail: (state) => state.checkall.checkallDetail,
+      detailTotal: (state) => state.checkall.detailTotal,
+      detailPage: (state) => state.checkall.detailPage,
+      detailPagesize: (state) => state.checkall.detailPagesize,
     }),
   },
   data() {
@@ -161,11 +181,15 @@ export default {
       checkallPieNumber: 0,
       checkallTableColumns: checkallColumns,
       checkdetailTableColumns: checkdetailColumns,
-      totalPage: 15,
+      totalPage: 0,
     };
   },
   methods: {
-    ...mapActions("checkall", ["getHeadData", "getCheckallTableData"]),
+    ...mapActions("checkall", [
+      "getHeadData",
+      "getCheckallTableData",
+      "getCheckallDetailData",
+    ]),
     JumpToDetail() {
       this.$store.dispatch("setCurrentBread", [
         {
@@ -182,17 +206,28 @@ export default {
       this.piechartOptions.series[0].data = this.pieData;
       this.getHeadData();
     },
+    handleDetailData({ page, pageSize }) {
+      this.getCheckallDetailData({ page: page, pageSize: pageSize });
+      this.totalPage = this.detailTotal;
+    },
     drawLines() {
       const lineChart = this.$echarts.init(
         document.getElementById("linechart")
       );
-
       lineChart.setOption(this.linechartOptions);
       const piechart = this.$echarts.init(document.getElementById("piechart"));
+      this.piechartOptions.tooltip.formatter =
+        "<div style='padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>{c}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>{d}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style='text-align:center;margin:0px'>全国{b}缴纳单</div>";
       piechart.setOption(this.piechartOptions);
       this.pieData.map((pie) => {
         this.checkallPieNumber += pie.value;
       });
+    },
+    handleDetailPagesize(pageSize) {
+      this.handleDetailData({ page: 1, pageSize: +pageSize });
+    },
+    handlePaginationChange(page, pageSize) {
+      this.handleDetailData({ page: page, pageSize: pageSize });
     },
   },
 };

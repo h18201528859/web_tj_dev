@@ -7,6 +7,8 @@ module.exports = {
     // "/portal/getcheckfee": "/_getCheckallAmout",
     "/portal/business/getcheckfee": "/_getCheckallAmout",
     "/portal/business/getcheckalltable": "/_getCheckallTableAmount",
+    "/portal/business/getcheckalldetail?page=:page&pageSize=:pageSize":
+        "/getCheckallDetail",
 
     ///////<-------------VimEnv--------->/////
 

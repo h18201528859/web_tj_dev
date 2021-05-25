@@ -28,6 +28,24 @@ const actions = {
             }
         );
     },
+    getCheckallDetailData({ commit }, { page, pageSize }) {
+        commit("updateCurrentPage", { page, pageSize });
+        axiosget("/portal/business/getcheckalldetail", {
+            page,
+            pageSize,
+        }).then(
+            (res) => {
+                if (+res.code === 200) {
+                    commit("updateCheckAllDetail", res);
+                } else {
+                    console.error("数据错了");
+                }
+            },
+            () => {
+                console.error("error");
+            }
+        );
+    },
 };
 
 export default actions;
