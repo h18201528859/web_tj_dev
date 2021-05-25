@@ -16,6 +16,7 @@ import Login from "../views/Login.vue";
 //views
 import Checkall from "../views/Checkall/Checkall.vue";
 import Elecfee from "../views/Elecfee/Elecfee.vue";
+import ElecfeeDetail from "../views/Elecfee/elecfeeDetail.vue";
 import CheckDetail from "../views/CheckDetail/CheckDetail.vue";
 import Provincefee from "../views/Provincefee/Provincefee.vue";
 
@@ -65,7 +66,25 @@ const routes = [
                         /* webpackChunkName: "about" */ "../views/Elecfee/Elecfee.vue"
                     ),
             },
+            {
+                path: "/elecfee/elecfeeDetail",
+                component: ElecfeeDetail
+               
+            },
+           
         ],
+    },
+    {
+        path: "/elecfeeDetail",
+        component: Layout,
+        children: [
+            {
+                path: "",
+                name: "elecfeedetail",
+                component: ElecfeeDetail,
+            },
+        ],
+       
     },
     {
         path: "/provincefee",

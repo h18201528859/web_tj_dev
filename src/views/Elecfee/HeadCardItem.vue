@@ -1,26 +1,20 @@
+
 <template>
   <div class="head-item" @click="JumptoOtherPage(page)">
     <div class="left">
-      <img :src="icon" alt="image" />
+      <img :src="icon" alt="image"  class="img"/>
       <div class="right-item">
         <span>{{ headTitle }}</span>
-        <a-tooltip placement="topLeft" arrow-point-at-center>
-          <a-icon type="question-circle" class="tooltip-icon" />
-          <template slot="title">
-            <span>{{ toolpit }}</span>
-          </template>
-        </a-tooltip>
       </div>
     </div>
-
-    <div class="right">
-      <div class="item">
-        <span class="number">{{ upNumber }}</span>
-        <span class="count">单</span>
+    <div class="count-box">
+      <div class="all-cont">
+        <span class="all-text">{{ upNumber || 0 }}</span>
+        {{ allText }}
       </div>
-      <div class="item">
-        <span class="number">{{ downNumber }}</span>
-        <span class="count">元</span>
+      <div class="money-cont">
+        <span class="month-text">{{ downNumber || 0 }}</span>
+        {{ monthText }}
       </div>
     </div>
   </div>
@@ -42,9 +36,13 @@ export default {
       type: String,
       default: require("./icon/1.png"),
     },
-    toolpit: {
+    allText:{
       type: String,
-      default: "网络设施、设备运转中按周期支出的电力费用",
+      default: '总量/单',
+    },
+    monthText:{
+      type: String,
+      default: '',
     },
     currentData: {
       count: 0,
@@ -84,20 +82,19 @@ export default {
 
 <style lang="less" scoped>
 .head-item {
-  width: 380px;
-  margin-right: 24px;
-  padding: 24px;
-  display: flex;
-  flex: 1;
-  justify-content: space-between;
-  align-items: center;
-  background: #ffffff;
+  width: 100%;
+    margin-right: 24px;
+    padding: 24px;
+    flex-flow: column;
+    justify-content: space-between;
+    background: hsl(0deg 0% 100%);
+    cursor: pointer;
   cursor: pointer;
   .left {
     display: flex;
-    align-items: center;
-    img {
-      width: 72px;
+    .img{
+      width:24px;
+      height: 24px;
     }
     .right-item {
       span {
@@ -114,24 +111,27 @@ export default {
       }
     }
   }
-  .right {
-    text-align: right;
-    .item {
-      .number {
-        font-size: 24px;
-        font-family: PingFangSC-Regular, PingFang SC;
-        font-weight: 400;
-        color: #343642;
-      }
-      .count {
-        margin-left: 8px;
-        font-size: 14px;
-        font-family: PingFangSC-Regular, PingFang SC;
-        font-weight: 400;
-        color: #7f828f;
-      }
+  .count-box{
+    display:flex;
+    justify-content: space-between;
+    padding-top:8px;
+    width: 60%;
+    .all-text,.month-text{
+      font-size:24px;
+
+    }
+    .money-cont::before{
+      content: '';
+      height: 24px;
+      width:1px ;
+      background: #cccccc;
+      margin-right: 24px;
+      position: relative;
+      display: inline-block;
+      top: 5px;
     }
   }
+
 }
 .head-item:last-child {
   margin-right: 0;
