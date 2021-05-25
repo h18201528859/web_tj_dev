@@ -213,9 +213,6 @@ export default {
   created() {
     this.getCheckallTableData();
   },
-  mounted() {
-   
-  },
   methods: {
     ...mapActions("checkall", ["getHeadData", "getCheckallTableData"]),
     JumpToDetail() {
