@@ -29,6 +29,7 @@ const actions = {
         );
     },
     getCheckallDetailData({ commit }, { page, pageSize }) {
+        commit("updateCurrentPage", { page, pageSize });
         axiosget("/portal/business/getcheckalldetail", {
             page,
             pageSize,

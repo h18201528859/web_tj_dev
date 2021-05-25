@@ -7,7 +7,11 @@ const mutations = {
     },
     updateCheckAllDetail(state, data) {
         state.checkallDetail = data.body;
-        state.detailPage = data.total;
+        state.detailTotal = data.total;
+    },
+    updateCurrentPage(state, data) {
+        state.detailPage = data.page;
+        state.detailPagesize = data.pageSize;
     },
 };
 export default mutations;

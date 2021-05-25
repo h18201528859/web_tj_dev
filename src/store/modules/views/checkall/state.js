@@ -2,7 +2,9 @@ const state = {
     headData: [],
     checkallTable: [],
     checkallDetail: [],
-    detailPage: 0,
+    detailTotal: 0,
+    detailPage: 1,
+    detailPagesize: 10,
 };
 
 export default state;

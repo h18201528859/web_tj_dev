@@ -105,7 +105,9 @@
               <a-select
                 default-value="10"
                 style="min-width: 50px; margin: 0 5px"
+                @change="handleDetailPagesize"
               >
+                <a-select-option value="5"> 5</a-select-option>
                 <a-select-option value="10"> 10 </a-select-option>
                 <a-select-option value="15"> 15 </a-select-option>
                 <a-select-option value="20"> 20 </a-select-option>
@@ -113,7 +115,14 @@
               <span>条</span>
             </div>
           </div>
-          <a-pagination show-quick-jumper :default-current="1" :total="15" />
+          <a-pagination
+            show-quick-jumper
+            :default-current="1"
+            :total="totalPage"
+            :current="detailPage"
+            :pageSize="detailPagesize"
+            @change="handlePaginationChange"
+          />
         </div>
       </div>
     </div>
@@ -138,17 +147,24 @@ export default {
   created() {
     this.handleHeadData();
     this.getCheckallTableData();
-    this.handleDetailData();
+    this.handleDetailData({ page: 1, pageSize: 10 });
   },
   mounted() {
     this.drawLines();
+  },
+  watch: {
+    detailTotal(newValue) {
+      this.totalPage = newValue;
+    },
   },
   computed: {
     ...mapState({
       headData: (state) => state.checkall.headData,
       checkallTable: (state) => state.checkall.checkallTable,
       checkallDetail: (state) => state.checkall.checkallDetail,
+      detailTotal: (state) => state.checkall.detailTotal,
       detailPage: (state) => state.checkall.detailPage,
+      detailPagesize: (state) => state.checkall.detailPagesize,
     }),
   },
   data() {
@@ -190,9 +206,9 @@ export default {
       this.piechartOptions.series[0].data = this.pieData;
       this.getHeadData();
     },
-    handleDetailData() {
-      this.getCheckallDetailData({ page: 1, pageSize: 10 });
-      this.totalPage = this.detailPage || 0;
+    handleDetailData({ page, pageSize }) {
+      this.getCheckallDetailData({ page: page, pageSize: pageSize });
+      this.totalPage = this.detailTotal;
     },
     drawLines() {
       const lineChart = this.$echarts.init(
@@ -205,6 +221,12 @@ export default {
       this.pieData.map((pie) => {
         this.checkallPieNumber += pie.value;
       });
+    },
+    handleDetailPagesize(pageSize) {
+      this.handleDetailData({ page: 1, pageSize: +pageSize });
+    },
+    handlePaginationChange(page, pageSize) {
+      this.handleDetailData({ page: page, pageSize: pageSize });
     },
   },
 };
