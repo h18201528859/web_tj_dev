@@ -39,8 +39,8 @@ export const linechartOptions = {
                     target = lineData[i];
                 }
             }
-            let percent = ((target / total) * 100).toFixed(1);
-            toolpitArr = `<div style="text-align:left;font-size:12px"> <div style='font-size:16px'>${target}<span>条</span></div>  <div style="margin-bottom:8px"><span>${percent}%</span>占比</div><hr style='margin:-4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div>全国近一年${name.name}</div> </div>`;
+            const percent = ((target / total) * 100).toFixed(1);
+            toolpitArr = `<div style="text-align:left;font-size:12px"> <div style='font-size:16px;margin-bottom:8px'>${target}<span style="font-size:12px"> 条</span></div>  <div style="margin-bottom:8px"><span>${percent}%</span>占比</div><hr style='margin:-4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div>全国近一年${name.name}</div> </div>`;
             return toolpitArr;
         },
     },
@@ -70,8 +70,6 @@ export const linechartOptions = {
 export const piechartOptions = {
     tooltip: {
         trigger: "item",
-        // formatter:
-        // "<div style='padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>{c}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>{d}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style='text-align:center;margin:0px'>全国{b}缴纳单</div>",
     },
     legend: {
         orient: "vertical",
