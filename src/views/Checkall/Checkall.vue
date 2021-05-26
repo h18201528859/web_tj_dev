@@ -37,7 +37,7 @@
             <p class="pieCenter-title">稽核总量 (万)</p>
             <p class="pieCenter-number">{{ checkallPieNumber }}</p>
           </div>
-          <div id="piechart" style="height: 100%; width: 80%"></div>
+          <div id="piechart" style="height: 100%; width: 100%"></div>
         </div>
       </div>
       <div class="overview-table">
@@ -216,7 +216,6 @@ export default {
       );
       lineChart.setOption(this.linechartOptions);
       const piechart = this.$echarts.init(document.getElementById("piechart"));
-
       piechart.setOption(this.piechartOptions);
       this.pieData.map((pie) => {
         this.checkallPieNumber += pie.value;
