@@ -28,7 +28,7 @@ module.exports = {
                 total: faker.random.number(),
                 passtotal: faker.random.number(),
                 notpass: faker.random.number(),
-                notpassper: faker.random.number(),
+                notpassper: faker.random.number() / 1000,
             };
         }),
     },
