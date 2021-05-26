@@ -89,6 +89,7 @@
           :data-source="checkallDetail"
           :rowKey="(record, index) => index"
           :pagination="false"
+          :loading="detailTableLoading"
         >
           <template slot="notpass" slot-scope="text">
             <span class="red">{{ text }}</span>
@@ -165,6 +166,7 @@ export default {
       detailTotal: (state) => state.checkall.detailTotal,
       detailPage: (state) => state.checkall.detailPage,
       detailPagesize: (state) => state.checkall.detailPagesize,
+      detailTableLoading: (state) => state.checkall.detailTableLoading,
     }),
   },
   data() {

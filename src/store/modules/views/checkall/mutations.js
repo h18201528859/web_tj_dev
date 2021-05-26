@@ -13,5 +13,8 @@ const mutations = {
         state.detailPage = data.page;
         state.detailPagesize = data.pageSize;
     },
+    updateDetailTableLoading(state, loading) {
+        state.detailTableLoading = loading;
+    },
 };
 export default mutations;

@@ -21,11 +21,8 @@ export function axiospost(url, data, uploadHeader, callback) {
             .then((res) => {
                 if (res.data.code === 200) {
                     resolve(res.data);
-                } else if (res.data.code === 417) {
-                    message.error(res.data.body);
-                    callback();
                 } else {
-                    message.error("Network exception, please try again.");
+                    message.error("网络错误，请稍后重试");
                 }
             })
             .catch((err) => {
@@ -45,11 +42,9 @@ export function axiosget(url, data, callback) {
             .then((res) => {
                 if (+res.data.code === 200) {
                     resolve(res.data);
-                } else if (+res.data.code === 417) {
-                    message.error(res.data.body);
-                    callback();
                 } else {
-                    message.error("Network exception, please try again.");
+                    message.error("网络错误，请稍后重试");
+                    callback();
                 }
             })
             .catch((err) => {

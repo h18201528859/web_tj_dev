@@ -1,4 +1,5 @@
 import { axiosget } from "../../../../utils/http";
+import { message } from "ant-design-vue";
 const actions = {
     getHeadData({ commit }) {
         axiosget("/portal/business/getcheckfee").then(
@@ -30,6 +31,7 @@ const actions = {
     },
     getCheckallDetailData({ commit }, { page, pageSize }) {
         commit("updateCurrentPage", { page, pageSize });
+        commit("updateDetailTableLoading", true);
         axiosget("/portal/business/getcheckalldetail", {
             page,
             pageSize,
@@ -37,12 +39,15 @@ const actions = {
             (res) => {
                 if (+res.code === 200) {
                     commit("updateCheckAllDetail", res);
+                    setTimeout(() => {
+                        commit("updateDetailTableLoading", false);
+                    }, 100);
                 } else {
-                    console.error("数据错了");
+                    commit("updateDetailTableLoading", false);
                 }
             },
             () => {
-                console.error("error");
+                commit("updateDetailTableLoading", false);
             }
         );
     },
