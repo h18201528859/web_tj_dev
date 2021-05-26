@@ -60,7 +60,36 @@
           </div>
           <div id="piechart" style="height: 100%; width: 80%"></div>
         </div>
+       
+       
       </div>
+      
+            <!-- <a-tabs
+              default-active-key="1"
+              :tab-position="mode"
+              type="card"
+              :style="{ height: '32px' }"
+               @change="getChangeCity"
+              @prevClick="callbackhandle"
+              @nextClick="callbackhandle"
+              class="cityTab"
+            >
+              <a-tab-pane v-for="i in cityArr" :key="i.id" :tab="`${i.name}`" ></a-tab-pane>
+            </a-tabs> -->
+      <div style="width:80%">
+          <a-tabs type="card"
+                default-active-key="1"
+                @change="getChangeCity"
+                @prevClick="callbackhandle"
+                @nextClick="callbackhandle"
+                 class="cityTab"
+        >
+            <a-tab-pane v-for="i in cityArr" :key="i.id" :tab="`${i.name}`">
+            </a-tab-pane>
+      
+          </a-tabs>
+      </div>
+      
       <div class="overview-table hide">
         <div class="title">
           <div class="title-front"></div>
@@ -151,7 +180,11 @@ export default {
       checkallPieNumber: 0,
       checkallTableColumns: checkallColumns,
       checkdetailTableColumns: checkdetailColumns,
-      totalPage: 15
+      totalPage: 15,
+      mode: 'top',
+      cityArr:[{name:'全国',id:0},{name:'北京',id:1},{name:'上海',id:2},{name:'广州',id:3},{name:'深圳',id:4},
+      {name:'河北',id:5},{name:'河南',id:6},{name:'湖南',id:7},{name:'江苏',id:8},{name:'湖北',id:9},{name:'广西',id:10},
+      {name:'广东',id:11},{name:'江西',id:12},]
     }
   },
   components: {
@@ -182,6 +215,15 @@ export default {
       this.$router.push({
         path: "/checkdetail",
       });
+    },
+    callback(key){
+      console.log(key)
+    },
+    callbackhandle(value){
+      console.log(value)
+    },
+    getChangeCity(key){
+      console.log(key)
     },
     JumpToProvince() {
       this.$store.dispatch("setCurrentBread", [
@@ -230,7 +272,7 @@ export default {
 </script>
 
 
-<style lang="less">
+<style lang="less" >
 .jump-wrap {
   .header-section {
     display: flex;
@@ -380,4 +422,32 @@ export default {
 .hide{
   display: none;
 }
+.cityTab .ant-tabs-bar{
+ border-bottom:none;
+}
+.cityTab.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active{
+       border-bottom: 1px solid #e8e8e8;
+      
+}
+.cityTab.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab{
+ margin-right: 16px;
+ border-radius: 0;
+}
+// .cityTab  .ant-tabs-nav .ant-tabs-tab{
+//       border: 1px solid #ccc;
+//           height: 32px;
+          
+// }
+// .cityTab.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab{
+//   margin-right:16px;
+// }
+// .cityTab .ant-tabs-ink-bar{
+//   // display: none!important;
+// }
+// .cityTab.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active{
+//  border-bottom: 1px solid #ccc;
+// }
+// .cityTab  .ant-tabs-nav .ant-tabs-tab::before{
+//   display: none;
+// }
 </style>

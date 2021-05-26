@@ -28,6 +28,7 @@
                           id="components-form-demo-normal-login"
                           :form="form"
                           class="login-form"
+                           layout="horizontal"
                           @submit="handleSubmit"
                         >
                           <a-form-item>
@@ -35,7 +36,7 @@
                             class="inp_user"
                               v-decorator="[
                                 'userName',
-                                { rules: [{ required: true, message: 'Please input your username!', trigger: 'change blur',initialValue: form.userName}] },
+                                { rules: [{ required: true, message: '错误提示', trigger: 'change blur',initialValue: form.userName}] },
                               ]"
                               placeholder="用户名"
                             
@@ -85,15 +86,6 @@
 </template>
 <script>
 export default {
-  data(){
-    return {
-       
-      // form:{
-      //   password:'',
-      //   userName:''
-      // }
-    }
-  },
   beforeCreate() {
    this.form = this.$form.createForm(this, { name: 'normal_login' });
   },
@@ -135,24 +127,28 @@ export default {
       });
     },
     passwordValidator(rule,value,callback){
-       const reg = /^.*(?=.{8,32})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[~`!@#$%\^&\*\(\)_+{}\|":\?><,\.\/;'\[\]\\]).[A-Za-z\d~`!@#$%\^&\*\(\)_+{}\|":\?><,\.\/;'\[\]\\]*$/
+      //  const reg = /^.*(?=.{8,32})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[~`!@#$%\^&\*\(\)_+{}\|":\?><,\.\/;'\[\]\\]).[A-Za-z\d~`!@#$%\^&\*\(\)_+{}\|":\?><,\.\/;'\[\]\\]*$/
       if(!value.length){
-         callback('密码长度不能为空!')
-      }else if(value.length<8){
-         callback('密码长度不能小于8位！')
-      }else if(!reg.test(value)){
-          callback('密码必须包含大小写字母，特殊符号!')
+         callback('错误提示')
       }
+      // else if(value.length<8){
+      //    callback('密码长度不能小于8位！')
+      // }else if(!reg.test(value)){
+      //     callback('密码必须包含大小写字母，特殊符号!')
+      // }
        callback()
     }
   },
 };
-// style="vertical-align: middle"
 </script>
 <style scoped>
 * {
   margin: 0;
   padding: 0;
+}
+html,body{
+  width:100%;
+  height:100%;
 }
 .main_Login {
   width: 100%;
@@ -164,48 +160,47 @@ export default {
   display: flex;
 }
  .imgOne{
-  width: 55rem;
-  height: 721px;
+  width: 880px;
+  height: auto;
 
 }
 .lilto_imgs{
   position: absolute;
   left: 5px;
   top: 5px;
-  width:   578px;
-  height: 74px;
 }
 .box{
   flex: 1;
-  height: 721px;
   text-align: left;
   position: relative;
 }
 .modoles{
-    width: 474px;
+    width: 472px;
     height: 452px;
     /* border: 1px solid #ccc; */
+    margin:0 auto;
 }
 .text_one{
   width: 272px;
   height: 96px;
   font-size: 18px;
-  
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #333333;
-  padding-top: 189px;
-    padding-left: 97px;
+   padding-top: 189px;
+   /* padding-left: 97px; */
 
 }
 .Input_net{
-  margin: 24px 97px;
+  margin: 24px 0;
+  
 }
 .inp_user{
   width:368px;
   height:40px;
   margin-top:48px;
   line-height:40px;
+  margin-bottom: 10px;
   background: #FFFFFF;
   border-radius: 4px;
 }
@@ -218,6 +213,7 @@ export default {
 }
 .h_num{
   font-size: 12px;
+  margin-top:16px;
   color:#7F828F;
 }
 .h_footer{
@@ -239,6 +235,7 @@ export default {
   background: linear-gradient(90deg, #63C4FF 0%, #457EFF 100%);
   color: #FFFFFF;
   font-weight: 400;
+  display: block;
 }
 
 </style>
