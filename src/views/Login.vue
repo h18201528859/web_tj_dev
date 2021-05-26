@@ -4,7 +4,6 @@
       <img src="../assets/home/bglogin.jpg" alt="logo" class="imgOne" />
       <img src="../assets/home/logo.png" alt="" class="lilto_imgs" />
       <div class="box">
-<<<<<<< HEAD
           <div class="modoles">
               <div class="text_one">
                   <p>欢迎来到</p >
@@ -67,12 +66,6 @@
                     <h3 class="h_num">有问题请联系管理员 010-5268668</h3>
                     <h3 class="h_footer">copyright © 中国移动九天智能稽核平台</h3>
               </div>
-=======
-        <div class="modoles">
-          <div class="text_one">
-            <p>欢迎来到</p>
-            <p>九天智能稽核平台</p>
->>>>>>> 3c90023caa056858f74c956e439a86b0d55c02dc
           </div>
           <div class="Input_net">
             <div class="login-container">
@@ -161,17 +154,6 @@
 </template>
 <script>
 export default {
-<<<<<<< HEAD
-=======
-  data() {
-    return {
-      // form:{
-      //   password:'',
-      //   userName:''
-      // }
-    };
-  },
->>>>>>> 3c90023caa056858f74c956e439a86b0d55c02dc
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: "normal_login" });
   },
@@ -205,32 +187,18 @@ export default {
         window.location.href = "#/checkall";
       });
     },
-<<<<<<< HEAD
-    passwordValidator(rule,value,callback){
-      //  const reg = /^.*(?=.{8,32})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[~`!@#$%\^&\*\(\)_+{}\|":\?><,\.\/;'\[\]\\]).[A-Za-z\d~`!@#$%\^&\*\(\)_+{}\|":\?><,\.\/;'\[\]\\]*$/
-      if(!value.length){
-         callback('错误提示')
-      }
-      // else if(value.length<8){
-      //    callback('密码长度不能小于8位！')
-      // }else if(!reg.test(value)){
-      //     callback('密码必须包含大小写字母，特殊符号!')
-      // }
-       callback()
-    }
-=======
     passwordValidator(rule, value, callback) {
-      const reg = /^.*(?=.{8,32})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[~`!@#$%\^&\*\(\)_+{}\|":\?><,\.\/;'\[\]\\]).[A-Za-z\d~`!@#$%\^&\*\(\)_+{}\|":\?><,\.\/;'\[\]\\]*$/;
+      // const reg = /^.*(?=.{8,32})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[~`!@#$%\^&\*\(\)_+{}\|":\?><,\.\/;'\[\]\\]).[A-Za-z\d~`!@#$%\^&\*\(\)_+{}\|":\?><,\.\/;'\[\]\\]*$/;
       if (!value.length) {
         callback("密码长度不能为空!");
-      } else if (value.length < 8) {
-        callback("密码长度不能小于8位！");
-      } else if (!reg.test(value)) {
-        callback("密码必须包含大小写字母，特殊符号!");
-      }
+      } 
+      // else if (value.length < 8) {
+      //   callback("密码长度不能小于8位！");
+      // } else if (!reg.test(value)) {
+      //   callback("密码必须包含大小写字母，特殊符号!");
+      // }
       callback();
     },
->>>>>>> 3c90023caa056858f74c956e439a86b0d55c02dc
   },
 };
 </script>
@@ -253,50 +221,31 @@ html,body{
 .main_Login_img {
   display: flex;
 }
-<<<<<<< HEAD
  .imgOne{
   width: 880px;
   height: auto;
 
-=======
-.imgOne {
-  width: 55rem;
-  height: 721px;
->>>>>>> 3c90023caa056858f74c956e439a86b0d55c02dc
 }
 .lilto_imgs {
   position: absolute;
   left: 5px;
   top: 5px;
-<<<<<<< HEAD
-=======
-  width: 578px;
-  height: 74px;
->>>>>>> 3c90023caa056858f74c956e439a86b0d55c02dc
 }
 .box {
   flex: 1;
   text-align: left;
   position: relative;
 }
-<<<<<<< HEAD
 .modoles{
     width: 472px;
     height: 452px;
     /* border: 1px solid #ccc; */
     margin:0 auto;
-=======
-.modoles {
-  width: 474px;
-  height: 452px;
-  /* border: 1px solid #ccc; */
->>>>>>> 3c90023caa056858f74c956e439a86b0d55c02dc
 }
 .text_one {
   width: 272px;
   height: 96px;
   font-size: 18px;
-<<<<<<< HEAD
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #333333;
@@ -315,24 +264,6 @@ html,body{
   line-height:40px;
   margin-bottom: 10px;
   background: #FFFFFF;
-=======
-
-  font-family: PingFangSC-Medium, PingFang SC;
-  font-weight: 500;
-  color: #333333;
-  padding-top: 189px;
-  padding-left: 97px;
-}
-.Input_net {
-  margin: 24px 97px;
-}
-.inp_user {
-  width: 368px;
-  height: 40px;
-  margin-top: 48px;
-  line-height: 40px;
-  background: #ffffff;
->>>>>>> 3c90023caa056858f74c956e439a86b0d55c02dc
   border-radius: 4px;
 }
 .inp_password {
@@ -344,12 +275,8 @@ html,body{
 }
 .h_num {
   font-size: 12px;
-<<<<<<< HEAD
   margin-top:16px;
   color:#7F828F;
-=======
-  color: #7f828f;
->>>>>>> 3c90023caa056858f74c956e439a86b0d55c02dc
 }
 .h_footer {
   font-size: 12px;
@@ -372,9 +299,5 @@ html,body{
   font-weight: 400;
   display: block;
 }
-<<<<<<< HEAD
 
 </style>
-=======
-</style>
->>>>>>> 3c90023caa056858f74c956e439a86b0d55c02dc
