@@ -1,5 +1,5 @@
 import { axiosget } from "../../../../utils/http";
-import { message } from "ant-design-vue";
+
 const actions = {
     getHeadData({ commit }) {
         axiosget("/portal/business/getcheckfee").then(

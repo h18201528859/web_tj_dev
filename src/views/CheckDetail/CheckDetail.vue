@@ -47,107 +47,98 @@
               </a-form-model-item>
             </a-col>
           </a-row>
-          <div v-if="!collapis">
-            <a-row>
-              <a-form-model-item label="地区选择" prop="areas">
-                <a-radio-group v-model="formCollapis.areas">
-                  <a-radio value="allprovince"> 全部省份 </a-radio>
-                  <a-radio value="number">
-                    自选省份
-                    <a-select default-value="lucy" style="width: 120px">
-                      <a-select-option value="jack"> Jack </a-select-option>
-                      <a-select-option value="lucy"> Lucy </a-select-option>
-                    </a-select>
-                  </a-radio>
+          <div v-if="collapis">
+            <a-form-model-item
+              label="地区选择"
+              prop="areas"
+              style="width: 100%"
+            >
+              <a-radio-group v-model="formCollapis.areas">
+                <a-radio value="allprovince">全部省份</a-radio>
+                <a-radio value="number">
+                  <span>自选省份</span>
+                  <a-select default-value="lucy" style="width: 120px">
+                    <a-select-option value="jack"> Jack </a-select-option>
+                    <a-select-option value="lucy"> Lucy </a-select-option>
+                  </a-select>
+                </a-radio>
+              </a-radio-group>
+            </a-form-model-item>
+
+            <a-form-model-item
+              style="width: 100%; margin-left: 69px"
+              label=""
+              prop="cities"
+            >
+              <a-radio-group v-model="formCollapis.cities">
+                <a-radio value="allcity"> 全部城市 </a-radio>
+                <a-radio value="number">
+                  <span>自选城市</span>
+                  <a-select default-value="lucy" style="width: 120px">
+                    <a-select-option value="jack"> Jack </a-select-option>
+                    <a-select-option value="lucy"> Lucy </a-select-option>
+                  </a-select>
+                </a-radio>
+              </a-radio-group>
+            </a-form-model-item>
+
+            <a-form-model-item
+              label="稽核得分"
+              prop="points"
+              style="width: 100%"
+            >
+              <a-radio-group v-model="formCollapis.points">
+                <a-radio value="all" style="margin-top: 5px"> 不限 </a-radio>
+
+                <a-radio value="range">
+                  <span>分数段</span>
+                  <a-radio-group>
+                    <a-radio-button value="a"> 0-6分</a-radio-button>
+                    <a-radio-button value="b"> 6-8分 </a-radio-button>
+                    <a-radio-button value="c"> 8-9分 </a-radio-button>
+                    <a-radio-button value="d"> 9-10分 </a-radio-button>
+                  </a-radio-group>
+                </a-radio>
+                <a-radio value="custom">
+                  <span>自定义</span>
+                  <a-input-number placeholder="请输入" /> -
+                  <a-input-number placeholder="请输入" /> 分
+                </a-radio>
+              </a-radio-group>
+            </a-form-model-item>
+
+            <a-form-model-item
+              label="稽核时间"
+              prop="areas"
+              style="width: 100%"
+            >
+              <a-radio-group v-model="formCollapis.checktime">
+                <a-radio value="all" style="margin-top: 5px"> 不限 </a-radio>
+                <a-radio value="range"> 时间段 </a-radio>
+                <a-radio-group>
+                  <a-radio-button value="a"> 近一月 </a-radio-button>
+                  <a-radio-button value="b"> 近三月 </a-radio-button>
+                  <a-radio-button value="c"> 近半年 </a-radio-button>
+                  <a-radio-button value="d"> 近一年 </a-radio-button>
                 </a-radio-group>
-              </a-form-model-item>
-            </a-row>
-            <a-row>
-              <a-form-model-item
-                label=""
-                prop="cities"
-                v-bind="formItemLayoutWithOutLabel"
+
+                <a-radio value="custom"> 自定义 </a-radio
+                ><a-range-picker
+                  :show-time="{ format: 'HH:mm' }"
+                  format="YYYY-MM-DD HH:mm"
+                  :placeholder="['Start Time', 'End Time']"
+                />
+              </a-radio-group>
+            </a-form-model-item>
+
+            <a-form-model-item v-if="collapis">
+              <a-button style="width: 160px" type="primary" html-type="submit"
+                >搜索</a-button
               >
-                <a-radio-group v-model="formCollapis.cities">
-                  <a-radio value="allcity"> 全部城市 </a-radio>
-                  <a-radio value="number">
-                    自选城市
-                    <a-select default-value="lucy" style="width: 120px">
-                      <a-select-option value="jack"> Jack </a-select-option>
-                      <a-select-option value="lucy"> Lucy </a-select-option>
-                    </a-select>
-                  </a-radio>
-                </a-radio-group>
-              </a-form-model-item>
-            </a-row>
-            <a-row>
-              <a-form-model-item label="稽核得分" prop="points">
-                <a-radio-group v-model="formCollapis.points">
-                  <a-col :span="2">
-                    <a-radio value="all"> 不限 </a-radio>
-                  </a-col>
-                  <a-col :span="12">
-                    <a-radio value="range"> 分数段 </a-radio>
-                    <a-radio-group>
-                      <a-radio-button value="a"> 0-6分</a-radio-button>
-                      <a-radio-button value="b"> 6-8分 </a-radio-button>
-                      <a-radio-button value="c"> 8-9分 </a-radio-button>
-                      <a-radio-button value="d"> 9-10分 </a-radio-button>
-                    </a-radio-group>
-                  </a-col>
-                  <a-col :span="10">
-                    <div>
-                      <a-radio value="custom"> 自定义 </a-radio>
-                      <a-input-number placeholder="请输入" /> -
-                      <a-input-number placeholder="请输入" /> 分
-                    </div>
-                  </a-col>
-                </a-radio-group>
-              </a-form-model-item>
-            </a-row>
-            <a-row align="middle">
-              <a-form-model-item label="稽核时间" prop="areas">
-                <a-radio-group v-model="formCollapis.checktime">
-                  <a-col :span="2">
-                    <a-radio value="all"> 不限 </a-radio>
-                  </a-col>
-                  <a-col :span="12">
-                    <a-radio value="range"> 时间段 </a-radio>
-                    <a-radio-group>
-                      <a-radio-button value="a"> 近一月 </a-radio-button>
-                      <a-radio-button value="b"> 近三月 </a-radio-button>
-                      <a-radio-button value="c"> 近半年 </a-radio-button>
-                      <a-radio-button value="d"> 近一年 </a-radio-button>
-                    </a-radio-group>
-                  </a-col>
-                  <a-col :span="10">
-                    <div style="display: flex; align-items: center">
-                      <a-radio value="custom"> 自定义 </a-radio
-                      ><a-range-picker
-                        :show-time="{ format: 'HH:mm' }"
-                        format="YYYY-MM-DD HH:mm"
-                        :placeholder="['Start Time', 'End Time']"
-                      />
-                    </div>
-                  </a-col>
-                </a-radio-group>
-              </a-form-model-item>
-            </a-row>
-            <a-row>
-              <a-col :span="12" v-if="!collapis">
-                <a-form-model-item>
-                  <a-button
-                    style="width: 160px"
-                    type="primary"
-                    html-type="submit"
-                    >搜索</a-button
-                  >
-                  <a-button @click="resetForm" style="margin-left: 8px"
-                    >清空</a-button
-                  >
-                </a-form-model-item>
-              </a-col>
-            </a-row>
+              <a-button @click="resetForm" style="margin-left: 8px"
+                >清空</a-button
+              >
+            </a-form-model-item>
           </div>
         </a-form-model>
       </div>
@@ -247,8 +238,8 @@ export default {
       },
       formItemLayoutWithOutLabel: {
         wrapperCol: {
-          xs: { span: 24, offset: 0 },
-          sm: { offset: 5 },
+          xs: { span: 24, offset: 2 },
+          sm: { offset: 2 },
         },
       },
     };
@@ -268,7 +259,7 @@ export default {
     handlePaginationChange(page, pageSize) {
       this.handleDetailData({ page: page, pageSize: pageSize });
     },
-    handleSubmit(e) {
+    handleSubmit() {
       console.log(this.formCollapis);
     },
     resetForm() {
