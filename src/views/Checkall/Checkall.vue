@@ -37,7 +37,7 @@
             <p class="pieCenter-title">稽核总量 (万)</p>
             <p class="pieCenter-number">{{ checkallPieNumber }}</p>
           </div>
-          <div id="piechart" style="height: 100%; width: 80%"></div>
+          <div id="piechart" style="height: 100%; width: 100%"></div>
         </div>
       </div>
       <div class="overview-table">
@@ -89,6 +89,7 @@
           :data-source="checkallDetail"
           :rowKey="(record, index) => index"
           :pagination="false"
+          :loading="detailTableLoading"
         >
           <template slot="notpass" slot-scope="text">
             <span class="red">{{ text }}</span>
@@ -165,6 +166,7 @@ export default {
       detailTotal: (state) => state.checkall.detailTotal,
       detailPage: (state) => state.checkall.detailPage,
       detailPagesize: (state) => state.checkall.detailPagesize,
+      detailTableLoading: (state) => state.checkall.detailTableLoading,
     }),
   },
   data() {
@@ -216,8 +218,6 @@ export default {
       );
       lineChart.setOption(this.linechartOptions);
       const piechart = this.$echarts.init(document.getElementById("piechart"));
-      this.piechartOptions.tooltip.formatter =
-        "<div style='padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>{c}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>{d}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style='text-align:center;margin:0px'>全国{b}缴纳单</div>";
       piechart.setOption(this.piechartOptions);
       this.pieData.map((pie) => {
         this.checkallPieNumber += pie.value;

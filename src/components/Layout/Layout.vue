@@ -40,7 +40,7 @@
                   <span>退出登录</span>
                 </a-menu-item>
               </a-menu>
-              <span>User name <a-icon type="caret-down" /></span>
+              <span>{{ UserName }}<a-icon type="caret-down" /></span>
             </a-dropdown>
           </div>
         </div>
@@ -69,7 +69,12 @@ export default {
   data() {
     return {
       collapsed: false,
+      UserName: "user name",
     };
+  },
+  mounted() {
+    const loginName = window.sessionStorage.getItem("username");
+    this.UserName = loginName;
   },
   methods: {
     gotoLogout() {
