@@ -23,7 +23,7 @@
                             class="inp_user"
                               v-decorator="[
                                 'userName',
-                                { rules: [{ required: true, message: '错误提示', trigger: 'change blur',initialValue: form.userName}] },
+                                { rules: [{ required: true, message: '请输入用户名!', trigger: 'change blur',initialValue: form.userName}] },
                               ]"
                               placeholder="用户名"
                             
@@ -67,90 +67,9 @@
                     <h3 class="h_footer">copyright © 中国移动九天智能稽核平台</h3>
               </div>
           </div>
-          <div class="Input_net">
-            <div class="login-container">
-              <a-form
-                id="components-form-demo-normal-login"
-                :form="form"
-                class="login-form"
-                @submit="handleSubmit"
-              >
-                <a-form-item>
-                  <a-input
-                    class="inp_user"
-                    v-decorator="[
-                      'userName',
-                      {
-                        rules: [
-                          {
-                            required: true,
-                            message: '请输入用户名!',
-                            trigger: 'change blur',
-                            initialValue: form.userName,
-                          },
-                        ],
-                      },
-                    ]"
-                    placeholder="用户名"
-                  >
-                    <a-icon
-                      slot="prefix"
-                      type="user"
-                      style="color: rgba(0, 0, 0, 0.25)"
-                    />
-                  </a-input>
-                </a-form-item>
-                <a-form-item>
-                  <a-input-password
-                    class="inp_password"
-                    v-decorator="[
-                      'password',
-                      {
-                        rules: [
-                          {
-                            required: true,
-                            validator: passwordValidator,
-                            trigger: 'change blur',
-                            initialValue: form.password,
-                          },
-                        ],
-                      },
-                    ]"
-                    type="password"
-                    placeholder="密码"
-                  >
-                    <a-icon
-                      slot="prefix"
-                      type="lock"
-                      style="color: rgba(0, 0, 0, 0.25)"
-                    />
-                  </a-input-password>
-                </a-form-item>
-                <a-form-item class="chackNumber">
-                  <a-checkbox
-                    v-decorator="[
-                      'remember',
-                      {
-                        valuePropName: 'checked',
-                        initialValue: false,
-                      },
-                    ]"
-                  >
-                    记住密码
-                  </a-checkbox>
-                  <a-button html-type="submit" class="login-form-button">
-                    登录
-                  </a-button>
-                </a-form-item>
-              </a-form>
-            </div>
-            <h3 class="h_num">有问题请联系管理员 010-5268668</h3>
-            <h3 class="h_footer">copyright © 中国移动九天智能稽核平台</h3>
-          </div>
         </div>
       </div>
     </div>
-  </div>
 </template>
 <script>
 export default {

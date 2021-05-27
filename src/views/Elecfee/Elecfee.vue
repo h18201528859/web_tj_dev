@@ -18,26 +18,27 @@
       <div class="overview-head">
         <p>稽核概况</p>
         <div class="radio-box">
-            <a-radio-group defaultValue="amount" class="amount-box">
+            <a-radio-group defaultValue="amount">
               <a-radio-button value="amount"> 数额统计 </a-radio-button>
               <a-radio-button value="amountMoney"> 金额统计 </a-radio-button>
             </a-radio-group>
-            <a-radio-group defaultValue="all">
+            <a-radio-group defaultValue="all"  class="amount-box">
               <a-radio-button value="all"> 全部 </a-radio-button>
               <a-radio-button value="year"> 近一年 </a-radio-button>
               <a-radio-button value="month"> 近三月 </a-radio-button>
               <a-radio-button value="halfyear"> 近半年 </a-radio-button>
             </a-radio-group>
+             <a-button icon="filter" @click="filterHandle">
+              筛选
+            </a-button>
         </div>
        
       </div>
        <div class="tabs-box">
           <a-tabs default-active-key="1" @change="callback">
             <a-tab-pane key="1" tab="缴费单">
-              Content of Tab Pane 1
             </a-tab-pane>
             <a-tab-pane key="2" tab="电表图" force-render>
-              Content of Tab Pane 2
             </a-tab-pane>
           </a-tabs>
         </div>
@@ -45,7 +46,7 @@
         <div class="line-chart">
           <div class="title">
             <div class="title-front"></div>
-            <p>广东省各地市缴费单稽核数量统计TOP10</p>
+            <p>各省缴费单金额统计TOP10</p>
           </div>
           <div id="linechart" style="height: 100%; width: 80%"></div>
         </div>
@@ -59,30 +60,15 @@
             <p class="pieCenter-number">{{ checkallPieNumber }}</p>
           </div>
           <div id="piechart" style="height: 100%; width: 80%"></div>
-        </div>
-       
-       
+        </div>     
       </div>
-      
-            <!-- <a-tabs
-              default-active-key="1"
-              :tab-position="mode"
-              type="card"
-              :style="{ height: '32px' }"
-               @change="getChangeCity"
-              @prevClick="callbackhandle"
-              @nextClick="callbackhandle"
-              class="cityTab"
-            >
-              <a-tab-pane v-for="i in cityArr" :key="i.id" :tab="`${i.name}`" ></a-tab-pane>
-            </a-tabs> -->
-      <div style="width:80%">
+      <div style="width:80%" v-if="cityId=='-1'">
           <a-tabs type="card"
                 default-active-key="1"
                 @change="getChangeCity"
                 @prevClick="callbackhandle"
                 @nextClick="callbackhandle"
-                 class="cityTab"
+                class="cityTab"
         >
             <a-tab-pane v-for="i in cityArr" :key="i.id" :tab="`${i.name}`">
             </a-tab-pane>
@@ -112,7 +98,7 @@
     </div>
     <div class="detail-section">
       <div class="header">
-        <p>各省缴费单稽核数量统计TOP10</p>
+        <p class="header_p">各省缴费单稽核数量统计TOP10</p>
         <div class="operations">
           <a-button class="button" @click="JumpToDetail" type="primary"
             >查看更多
@@ -182,6 +168,7 @@ export default {
       checkdetailTableColumns: checkdetailColumns,
       totalPage: 15,
       mode: 'top',
+      cityId:'-1',
       cityArr:[{name:'全国',id:0},{name:'北京',id:1},{name:'上海',id:2},{name:'广州',id:3},{name:'深圳',id:4},
       {name:'河北',id:5},{name:'河南',id:6},{name:'湖南',id:7},{name:'江苏',id:8},{name:'湖北',id:9},{name:'广西',id:10},
       {name:'广东',id:11},{name:'江西',id:12},]
@@ -190,6 +177,14 @@ export default {
   components: {
     HeadCardItem,
   },
+  watch: {
+  '$route.path': function (newVal, oldVal) {
+      const { params:{ cityId = '-1' } ,name } = this.$route
+      if(name!=='elecfeecitydetail'){
+          this.cityId = cityId;
+      }
+  }
+},
   computed: {
     ...mapState({
       headData: (state) => state.checkall.headData,
@@ -223,7 +218,14 @@ export default {
       console.log(value)
     },
     getChangeCity(key){
-      console.log(key)
+      this.cityId = key;
+      this.$router.push({
+        name: 'elecfeecitydetail',
+        path:`/elecfee/elecfeeCityDetail`,
+        params:{
+          cityId:key
+        }
+      })
     },
     JumpToProvince() {
       this.$store.dispatch("setCurrentBread", [
@@ -240,6 +242,11 @@ export default {
       this.linechartOptions.series[0].data = this.lineData;
       this.piechartOptions.series[0].data = this.pieData;
       this.getHeadData();
+    },
+    filterHandle(){
+        this.$router.push({
+          path: "/elecfee/elecfeeDetail",
+        });
     },
     drawLines() {
       const lineChart = this.$echarts.init(
@@ -294,7 +301,7 @@ export default {
         color: #343642;
       }
       .amount-box{
-         margin-right:16px;
+         margin:0 16px;
       }
     }
     .tabs-box{
@@ -317,6 +324,10 @@ export default {
           }
           p {
             text-align: left;
+            color: #343642;
+            font-size: 14px;
+            font-weight: 400;
+            font-family: PingFangSC-Regular, PingFang SC;
           }
         }
       }
@@ -375,6 +386,10 @@ export default {
         }
         p {
           text-align: left;
+          font-size: 14px;
+          font-family: PingFangSC-Regular, PingFang SC;
+          font-weight: 400;
+          color: #343642;
         }
       }
     }
@@ -388,11 +403,10 @@ export default {
     .header {
       display: flex;
       justify-content: space-between;
-
-      p {
-        font-size: 16px;
+      .header_p {
+        font-size: 14px;
         font-family: PingFangSC-Regular, PingFang SC;
-        font-weight: bold;
+        font-weight: 400;
         color: #343642;
       }
       .select {
@@ -400,6 +414,12 @@ export default {
       }
       .button {
         margin-left: 24px;
+        width: 80px;
+        height: 32px;
+        background: #0068FF;
+        border-radius: 2px;
+        font-size: 12px;
+        line-height: 18px;
       }
     }
     .table {
@@ -425,13 +445,20 @@ export default {
 .cityTab .ant-tabs-bar{
  border-bottom:none;
 }
-.cityTab.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active{
+.jump-wrap .cityTab.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active{
        border-bottom: 1px solid #e8e8e8;
+       background: #E6F4FF;
+      border: 1px solid #52A3FF;
       
 }
 .cityTab.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab{
- margin-right: 16px;
- border-radius: 0;
+      margin-right: 16px;
+      border-radius: 0;
+      height: 32px;
+      border-radius: 2px;
+      background: #FFFFFF;
+      border: 1px solid #D9D9D9;
+      margin-top:5px;
 }
 // .cityTab  .ant-tabs-nav .ant-tabs-tab{
 //       border: 1px solid #ccc;
@@ -449,5 +476,17 @@ export default {
 // }
 // .cityTab  .ant-tabs-nav .ant-tabs-tab::before{
 //   display: none;
+// }
+.ant-tabs-tab-next-icon,.ant-tabs-tab-prev-icon{
+    width: 16px;
+    height: 32px;
+    line-height: 32px;
+    background: #FFFFFF;
+    border-radius: 2px 0px 0px 2px;
+    border: 1px solid #D9D9D9;
+}
+// .ant-tabs-tab-next ant-tabs-tab-arrow-show{
+//     width: 16px;
+//     height: 32px;
 // }
 </style>

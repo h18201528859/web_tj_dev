@@ -52,7 +52,22 @@ export const linechartOptions = {
 export const piechartOptions = {
   tooltip: {
       trigger: "item",
-      formatter: "{b} : {c} ({d}%)",
+      formatter: function(item){
+        const pieData = piechartOptions.series[0].data;
+        const name = item.data.name
+        let total = 0;
+        let target = 0;
+        let legendArr = [];
+        for (let i = 0; i < pieData.length; i++) {
+            total += pieData[i].value;
+            if (pieData[i].name === name) {
+                target = pieData[i].value;
+            }
+        }
+        let percent = ((target / total) * 100).toFixed(1);
+        legendArr.push(`${target}条  ${percent}% <br/> <hr/> ${name} `);
+          return legendArr.join('');
+      }
   },
   legend: {
       orient: "vertical",

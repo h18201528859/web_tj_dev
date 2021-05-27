@@ -22,6 +22,7 @@ export default {
                 // {
                 //     auth: ["admin", "customer"],
                 //     name: "稽核详情",
+                //     key: "elecfee",
                 //     key: "elecfeeDetail",
                 //     iconType: "",
                 // },

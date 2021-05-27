@@ -68,23 +68,20 @@ const routes = [
             },
             {
                 path: "/elecfee/elecfeeDetail",
-                component: ElecfeeDetail
-               
+                component:   () =>
+                import(
+                    /* webpackChunkName: "home" */ "../views/Elecfee/elecfeeDetail.vue"
+                ),
             },
-           
-        ],
-    },
-    {
-        path: "/elecfeeDetail",
-        component: Layout,
-        children: [
             {
-                path: "",
-                name: "elecfeedetail",
-                component: ElecfeeDetail,
+                path: "/elecfee/elecfeeCityDetail",
+                name:'elecfeecitydetail',
+                component:  () =>
+                import(
+                    /* webpackChunkName: "about" */ "../views/Elecfee/Elecfee.vue"
+                ),
             },
         ],
-       
     },
     {
         path: "/provincefee",
