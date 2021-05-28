@@ -140,6 +140,7 @@ import {
   checkdetailColumns,
 } from "./constants";
 import { mapActions, mapState } from "vuex";
+import util from "../../utils/utils";
 
 export default {
   components: {
@@ -202,6 +203,7 @@ export default {
       this.$router.push({
         path: "/checkdetail",
       });
+      util.jumpTop();
     },
     handleHeadData() {
       this.linechartOptions.series[0].data = this.lineData;

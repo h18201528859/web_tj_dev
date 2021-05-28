@@ -11,7 +11,7 @@ const getHeaders = () => ({
 const uploadGetHeaders = () => ({
     "Content-Type": "multipart/form-data",
 });
-export function axiospost(url, data, uploadHeader, callback) {
+export function axiospost(url, data, uploadHeader) {
     // axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
     return new Promise((resolve, reject) => {
         axios
