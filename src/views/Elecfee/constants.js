@@ -276,3 +276,10 @@ export const checkdetailColumns = [
       scopedSlots: { customRender: "notpassper" },
   },
 ];
+
+export const cityTitle = {
+    surveyTitle: '电费稽核概况',
+    provinceTitle: '各省缴费单金额统计TOP10',
+    scoreTitle: '各评分区间占比',
+    tabProvinceTitle: '各省缴费单金额统计TOP10'
+}

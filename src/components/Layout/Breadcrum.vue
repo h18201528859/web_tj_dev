@@ -27,7 +27,7 @@
   </a-breadcrumb>
    <span class="city-wrap"  v-if="cityId!=='-1'">
           <a-select :defaultValue="cityId!=='-1'&&cityArr[cityId].name" style="width: 120px" @change="handleChange">
-            <a-select-option v-for="i in cityArr" :key="i.id" :value="i.name" >
+            <a-select-option v-for="i in cityArr" :key="i.id" :value="i.id" >
               {{i.name}}
             </a-select-option>
           </a-select>
@@ -35,18 +35,18 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
-
+import { mapActions, mapState } from "vuex";
 export default {
   name: "Breadcrum",
   mounted() {},
   computed: {
     ...mapState({
       breadcrumbArr: (state) => state.breadcrum.breadcrumbArr,
+      cityTitle:(state) => state.elecfee.cityTitle
     }),
   },
    watch: {
-    '$route.path': function (newVal, oldVal) {
+    '$route.path': function () {
         const { cityId='-1'  } = this.$route.params
         this.cityId = cityId;
     }
@@ -61,6 +61,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions("checkall", ["getHeadData", "getCheckallTableData","getUpdateCityTitle"]),
     JumptobreadLink(e) {
       let hashStr = e.target.hash.substr(2);
       const matchedStr = hashStr.match(/\/(\S*)/);
@@ -79,7 +80,17 @@ export default {
       this.$store.commit("setBreadcrumb", updateBread);
     },
     handleChange(key){
-      console.log(key)
+      const cityName = this.cityArr[key].name;
+      const newcityTitle = {
+          surveyTitle: '电费稽核概况',
+          provinceTitle: '各省缴费单金额统计TOP10',
+          scoreTitle: '各评分区间占比',
+          tabProvinceTitle: '各省缴费单金额统计TOP10'
+      }
+      const { surveyTitle, provinceTitle,scoreTitle, tabProvinceTitle } = newcityTitle
+      const oCityData = {surveyTitle:cityName+surveyTitle,scoreTitle,provinceTitle:cityName+provinceTitle,tabProvinceTitle:cityName+tabProvinceTitle}
+      this.$store.dispatch("getUpdateCityTitle", oCityData);
+      this.breadcrumbArr[2].breadcrumbName=`${this.cityArr[key].name}省电费稽核`
     }
   },
 };

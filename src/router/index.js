@@ -15,8 +15,8 @@ import Login from "../views/Login.vue";
 
 //views
 import Checkall from "../views/Checkall/Checkall.vue";
-import Elecfee from "../views/Elecfee/Elecfee.vue";
-import ElecfeeDetail from "../views/Elecfee/elecfeeDetail.vue";
+// import Elecfee from "../views/Elecfee/Elecfee.vue";
+// import ElecfeeDetail from "../views/Elecfee/elecfeeDetail.vue";
 import CheckDetail from "../views/CheckDetail/CheckDetail.vue";
 import Provincefee from "../views/Provincefee/Provincefee.vue";
 

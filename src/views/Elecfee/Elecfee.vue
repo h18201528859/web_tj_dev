@@ -16,7 +16,7 @@
     </div>
      <div class="overview-section">
       <div class="overview-head">
-        <p>稽核概况</p>
+        <p>{{cityTitle.surveyTitle}}</p>
         <div class="radio-box">
             <a-radio-group defaultValue="amount">
               <a-radio-button value="amount"> 数额统计 </a-radio-button>
@@ -46,14 +46,14 @@
         <div class="line-chart">
           <div class="title">
             <div class="title-front"></div>
-            <p>各省缴费单金额统计TOP10</p>
+            <p>{{ cityTitle.provinceTitle }}</p>
           </div>
           <div id="linechart" style="height: 100%; width: 80%"></div>
         </div>
         <div class="pie-chart">
           <div class="title">
             <div class="title-front"></div>
-            <p>各评分区间占比</p>
+            <p>{{ cityTitle.scoreTitle}}</p>
           </div>
           <div class="pieCenter">
             <p class="pieCenter-title">稽核总量 (万)</p>
@@ -70,35 +70,17 @@
                 @nextClick="callbackhandle"
                 class="cityTab"
         >
-            <a-tab-pane v-for="i in cityArr" :key="i.id" :tab="`${i.name}`">
+            <a-tab-pane class="citybut" v-for="i in cityArr" :key="i.id" :tab="`${i.name}`">
             </a-tab-pane>
       
           </a-tabs>
       </div>
       
-      <div class="overview-table hide">
-        <div class="title">
-          <div class="title-front"></div>
-          <p>各省缴费单稽核数量统计TOP10</p>
-        </div>
-        <a-table
-          :columns="checkallTableColumns"
-          :data-source="checkallTable"
-          :rowKey="(record, index) => index"
-          :pagination="false"
-        >
-          <template slot="notpass" slot-scope="text">
-            <span class="red">{{ text }}</span>
-          </template>
-          <template slot="notpassper" slot-scope="text">
-            <span>{{ `${text}%` }}</span>
-          </template>
-        </a-table>
-      </div>
+     
     </div>
     <div class="detail-section">
       <div class="header">
-        <p class="header_p">各省缴费单稽核数量统计TOP10</p>
+        <p class="header_p">{{cityTitle.tabProvinceTitle}}</p>
         <div class="operations">
           <a-button class="button" @click="JumpToDetail" type="primary"
             >查看更多
@@ -152,6 +134,13 @@ import {
   } from "./constants";
 import { mapActions, mapState } from "vuex";
 export default {
+   computed: {
+    ...mapState({
+      headData: (state) => state.checkall.headData,
+      checkallTable: (state) => state.checkall.checkallTable,
+      cityTitle:(state) => state.elecfee.cityTitle
+    }),
+  },
   data(){
     return {
       HeadCardItems,
@@ -161,8 +150,8 @@ export default {
         { value: 735, name: "铁塔服务费" },
         { value: 580, name: "租费" },
       ],
-      linechartOptions: linechartOptions,
-      piechartOptions: piechartOptions,
+      linechartOptions,
+      piechartOptions,
       checkallPieNumber: 0,
       checkallTableColumns: checkallColumns,
       checkdetailTableColumns: checkdetailColumns,
@@ -178,19 +167,14 @@ export default {
     HeadCardItem,
   },
   watch: {
-  '$route.path': function (newVal, oldVal) {
+  '$route.path': function () {
       const { params:{ cityId = '-1' } ,name } = this.$route
       if(name!=='elecfeecitydetail'){
           this.cityId = cityId;
       }
   }
 },
-  computed: {
-    ...mapState({
-      headData: (state) => state.checkall.headData,
-      checkallTable: (state) => state.checkall.checkallTable,
-    }),
-  },
+ 
   created() {
     this.handleHeadData();
     this.getCheckallTableData();
@@ -199,7 +183,7 @@ export default {
     this.drawLines();
   },
   methods: {
-    ...mapActions("checkall", ["getHeadData", "getCheckallTableData"]),
+    ...mapActions("checkall", ["getHeadData", "getCheckallTableData","getUpdateCityTitle"]),
     JumpToDetail() {
       this.$store.dispatch("setCurrentBread", [
         {
@@ -219,6 +203,16 @@ export default {
     },
     getChangeCity(key){
       this.cityId = key;
+      const cityName = this.cityArr[key].name;
+      const { surveyTitle, provinceTitle,scoreTitle, tabProvinceTitle } =this.cityTitle
+      const oCityData = {surveyTitle:cityName+surveyTitle,scoreTitle,provinceTitle:cityName+provinceTitle,tabProvinceTitle:cityName+tabProvinceTitle}
+      this.$store.dispatch("getUpdateCityTitle", oCityData);
+       this.$store.dispatch("setCurrentBread", [
+        {
+          path: "/elecfee/elecfeeCityDetail",
+          breadcrumbName: `${this.cityArr[key].name}省电费稽核`,
+        },
+      ]);
       this.$router.push({
         name: 'elecfeecitydetail',
         path:`/elecfee/elecfeeCityDetail`,
@@ -244,6 +238,12 @@ export default {
       this.getHeadData();
     },
     filterHandle(){
+        this.$store.dispatch("setCurrentBread", [
+        {
+          path: "/elecfee/elecfeeDetai",
+          breadcrumbName: "稽核详情",
+        },
+      ]);
         this.$router.push({
           path: "/elecfee/elecfeeDetail",
         });
@@ -279,7 +279,7 @@ export default {
 </script>
 
 
-<style lang="less" >
+<style lang="less" scoped>
 .jump-wrap {
   .header-section {
     display: flex;
@@ -442,6 +442,9 @@ export default {
 .hide{
   display: none;
 }
+
+</style>
+<style lang="less">
 .cityTab .ant-tabs-bar{
  border-bottom:none;
 }
@@ -455,38 +458,19 @@ export default {
       margin-right: 16px;
       border-radius: 0;
       height: 32px;
+      line-height: 32px;
       border-radius: 2px;
       background: #FFFFFF;
       border: 1px solid #D9D9D9;
       margin-top:5px;
 }
-// .cityTab  .ant-tabs-nav .ant-tabs-tab{
-//       border: 1px solid #ccc;
-//           height: 32px;
-          
-// }
-// .cityTab.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab{
-//   margin-right:16px;
-// }
-// .cityTab .ant-tabs-ink-bar{
-//   // display: none!important;
-// }
-// .cityTab.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active{
-//  border-bottom: 1px solid #ccc;
-// }
-// .cityTab  .ant-tabs-nav .ant-tabs-tab::before{
-//   display: none;
-// }
-.ant-tabs-tab-next-icon,.ant-tabs-tab-prev-icon{
+ .cityTab .ant-tabs-tab-next-icon,.cityTab .ant-tabs-tab-prev-icon{
     width: 16px;
     height: 32px;
     line-height: 32px;
     background: #FFFFFF;
-    border-radius: 2px 0px 0px 2px;
+    border-radius: 2px;
     border: 1px solid #D9D9D9;
 }
-// .ant-tabs-tab-next ant-tabs-tab-arrow-show{
-//     width: 16px;
-//     height: 32px;
-// }
+
 </style>

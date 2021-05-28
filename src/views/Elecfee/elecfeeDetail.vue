@@ -93,7 +93,7 @@
             </a-radio>
              <a-radio value="c" class="radio-auto">
               自定义
-               <a-input placeholder="" class="radio-ipt"/>-<a-input placeholder="" class="radio-ipt" />
+               <a-input-number placeholder="" class="radio-ipt"/>-<a-input-number placeholder="" class="radio-ipt" />分
             </a-radio>
           </a-radio-group>
           
@@ -183,7 +183,7 @@ import {
     checkallColumns,
     checkdetailColumns
   } from "./constants";
-import { mapActions, mapState } from "vuex";
+import {  mapState } from "vuex";
 
 export default {
   data(){
@@ -214,7 +214,7 @@ export default {
     this.getCheckallTableData();
   },
   methods: {
-    ...mapActions("checkall", ["getHeadData", "getCheckallTableData"]),
+    //...mapActions("checkall", ["getHeadData", "getCheckallTableData"]),
     JumpToDetail() {
       this.$store.dispatch("setCurrentBread", [
         {
@@ -281,7 +281,7 @@ export default {
 </script>
 
 
-<style lang="less">
+<style lang="less" scoped>
 .jump-wrap {
   .header-section {
     display: flex;
