@@ -1,4 +1,3 @@
-import MENUITEM from "../../../const/menu";
 const router = {
     state: {
         breadcrumbArr: [],

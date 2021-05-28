@@ -23,8 +23,8 @@
   </div>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
-// import util from "../../utils/utils";
+import { mapState } from "vuex";
+import util from "../../utils/utils";
 import MENUITEM from "../../const/menu";
 
 export default {
@@ -113,6 +113,7 @@ export default {
       this.$router.push({
         path: `/${routePath}`,
       });
+      util.jumpTop();
     },
   },
 };
