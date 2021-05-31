@@ -1,6 +1,6 @@
 const devProxy = ["/api"]; // proxy route
 let proEnv = require("./config/pro.env");
-let devEnv = require("./config/dev.env");
+// let devEnv = require("./config/dev.env");
 const env = process.env.NODE_ENV;
 // generate proxy object
 let proxyObj = {};

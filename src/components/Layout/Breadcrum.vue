@@ -35,45 +35,33 @@
   </div>
 </template>
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState ,mapMutations} from "vuex";
+import { cityArr } from "../../views/Elecfee/constants";
+console.log(cityArr);
 export default {
   name: "Breadcrum",
-  mounted() {},
   computed: {
     ...mapState({
-      breadcrumbArr: (state) => state.breadcrum.breadcrumbArr,
-      cityTitle:(state) => state.elecfee.cityTitle
+      breadcrumbArr: state=>state.breadcrum.breadcrumbArr,
+      cityTitle:(state) => state.elecfee.cityTitle,
+      cityId: state => state.elecfee.cityId
     }),
-  },
-   watch: {
-    '$route.path': function () {
-        const { cityId='-1'  } = this.$route.params
-        this.cityId = cityId;
-    }
   },
   data() {
     return {
       routes: this.breadcrumbArr,
-      cityId: "-1",
-      cityArr: [
-        { name: "全国", id: 0 },
-        { name: "北京", id: 1 },
-        { name: "上海", id: 2 },
-        { name: "广州", id: 3 },
-        { name: "深圳", id: 4 },
-        { name: "河北", id: 5 },
-        { name: "河南", id: 6 },
-        { name: "湖南", id: 7 },
-        { name: "江苏", id: 8 },
-        { name: "湖北", id: 9 },
-        { name: "广西", id: 10 },
-        { name: "广东", id: 11 },
-        { name: "江西", id: 12 },
-      ],
+      cityArr
     };
   },
+  mounted(){
+     const { cityId = '-1' } = this.$route.params;
+     if(cityId!=='-1'){
+       this.updateCityId(cityId);
+     }
+  },
   methods: {
-    ...mapActions("checkall", ["getHeadData", "getCheckallTableData","getUpdateCityTitle"]),
+    ...mapMutations("elecfee",['updateCityId']),
+    ...mapActions("elecfee", ["getUpdateCityTitle"]),
     JumptobreadLink(e) {
       let hashStr = e.target.hash.substr(2);
       const matchedStr = hashStr.match(/\/(\S*)/);
@@ -89,20 +77,22 @@ export default {
           updateBread = updateBread.splice(0, i + 1);
         }
       });
+       this.getUpdateCityTitle('');
+       this.updateCityId('-1');
       this.$store.commit("setBreadcrumb", updateBread);
     },
     handleChange(key){
-      const cityName = this.cityArr[key].name;
-      const newcityTitle = {
-          surveyTitle: '电费稽核概况',
-          provinceTitle: '各省缴费单金额统计TOP10',
-          scoreTitle: '各评分区间占比',
-          tabProvinceTitle: '各省缴费单金额统计TOP10'
-      }
-      const { surveyTitle, provinceTitle,scoreTitle, tabProvinceTitle } = newcityTitle
-      const oCityData = {surveyTitle:cityName+surveyTitle,scoreTitle,provinceTitle:cityName+provinceTitle,tabProvinceTitle:cityName+tabProvinceTitle}
-      this.$store.dispatch("getUpdateCityTitle", oCityData);
-      this.breadcrumbArr[2].breadcrumbName=`${this.cityArr[key].name}省电费稽核`
+      const cityName = this.cityArr[key].name;     
+      this.updateCityId(key);
+      this.getUpdateCityTitle(cityName);
+      this.breadcrumbArr[2].breadcrumbName=`${this.cityArr[key].name}省电费稽核`;
+      this.$router.push({
+        name: 'elecfeecitydetail',
+        path:`/elecfee/elecfeeCityDetail/:id`+key,
+        params:{
+          cityId:key
+        }
+      });
     }
   },
 };

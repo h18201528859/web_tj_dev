@@ -9,11 +9,11 @@
     </div>
     <div class="count-box">
       <div class="all-cont">
-        <span class="all-text">{{ upNumber || 0 }}</span>
+        <span class="all-text">{{ upElecfeeNumber || 0 }}</span>
         {{ allText }}
       </div>
       <div class="money-cont">
-        <span class="month-text">{{ downNumber || 0 }}</span>
+        <span class="month-text">{{ downElecfeeNumber || 0 }}</span>
         {{ monthText }}
       </div>
     </div>
@@ -51,14 +51,14 @@ export default {
   },
   watch: {
     currentData(newValue) {
-      this.upNumber = newValue.number;
-      this.downNumber = newValue.count;
+      this.upElecfeeNumber = newValue.number;
+      this.downElecfeeNumber = newValue.count;
     },
   },
   data() {
     return {
-      upNumber: this.currentData.number,
-      downNumber: this.currentData.count,
+      upElecfeeNumber: this.currentData.number,
+      downElecfeeNumber: this.currentData.count,
     };
   },
   methods: {

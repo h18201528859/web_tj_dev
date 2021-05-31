@@ -1,8 +1,5 @@
 <template>
   <div class="jump-wrap">
-    <!-- <p>电费稽核</p>
-    <a-button @click="JumpToDetail">稽核详情</a-button>
-    <a-button @click="JumpToProvince">省级详情</a-button> -->
     <div class="header-section">
         <HeadCardItem
             v-for="(i, k) in HeadCardItems"
@@ -62,7 +59,7 @@
           <div id="piechart" style="height: 100%; width: 80%"></div>
         </div>     
       </div>
-      <div style="width:80%" v-if="cityId=='-1'">
+      <div v-if="cityId=='-1'">
           <a-tabs type="card"
                 default-active-key="1"
                 @change="getChangeCity"
@@ -82,7 +79,7 @@
       <div class="header">
         <p class="header_p">{{cityTitle.tabProvinceTitle}}</p>
         <div class="operations">
-          <a-button class="button" @click="JumpToDetail" type="primary"
+          <a-button class="button" @click="filterHandle" type="primary"
             >查看更多
           </a-button>
         </div>
@@ -130,15 +127,17 @@ import {
     linechartOptions,
     piechartOptions,
     checkallColumns,
-    checkdetailColumns
+    checkdetailColumns,
+    cityArr
   } from "./constants";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState ,mapMutations} from "vuex";
 export default {
    computed: {
     ...mapState({
-      headData: (state) => state.checkall.headData,
-      checkallTable: (state) => state.checkall.checkallTable,
-      cityTitle:(state) => state.elecfee.cityTitle
+      headData: (state) => state.elecfee.headData,
+      checkallTable: (state) => state.elecfee.checkallTable,
+      cityTitle:(state) => state.elecfee.cityTitle,
+      cityId: state => state.elecfee.cityId
     }),
   },
   data(){
@@ -157,79 +156,49 @@ export default {
       checkdetailTableColumns: checkdetailColumns,
       totalPage: 15,
       mode: 'top',
-      cityId:'-1',
-      cityArr:[{name:'全国',id:0},{name:'北京',id:1},{name:'上海',id:2},{name:'广州',id:3},{name:'深圳',id:4},
-      {name:'河北',id:5},{name:'河南',id:6},{name:'湖南',id:7},{name:'江苏',id:8},{name:'湖北',id:9},{name:'广西',id:10},
-      {name:'广东',id:11},{name:'江西',id:12},]
-    }
+      cityArr
+    };
   },
   components: {
     HeadCardItem,
   },
-  watch: {
-  '$route.path': function () {
-      const { params:{ cityId = '-1' } ,name } = this.$route
-      if(name!=='elecfeecitydetail'){
-          this.cityId = cityId;
-      }
-  }
-},
- 
   created() {
     this.handleHeadData();
-    this.getCheckallTableData();
+    this.getElecfeeTableData();
+    const {params:{ cityId='-1' },name} = this.$route;
+    if(name == 'elecfeecitydetail'){
+      const cityName = this.cityArr[cityId].name;
+      this.getUpdateCityTitle(cityName);
+    }
   },
   mounted() {
     this.drawLines();
   },
   methods: {
-    ...mapActions("checkall", ["getHeadData", "getCheckallTableData","getUpdateCityTitle"]),
-    JumpToDetail() {
-      this.$store.dispatch("setCurrentBread", [
-        {
-          path: "checkdetail",
-          breadcrumbName: "稽核详情",
-        },
-      ]);
-      this.$router.push({
-        path: "/checkdetail",
-      });
-    },
+    ...mapMutations("elecfee",['updateCityId']),
+    ...mapActions("elecfee", ["getHeadData", "getElecfeeTableData","getUpdateCityTitle"]),
     callback(key){
-      console.log(key)
+      console.log(key);
     },
     callbackhandle(value){
-      console.log(value)
+      console.log(value);
     },
     getChangeCity(key){
-      this.cityId = key;
+      this.updateCityId(key);
       const cityName = this.cityArr[key].name;
-      const { surveyTitle, provinceTitle,scoreTitle, tabProvinceTitle } =this.cityTitle
-      const oCityData = {surveyTitle:cityName+surveyTitle,scoreTitle,provinceTitle:cityName+provinceTitle,tabProvinceTitle:cityName+tabProvinceTitle}
-      this.$store.dispatch("getUpdateCityTitle", oCityData);
-       this.$store.dispatch("setCurrentBread", [
-        {
-          path: "/elecfee/elecfeeCityDetail",
+      this.getUpdateCityTitle(cityName);
+      this.$store.dispatch("setCurrentBread", [
+       {
+          path: "/elecfee/elecfeeCityDetail/:cityId"+key,
           breadcrumbName: `${this.cityArr[key].name}省电费稽核`,
         },
       ]);
       this.$router.push({
         name: 'elecfeecitydetail',
-        path:`/elecfee/elecfeeCityDetail`,
+        path:`/elecfee/elecfeeCityDetail/:id`+key,
         params:{
           cityId:key
         }
-      })
-    },
-    JumpToProvince() {
-      this.$store.dispatch("setCurrentBread", [
-        {
-          path: "provincefee",
-          breadcrumbName: "省级详情",
-        },
-      ]);
-      this.$router.push({
-        path: "/provincefee",
       });
     },
     handleHeadData() {
@@ -244,15 +213,14 @@ export default {
           breadcrumbName: "稽核详情",
         },
       ]);
-        this.$router.push({
-          path: "/elecfee/elecfeeDetail",
-        });
+      this.$router.push({
+        path: "/elecfee/elecfeeDetail",
+      });
     },
     drawLines() {
       const lineChart = this.$echarts.init(
         document.getElementById("linechart")
       );
-
       lineChart.setOption(this.linechartOptions);
       const piechart = this.$echarts.init(document.getElementById("piechart"));
       piechart.setOption(this.piechartOptions);
@@ -260,19 +228,19 @@ export default {
         this.checkallPieNumber += pie.value;
       });
       piechart.on('legendselectchanged', function (options) {
-                var name = options.name, selected = options.selected;
-                var option = piechart.getOption()
-                var selectKey = [];
-                for (var prop in selected) {
-                    if (hasOwnProperty.call(selected, prop)) selectKey.push(prop);
-                }
-                if (!selectKey.filter(function (key) {
-                    return selected[key]
-                }).length) {
-                    option.legend[0].selected[name] = true
-                }
-                piechart.setOption(option)
-            })
+          const name = options.name, selected = options.selected;
+          const option = piechart.getOption();
+          const selectKey = [];
+          for (let prop in selected) {
+              if (hasOwnProperty.call(selected, prop)) selectKey.push(prop);
+          }
+          if (!selectKey.filter(function (key) {
+              return selected[key];
+          }).length) {
+              option.legend[0].selected[name] = true;
+          }
+          piechart.setOption(option);
+      });
     }
   },
 };

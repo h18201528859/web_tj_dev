@@ -35,7 +35,7 @@ function fileDisplay(filePath) {
                     fileList.push(path.basename(filedir, '.json'));
                     fileList.forEach(item => {
                         localJsonDb[item] = getjsonContent(item);
-                    })
+                    });
                 }
                 if (isDir) {
                     console.warn("=====> DO NOT support mock data in folder");
@@ -43,14 +43,14 @@ function fileDisplay(filePath) {
                 }
                 Object.keys(fakeoriginalData).map(item => {
                     localJsonDb[item] = fakeoriginalData[item];
-                })
+                });
             }
-        })
-    })
+        });
+    });
     setTimeout(() => {
         serverRewrite();
         runServer(localJsonDb);
-    }, 100)
+    }, 100);
 }
 function getjsonContent(path) {
     let newpath = `./src/mock/json/${path}.json`;
@@ -60,7 +60,7 @@ function getjsonContent(path) {
 
 //set router rewriter rules according to routers.js
 function serverRewrite() {
-    server.use(jsonServer.rewriter(customersRouters))
+    server.use(jsonServer.rewriter(customersRouters));
 }
 
 function runServer(db) {
@@ -68,7 +68,7 @@ function runServer(db) {
 }
 
 server.post(`${baseUrl}/*`,(req,res,next) =>{
-    console.log(req.url)
+    console.log(req.url);
     req.method = 'GET';
     req.url = '/POST'+req.url;
     next();
@@ -87,5 +87,5 @@ server.delete(`${baseUrl}/*`,(req,res,next) =>{
 });
 
 server.listen(3004, () => {
-    console.log('Mock Server is successfully running on port 3004 😁')
+    console.log('Mock Server is successfully running on port 3004 😁');
 });

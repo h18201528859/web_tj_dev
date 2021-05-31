@@ -226,18 +226,18 @@ export default {
       });
        piechart.on('legendselectchanged', function (options) {
           var name = options.name, selected = options.selected;
-          var option = piechart.getOption()
+          var option = piechart.getOption();
           var selectKey = [];
           for (var prop in selected) {
               if (hasOwnProperty.call(selected, prop)) selectKey.push(prop);
           }
           if (!selectKey.filter(function (key) {
-              return selected[key]
+              return selected[key];
           }).length) {
-              option.legend[0].selected[name] = true
+              option.legend[0].selected[name] = true;
           }
-          piechart.setOption(option)
-      })
+          piechart.setOption(option);
+      });
     },
     handleDetailPagesize(pageSize) {
       this.handleDetailData({ page: 1, pageSize: +pageSize });

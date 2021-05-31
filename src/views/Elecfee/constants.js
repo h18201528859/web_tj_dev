@@ -54,7 +54,7 @@ export const piechartOptions = {
       trigger: "item",
       formatter: function(item){
         const pieData = piechartOptions.series[0].data;
-        const name = item.data.name
+        const name = item.data.name;
         let total = 0;
         let target = 0;
         let legendArr = [];
@@ -135,8 +135,6 @@ export const checkallColumns = [
       dataIndex: "type",
       key: "type",
       width: 150,
-
-      // ellipsis: true,
   },
   {
       title: "9-10分",
@@ -277,9 +275,31 @@ export const checkdetailColumns = [
   },
 ];
 
-export const cityTitle = {
-    surveyTitle: '电费稽核概况',
-    provinceTitle: '各省缴费单金额统计TOP10',
-    scoreTitle: '各评分区间占比',
-    tabProvinceTitle: '各省缴费单金额统计TOP10'
-}
+export const cityArr = [
+    { name: "全国", id: 0 },
+    { name: "北京", id: 1 },
+    { name: "上海", id: 2 },
+    { name: "广州", id: 3 },
+    { name: "深圳", id: 4 },
+    { name: "河北", id: 5 },
+    { name: "河南", id: 6 },
+    { name: "湖南", id: 7 },
+    { name: "江苏", id: 8 },
+    { name: "湖北", id: 9 },
+    { name: "广西", id: 10 },
+    { name: "广东", id: 11 },
+    { name: "四川", id: 12 },
+    { name: "云南", id: 13 },
+    { name: "西藏", id: 14 },
+    { name: "新疆", id: 15 },
+    { name: "甘肃", id: 16 },
+    { name: "海南", id: 17 },
+    { name: "山东", id: 18 },
+    { name: "福建", id: 19 },
+    { name: "合肥", id: 20 },
+    { name: "浙江", id: 21 },
+    { name: "黑龙江", id: 22 },
+    { name: "辽宁", id: 23 },
+    { name: "内蒙古", id: 24 },
+    { name: "山西", id: 25 },
+  ];

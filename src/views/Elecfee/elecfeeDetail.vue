@@ -9,27 +9,28 @@
           layout="inline"
           class="from-box"
         >
-    <a-form-item label="统计类型">
-      <a-radio-group v-decorator="['radio-group']">
-        <a-radio value="a">
+    <a-form-item label="统计类型" name="统计类型">
+      <a-radio-group v-decorator="['radio-types',{initialValue:'number'}]">
+        <a-radio value="number">
           数量
         </a-radio>
-        <a-radio value="b">
+        <a-radio value="all">
           全部
         </a-radio>
       </a-radio-group>
     </a-form-item>
 
-    <a-form-item label="稽核类型">
+    <a-form-item label="稽核类型" name="稽核类型">
         <a-checkbox :indeterminate="indeterminate" :checked="checkAll" @change="onCheckAllChange">
           全部
         </a-checkbox>
-      <a-checkbox-group v-model="checkedList" :options="plainOptions" @change="onChange" />
+      <a-checkbox-group   v-model="checkedList" :options="plainOptions" @change="onChange" >
+      </a-checkbox-group>
     </a-form-item>
     <div class="city-box" v-if="cityFlag">
-        <a-form-item label="地区选择" default-value="vertical">
+        <a-form-item label="地区选择" default-value="vertical" name="地区选择">
           <div>
-          <a-radio-group v-decorator="['radio-group']">
+          <a-radio-group v-decorator="['radio-provice',{initialValue:'a'}]">
             <a-radio value="a">
               全部省份
             </a-radio>
@@ -52,13 +53,15 @@
               </a-select-option>
             </a-select>
          </div>
-         <div>
-            <a-radio-group v-decorator="['radio-group']">
+        </a-form-item>
+        <a-form-item label="">
+          <div class="all-city">
+            <a-radio-group v-decorator="['radio-city', {initialValue: 'a'}]">
               <a-radio value="a">
-                全部省份
+                全部城市
               </a-radio>
               <a-radio value="b">
-                自选省份
+                自选城市
               </a-radio>
             </a-radio-group>
              <a-select default-value="lucy" style="width: 120px" @change="handleChange">
@@ -78,18 +81,20 @@
           </div>
         </a-form-item>
         <a-form-item label="稽核得分" default-value="vertical">
-          <a-radio-group v-decorator="['radio-group']">
+          <a-radio-group v-decorator="['radio-frationType',{initialValue:'a'}]">
             <a-radio value="a">
               全部
             </a-radio>
             <a-radio value="b" class="radio-fraction">
               分数段
-              <a-radio-group defaultValue="all">
-                <a-radio-button value="year"> 0-6分 </a-radio-button>
-                <a-radio-button value="month"> 6-8分 </a-radio-button>
-                <a-radio-button value="halfyear"> 8-9分 </a-radio-button>
-                <a-radio-button value="year"> 9-10分 </a-radio-button>
-              </a-radio-group>
+              <a-form-item class="child-fraction">
+                <a-radio-group  v-decorator="['radio-childFrationType',{initialValue:''}]">
+                  <a-radio-button value="a"> 0-6分 </a-radio-button>
+                  <a-radio-button value="b"> 6-8分 </a-radio-button>
+                  <a-radio-button value="c"> 8-9分 </a-radio-button>
+                  <a-radio-button value="d"> 9-10分 </a-radio-button>
+                </a-radio-group>
+              </a-form-item>
             </a-radio>
              <a-radio value="c" class="radio-auto">
               自定义
@@ -99,18 +104,20 @@
           
         </a-form-item>
           <a-form-item label="稽核时间" default-value="vertical">
-          <a-radio-group v-decorator="['radio-group']">
+          <a-radio-group v-decorator="['radio-time',{initialValue:'a'}]">
             <a-radio value="a">
               不限
             </a-radio>
             <a-radio value="b" class="radio-time">
               时间段
-               <a-radio-group defaultValue="all">
-                <a-radio-button value="year"> 近一月 </a-radio-button>
-                <a-radio-button value="month"> 近三月 </a-radio-button>
-                <a-radio-button value="halfyear"> 近半年 </a-radio-button>
-                <a-radio-button value="year"> 近一年 </a-radio-button>
-              </a-radio-group>
+                <a-form-item class="child-fraction">
+                  <a-radio-group v-decorator="['radio-childTimeType',{initialValue:''}]">
+                    <a-radio-button value="a"> 近一月 </a-radio-button>
+                    <a-radio-button value="b"> 近三月 </a-radio-button>
+                    <a-radio-button value="c"> 近半年 </a-radio-button>
+                    <a-radio-button value="d"> 近一年 </a-radio-button>
+                  </a-radio-group>
+                </a-form-item>
             </a-radio>
              <a-radio value="c">
               自定义
@@ -183,28 +190,33 @@ import {
     checkallColumns,
     checkdetailColumns
   } from "./constants";
-import {  mapState } from "vuex";
+import {  mapState ,mapActions} from "vuex";
 
 export default {
   data(){
     return {
-      plainOptions : ['电费(缴费单)','电费(电表图)', '铁塔服务费', '租费'],
+      // plainOptions : [
+      // {label:'电费(缴费单)', value:'a'},
+      // {label:'电费(电表图)', value:'b'},
+      // {label:'铁塔服务费', value:'c'},
+      // {label:'租费', value:'d'}
+      // ],
+      plainOptions:['电费(缴费单)','电费(电表图)','铁塔服务费','租费'],
       checkallPieNumber: 0,
       checkallTableColumns: checkallColumns,
       checkdetailTableColumns: checkdetailColumns,
       totalPage: 15,
-      checkedList: ['电费(缴费单)', '电费(电表图)'],
+      checkedList: [],
       indeterminate: true,
       checkAll: false,
       extendText:'展开',
       extendIcon:'down',
       cityFlag:false
-    }
+    };
   },
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: 'validate_other' });
   },
-  
   computed: {
     ...mapState({
       checkallTable: (state) => state.checkall.checkallTable,
@@ -214,7 +226,7 @@ export default {
     this.getCheckallTableData();
   },
   methods: {
-    //...mapActions("checkall", ["getHeadData", "getCheckallTableData"]),
+    ...mapActions("checkall", ["getHeadData", "getCheckallTableData"]),
     JumpToDetail() {
       this.$store.dispatch("setCurrentBread", [
         {
@@ -230,6 +242,7 @@ export default {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
+          values.radioChecked = this.checkedList;
           console.log('Received values of form: ', values);
         }
       });
@@ -263,18 +276,18 @@ export default {
       this.checkAll = checkedList.length === this.plainOptions.length;
     },
     onCheckAllChange(e) {
-      Object.assign(this, {
-        checkedList: e.target.checked ? this.plainOptions : [],
+      Object.assign(this, { 
+        checkedList: e.target.checked?this.plainOptions:[],
         indeterminate: false,
         checkAll: e.target.checked,
       });
     },
-    handleExtend(e){
-      this.extendText = this.extendText == '展开' ? '收起' : '展开'
-      this.extendIcon = this.extendIcon == 'down' ? 'up' : 'down' 
-      this.cityFlag = !this.cityFlag
-      let btnWrap = document.querySelector('.btn-wrap')
-      btnWrap.style.display =this.extendText=='展开' ? 'inline-block':'block'
+    handleExtend(){
+      this.extendText = this.extendText == '展开' ? '收起' : '展开';
+      this.extendIcon = this.extendIcon == 'down' ? 'up' : 'down';
+      this.cityFlag = !this.cityFlag;
+      let btnWrap = document.querySelector('.btn-wrap');
+      btnWrap.style.display =this.extendText=='展开' ? 'inline-block':'block';
     }
   },
 };
@@ -294,7 +307,6 @@ export default {
     margin-top: 24px;
     padding: 37px 24px;
     background: #ffffff;
-
     .overview-head {
       display: flex;
       justify-content: space-between;
@@ -303,7 +315,7 @@ export default {
         font-family: PingFangSC-Regular, PingFang SC;
         font-weight: bold;
         color: #343642;
-      }
+      };
       .amount-box{
          margin-right:16px;
       }
@@ -440,9 +452,16 @@ export default {
     text-align: left;
     display: flex;
     flex-flow: column;
+    .all-city{
+      margin-left:70px;
+    }
   }
   .radio-fraction,.radio-time{
     margin-left:28px;
+    display: inline;
+    .child-fraction{
+       margin-left:8px;
+    }
   }
   .radio-auto{
     margin-left:22px;

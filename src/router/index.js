@@ -4,7 +4,9 @@ import VueRouter from "vue-router";
 //解决重复点击vue导航报错的问题
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
-    return originalPush.call(this, location).catch((error) => {});
+    return originalPush.call(this, location).catch((error) => {
+        console.log(error);
+    });
 };
 
 //layout
@@ -74,7 +76,7 @@ const routes = [
                 ),
             },
             {
-                path: "/elecfee/elecfeeCityDetail",
+                path: "/elecfee/elecfeeCityDetail/:cityId",
                 name:'elecfeecitydetail',
                 component:  () =>
                 import(
