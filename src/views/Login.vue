@@ -114,7 +114,6 @@ export default {
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
-        console.log(values);
         if (!err) {
           console.log("Received values of form: ", values);
           // return false;
@@ -237,8 +236,9 @@ body {
 .h_footer {
   font-size: 12px;
   color: rgba(0, 0, 0, 0.45);
-  position: absolute;
-  bottom: 48px;
+  /* position: absolute;
+  bottom: 48px; */
+ margin-top: 74px;
 }
 #components-form-demo-normal-login .login-form {
   max-width: 368px;

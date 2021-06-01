@@ -77,7 +77,7 @@
     </div>
     <div class="detail-section">
       <div class="header">
-        <p class="header_p">{{cityTitle.tabProvinceTitle}}</p>
+        <div class="header_p"><div class="title-front"></div>{{cityTitle.tabProvinceTitle}}</div>
         <div class="operations">
           <a-button class="button" @click="filterHandle" type="primary"
             >查看更多
@@ -178,7 +178,20 @@ export default {
     ...mapMutations("elecfee",['updateCityId']),
     ...mapActions("elecfee", ["getHeadData", "getElecfeeTableData","getUpdateCityTitle"]),
     callback(key){
-      console.log(key);
+      const lineChart = this.$echarts.init(document.getElementById("linechart"));
+      const piechart = this.$echarts.init(document.getElementById("piechart"));
+      let lineData = [], pieData=[];
+      if(key=='2'){
+           lineData = [110,240,190]
+           pieData= [ {value:1020,name:'电费'},{value:3020,name:'铁塔服务费'},{value:1620,name:'租费'}]
+      }else{
+         lineData = [120, 200, 150]
+         pieData=[{value: 1048, name: "电费"}, {value: 735, name: "铁塔服务费"}, {value: 580, name: "租费"}]
+      }
+       this.linechartOptions.series[0].data = lineData;
+      this.piechartOptions.series[0].data = pieData;
+      lineChart.setOption(this.linechartOptions);
+      piechart.setOption(this.piechartOptions);
     },
     callbackhandle(value){
       console.log(value);
@@ -190,7 +203,7 @@ export default {
       this.$store.dispatch("setCurrentBread", [
        {
           path: "/elecfee/elecfeeCityDetail/:cityId"+key,
-          breadcrumbName: `${this.cityArr[key].name}省电费稽核`,
+          breadcrumbName: `${this.cityArr[key].name}电费稽核`,
         },
       ]);
       this.$router.push({
@@ -218,6 +231,7 @@ export default {
       });
     },
     drawLines() {
+      this.checkallPieNumber = 0;
       const lineChart = this.$echarts.init(
         document.getElementById("linechart")
       );
@@ -284,12 +298,7 @@ export default {
         flex: 1;
         .title {
           display: flex;
-          .title-front {
-            width: 4px;
-            height: 14px;
-            background: #0068ff;
-            margin: 3px 8px 3px;
-          }
+        
           p {
             text-align: left;
             color: #343642;
@@ -305,12 +314,7 @@ export default {
         flex: 1;
         .title {
           display: flex;
-          .title-front {
-            width: 4px;
-            height: 14px;
-            background: #0068ff;
-            margin: 3px 8px 3px;
-          }
+       
           p {
             text-align: left;
           }
@@ -346,12 +350,7 @@ export default {
       .title {
         display: flex;
         margin-bottom: 16px;
-        .title-front {
-          width: 4px;
-          height: 14px;
-          background: #0068ff;
-          margin: 3px 8px 3px;
-        }
+        
         p {
           text-align: left;
           font-size: 14px;
@@ -376,6 +375,7 @@ export default {
         font-family: PingFangSC-Regular, PingFang SC;
         font-weight: 400;
         color: #343642;
+        display: flex;
       }
       .select {
         margin-left: 8px;
@@ -410,7 +410,12 @@ export default {
 .hide{
   display: none;
 }
-
+.title-front {
+    width: 4px;
+    height: 14px;
+    background: #0068ff;
+    margin: 4px 8px 4px;
+  }
 </style>
 <style lang="less">
 .cityTab .ant-tabs-bar{
@@ -423,7 +428,7 @@ export default {
       
 }
 .cityTab.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab{
-      margin-right: 16px;
+      margin-right: 8px;
       border-radius: 0;
       height: 32px;
       line-height: 32px;
@@ -440,5 +445,7 @@ export default {
     border-radius: 2px;
     border: 1px solid #D9D9D9;
 }
-
+.jump-wrap .head-item:hover{
+  box-shadow:none;
+}
 </style>

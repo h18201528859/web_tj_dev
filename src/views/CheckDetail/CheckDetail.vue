@@ -269,7 +269,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .checkdetail {
   .toolbar {
     margin-bottom: 24px;

@@ -27,7 +27,7 @@
       <a-checkbox-group   v-model="checkedList" :options="plainOptions" @change="onChange" >
       </a-checkbox-group>
     </a-form-item>
-    <div class="city-box" v-if="cityFlag">
+    <div class="city-box" v-if="!cityFlag">
         <a-form-item label="地区选择" default-value="vertical" name="地区选择">
           <div>
           <a-radio-group v-decorator="['radio-provice',{initialValue:'a'}]">
@@ -130,13 +130,21 @@
             
         </a-form-item>
     </div>
-    <a-form-item class="btn-wrap">
-       <a-button type="primary" html-type="submit">
-         搜索
-      </a-button>
-      <a-button class="reset-btn">
+    <a-form-item class="btn-wrap" v-if="extendIcon=='up'">
+       <a-button class="reset-btn" @click="cancelHandle">
          清空
-      </a-button>
+        </a-button>
+        <a-button type="primary" html-type="submit">
+          搜索
+        </a-button>
+    </a-form-item>
+     <a-form-item class="btn-wrap"  v-if="extendIcon=='down'">
+       <a-button type="primary" html-type="submit" class="serach-btn">
+          搜索
+       </a-button>
+       <a-button class="reset-btn summom-set" @click="cancelHandle">
+         清空
+        </a-button>
     </a-form-item>
     <a-form-item class="extend-box">
       <div class="extend-text" @click="handleExtend">
@@ -147,7 +155,7 @@
 </div>
     <div class="detail-section">
       <div class="header">
-        <p>各省缴费单稽核数量统计TOP10</p>
+        <div class="title-front"></div>各省缴费单稽核数量统计TOP10
       </div>
       <div class="table">
         <a-table
@@ -195,12 +203,6 @@ import {  mapState ,mapActions} from "vuex";
 export default {
   data(){
     return {
-      // plainOptions : [
-      // {label:'电费(缴费单)', value:'a'},
-      // {label:'电费(电表图)', value:'b'},
-      // {label:'铁塔服务费', value:'c'},
-      // {label:'租费', value:'d'}
-      // ],
       plainOptions:['电费(缴费单)','电费(电表图)','铁塔服务费','租费'],
       checkallPieNumber: 0,
       checkallTableColumns: checkallColumns,
@@ -209,7 +211,7 @@ export default {
       checkedList: [],
       indeterminate: true,
       checkAll: false,
-      extendText:'展开',
+      extendText:'收起',
       extendIcon:'down',
       cityFlag:false
     };
@@ -238,17 +240,19 @@ export default {
         path: "/checkdetail",
       });
     },
+    cancelHandle(){
+      this.checkedList = [];
+      this.form.resetFields();
+    },
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
           values.radioChecked = this.checkedList;
-          console.log('Received values of form: ', values);
         }
       });
     },
     normFile(e) {
-      console.log('Upload event:', e);
       if (Array.isArray(e)) {
         return e;
       }
@@ -332,12 +336,7 @@ export default {
         flex: 1;
         .title {
           display: flex;
-          .title-front {
-            width: 4px;
-            height: 14px;
-            background: #0068ff;
-            margin: 3px 8px 3px;
-          }
+         
           p {
             text-align: left;
           }
@@ -349,12 +348,7 @@ export default {
         flex: 1;
         .title {
           display: flex;
-          .title-front {
-            width: 4px;
-            height: 14px;
-            background: #0068ff;
-            margin: 3px 8px 3px;
-          }
+         
           p {
             text-align: left;
           }
@@ -390,12 +384,6 @@ export default {
       .title {
         display: flex;
         margin-bottom: 16px;
-        .title-front {
-          width: 4px;
-          height: 14px;
-          background: #0068ff;
-          margin: 3px 8px 3px;
-        }
         p {
           text-align: left;
         }
@@ -410,8 +398,6 @@ export default {
     text-align: left;
     .header {
       display: flex;
-      justify-content: space-between;
-
       p {
         font-size: 16px;
         font-family: PingFangSC-Regular, PingFang SC;
@@ -467,24 +453,34 @@ export default {
     margin-left:22px;
   }
   .reset-btn{
-    margin-left:16px;
     margin-right:16px;
+  }
+  .summom-set{
+    margin-left:16px;
   }
   .extend-box{
     position: absolute;
-    right: -50px;
+    right: -60px;
     top: 0px;
   }
   .extend-text{
-    color:#1890ff;
+    color:#0068FF;
     cursor: pointer;
   }
   .btn-wrap{
    
     text-align: left;
+   
   }
   .radio-ipt{
     width: 100px;
   }
 }
+.serach-btn{width: 200px;}
+ .title-front {
+            width: 4px;
+            height: 14px;
+            background: #0068ff;
+            margin: 3px 8px 3px;
+          }
 </style>
