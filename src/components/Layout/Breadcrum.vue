@@ -37,7 +37,6 @@
 <script>
 import { mapActions, mapState ,mapMutations} from "vuex";
 import { cityArr } from "../../views/Elecfee/constants";
-console.log(cityArr);
 export default {
   name: "Breadcrum",
   computed: {

@@ -74,7 +74,11 @@ export default {
   },
   mounted() {
     const loginName = window.sessionStorage.getItem("username");
-    this.UserName = loginName;
+    if (typeof(loginName)==='string') {
+      this.UserName = loginName;
+    }else{
+      window.location.href = "#/login";
+    }
   },
   methods: {
     gotoLogout() {
@@ -138,6 +142,7 @@ export default {
   }
   .header-operation--item:last-child {
     border-right: 1px solid #f4f4f4;
+    cursor: pointer;
   }
 }
 

@@ -74,7 +74,7 @@
                 'remember',
                 {
                   valuePropName: 'checked',
-                  initialValue: false,
+                  initialValue: true,
                 },
               ]"
             >
@@ -116,13 +116,16 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log("Received values of form: ", values);
+          sessionStorage.setItem("username", values.userName);
+          window.location.href = "#/checkall";
           // return false;
+        }else{
+          return
         }
         // if (values.remember) {
         //   sessionStorage.setItem("password", JSON.stringify(values));
         // }
-        sessionStorage.setItem("username", values.userName);
-        window.location.href = "#/checkall";
+      
       });
     },
     passwordValidator(rule, value, callback) {
