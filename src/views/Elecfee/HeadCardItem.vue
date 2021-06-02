@@ -10,11 +10,11 @@
     <div class="count-box">
       <div class="all-cont">
         <span class="all-text">{{ upElecfeeNumber || 0 }}</span>
-        {{ allText }}
+        <span class="fraction-text">{{ allText }}</span>
       </div>
       <div class="money-cont">
         <span class="month-text">{{ downElecfeeNumber || 0 }}</span>
-        {{ monthText }}
+        <span class="fraction-text">{{ monthText }}</span>
       </div>
     </div>
   </div>
@@ -88,8 +88,6 @@ export default {
     flex-flow: column;
     justify-content: space-between;
     background: hsl(0deg 0% 100%);
-    cursor: pointer;
-  cursor: pointer;
   .left {
     display: flex;
     .img{
@@ -116,9 +114,12 @@ export default {
     justify-content: space-between;
     padding-top:8px;
     width: 60%;
+    .fraction-text{
+      color:#7F828F;
+      margin-left:8px;
+    }
     .all-text,.month-text{
       font-size:24px;
-
     }
     .money-cont::before{
       content: '';
@@ -129,6 +130,7 @@ export default {
       position: relative;
       display: inline-block;
       top: 5px;
+      color:#7F828F;
     }
   }
 

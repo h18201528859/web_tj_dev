@@ -9,7 +9,6 @@ VueRouter.prototype.push = function push(location) {
     });
 };
 
-//layout
 import Layout from "../components/Layout/Layout.vue";
 
 // import Home from "../views/Home.vue";
@@ -70,6 +69,7 @@ const routes = [
             },
             {
                 path: "/elecfee/elecfeeDetail",
+                name:'elecfeeDetail',
                 component:   () =>
                 import(
                     /* webpackChunkName: "home" */ "../views/Elecfee/elecfeeDetail.vue"
@@ -80,7 +80,7 @@ const routes = [
                 name:'elecfeecitydetail',
                 component:  () =>
                 import(
-                    /* webpackChunkName: "about" */ "../views/Elecfee/Elecfee.vue"
+                    /* webpackChunkName: "homeabout" */ "../views/Elecfee/Elecfee.vue"
                 ),
             },
         ],

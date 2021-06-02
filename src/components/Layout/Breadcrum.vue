@@ -54,7 +54,10 @@ export default {
     };
   },
   mounted(){
-     const { cityId = '-1' } = this.$route.params;
+     const { cityId = '-1',name } = this.$route.params;
+     const crumb = this.breadcrumbArr;
+     const breadname = crumb[crumb.length-1];
+    // console.log(this.$route,breadname,this.breadcrumbArr)
      if(cityId!=='-1'){
        this.updateCityId(cityId);
      }
@@ -85,7 +88,7 @@ export default {
       const cityName = this.cityArr[key].name;     
       this.updateCityId(key);
       this.getUpdateCityTitle(cityName);
-      this.breadcrumbArr[2].breadcrumbName=`${this.cityArr[key].name}省电费稽核`;
+      this.breadcrumbArr[2].breadcrumbName=`${this.cityArr[key].name}电费稽核`;
       this.$router.push({
         name: 'elecfeecitydetail',
         path:`/elecfee/elecfeeCityDetail/:id`+key,

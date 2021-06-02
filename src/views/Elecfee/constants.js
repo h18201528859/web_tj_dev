@@ -14,18 +14,15 @@ export const HeadCardItems = [
 ];
 const colorSet = {
   mainSet: [
-      "rgba(91,143,249,.85)",
-      "rgba(90,216,166,0.85)",
-      "rgba(119,114,241,0.85)",
+      "#5B8FF9",
+      "#5B8FF9",
+      "#5B8FF9",
   ],
   mainPieSet: [
-    "#CE77FB",
-    "#5ADCFF",
-    "#47A7FD",
-        "rgba(91,143,249,.85)",
-        "rgba(90,216,166,0.85)",
-        "rgba(119,114,241,0.85)",
-       
+    "#5B8FF9",
+    "#5AD8A6",
+    "#E8684A",
+    "#F6BD16"
    ]
 };
 
@@ -54,7 +51,7 @@ export const linechartOptions = {
   },
   xAxis: {
       type: "category",
-      data: ["电费", "铁塔服务费", "租费"],
+      data: ["北京", "上海", "广州"],
       toolpit: { show: true },
   },
   yAxis: {
@@ -167,25 +164,25 @@ export const checkallColumns = [
       title: "9-10分",
       dataIndex: "ninetoten",
       key: "ninetoten",
-      ellipsis: true,
+      //ellipsis: true,
   },
   {
       title: "8-9分",
       dataIndex: "eightto9",
       key: "eightto9",
-      ellipsis: true,
+     // ellipsis: true,
   },
   {
       title: "6-8分",
       dataIndex: "sixto8",
       key: "sixto8",
-      ellipsis: true,
+    //  ellipsis: true,
   },
   {
       title: "0-6分",
       dataIndex: "zerotosix",
       key: "zerotosix",
-      ellipsis: true,
+     // ellipsis: true,
   },
   {
       title: "总量",
@@ -201,13 +198,13 @@ export const checkallColumns = [
       title: "未通过数",
       dataIndex: "notpass",
       key: "notpass",
-      scopedSlots: { customRender: "notpass" },
+     // scopedSlots: { customRender: "notpass" },
   },
   {
       title: "未通过率",
       dataIndex: "notpassper",
       key: "notpassper",
-      scopedSlots: { customRender: "notpassper" },
+     // scopedSlots: { customRender: "notpassper" },
   },
 ];
 
@@ -222,21 +219,21 @@ export const checkdetailColumns = [
       dataIndex: "type",
       key: "type",
       width: 150,
-      filters: [
-          {
-              text: "电费",
-              value: "电费",
-          },
-          {
-              text: "铁塔服务费",
-              value: "铁塔服务费",
-          },
-          {
-              text: "租费",
-              value: "租费",
-          },
-      ],
-      onFilter: (value, record) => record.type.indexOf(value) === 0,
+    //   filters: [
+    //       {
+    //           text: "电费",
+    //           value: "电费",
+    //       },
+    //       {
+    //           text: "铁塔服务费",
+    //           value: "铁塔服务费",
+    //       },
+    //       {
+    //           text: "租费",
+    //           value: "租费",
+    //       },
+    //   ],
+    //   onFilter: (value, record) => record.type.indexOf(value) === 0,
       // ellipsis: true,
   },
   {
@@ -250,55 +247,55 @@ export const checkdetailColumns = [
       dataIndex: "ninetoten",
       key: "ninetoten",
       // defaultSortOrder: "descend",
-      sorter: (a, b) => a.ninetoten - b.ninetoten,
-      ellipsis: true,
+     // sorter: (a, b) => a.ninetoten - b.ninetoten,
+     // ellipsis: true,
   },
   {
       title: "8-9分",
       dataIndex: "eightto9",
       key: "eightto9",
-      sorter: (a, b) => a.eightto9 - b.eightto9,
-      ellipsis: true,
+      //sorter: (a, b) => a.eightto9 - b.eightto9,
+     // ellipsis: true,
   },
   {
       title: "6-8分",
       dataIndex: "sixto8",
       key: "sixto8",
-      sorter: (a, b) => a.sixto8 - b.sixto8,
-      ellipsis: true,
+    //   sorter: (a, b) => a.sixto8 - b.sixto8,
+    //   ellipsis: true,
   },
   {
       title: "0-6分",
       dataIndex: "zerotosix",
       key: "zerotosix",
-      sorter: (a, b) => a.zerotosix - b.zerotosix,
-      ellipsis: true,
+    //   sorter: (a, b) => a.zerotosix - b.zerotosix,
+    //   ellipsis: true,
   },
   {
       title: "总量",
       dataIndex: "total",
       key: "total",
-      sorter: (a, b) => a.total - b.total,
+      //sorter: (a, b) => a.total - b.total,
   },
   {
       title: "通过数",
       dataIndex: "passtotal",
       key: "passtotal",
-      sorter: (a, b) => a.passtotal - b.passtotal,
+     // sorter: (a, b) => a.passtotal - b.passtotal,
   },
   {
       title: "未通过数",
       dataIndex: "notpass",
       key: "notpass",
-      sorter: (a, b) => a.notpass - b.notpass,
-      scopedSlots: { customRender: "notpass" },
+    //   sorter: (a, b) => a.notpass - b.notpass,
+    //   scopedSlots: { customRender: "notpass" },
   },
   {
       title: "未通过率",
       dataIndex: "notpassper",
       key: "notpassper",
-      sorter: (a, b) => a.notpassper - b.notpassper,
-      scopedSlots: { customRender: "notpassper" },
+    //   sorter: (a, b) => a.notpassper - b.notpassper,
+    //   scopedSlots: { customRender: "notpassper" },
   },
 ];
 

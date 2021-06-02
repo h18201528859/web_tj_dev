@@ -53,7 +53,7 @@
             <p>{{ cityTitle.scoreTitle}}</p>
           </div>
           <div class="pieCenter">
-            <p class="pieCenter-title">稽核总量 (万)</p>
+            <p class="pieCenter-title">稽核量</p>
             <p class="pieCenter-number">{{ checkallPieNumber }}</p>
           </div>
           <div id="piechart" style="height: 100%; width: 80%"></div>
@@ -87,7 +87,7 @@
       <div class="table">
         <a-table
           :columns="checkdetailTableColumns"
-          :data-source="checkallTable"
+          :data-source="elecfeeTable"
           :rowKey="(record, index) => index"
           :pagination="false"
         >
@@ -135,7 +135,7 @@ export default {
    computed: {
     ...mapState({
       headData: (state) => state.elecfee.headData,
-      checkallTable: (state) => state.elecfee.checkallTable,
+      elecfeeTable:(state) => state.elecfee.elecfeeTable,
       cityTitle:(state) => state.elecfee.cityTitle,
       cityId: state => state.elecfee.cityId
     }),
@@ -145,9 +145,10 @@ export default {
       HeadCardItems,
       lineData: [120, 200, 150],
       pieData: [
-        { value: 1048, name: "电费" },
-        { value: 735, name: "铁塔服务费" },
-        { value: 580, name: "租费" },
+        { value: 2587, name: "电费" ,fraction:'9-10'},
+        { value: 1626, name: "铁塔服务费",fraction:'8-9'},
+        { value: 1062, name: "租费",fraction:'6-8' },
+        { value: 985, name: "稽核总量",fraction:'0-6' },
       ],
       linechartOptions,
       piechartOptions,
@@ -180,19 +181,125 @@ export default {
     callback(key){
       const lineChart = this.$echarts.init(document.getElementById("linechart"));
       const piechart = this.$echarts.init(document.getElementById("piechart"));
-      let lineData = [], pieData=[];
+      let lineData = [], pieData=[],colorSet={mainSet:[],mainPieSet:[]};
       if(key=='2'){
            lineData = [110,240,190]
-           pieData= [ {value:1020,name:'电费'},{value:3020,name:'铁塔服务费'},{value:1620,name:'租费'}]
+           pieData= [
+                { value: 1020, name: "电费" ,fraction:'9-10'},
+                { value: 1300, name: "铁塔服务费",fraction:'4-9'},
+                { value: 1340, name: "租费",fraction:'2-8' },
+                { value: 650, name: "稽核总量",fraction:'0-6' },
+              ]
+              colorSet.mainSet = ['#47C7FD','#47C7FD','#47C7FD'];
+              colorSet.mainPieSet = ['#317CFF','#47C7FD','#F6AE16','#5AD8A6']
+              if( this.linechartOptions && this.linechartOptions.tooltip){
+                this.linechartOptions.tooltip.formatter = (name)=>{
+                    const nameSet = this.linechartOptions.xAxis.data;
+                    let total = 0;
+                    let target = 0;
+                    let toolpitArr = "";
+                    let pointColor = "";
+                    for (let i = 0; i < lineData.length; i++) {
+                        total += lineData[i];
+                        if (nameSet[i] === name.name) {
+                            target = lineData[i];
+                            pointColor = colorSet.mainSet[i];
+                        }
+                    }
+                    const percent = ((target / total) * 100).toFixed(1);
+                    toolpitArr = `<div style="text-align:left;font-size:12px"> <div style='font-size:16px;margin-bottom:8px'>${target}<span style="font-size:12px"> 条</span></div>  <div style="margin-bottom:8px"><span>${percent}%</span>占比</div><hr style='margin:-4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:10px;height:10px;border-radius:50%;background:${pointColor};margin-right:5px"></div><div>全国近一年${name.name}</div></div> </div>`;
+                    return toolpitArr;
+                }
+              }
+             this.linechartOptions.series[0].itemStyle.color = function(params){
+                let colorList = colorSet.mainSet;
+                return colorList[params.dataIndex];
+             }
+              this.piechartOptions.tooltip.formatter = (name)=>{
+                let total = 0;
+                let target = 0;
+                let toolpitArr = "";
+                let pointColor = "";
+                for (let i = 0; i < lineData.length; i++) {
+                    total += pieData[i].value;
+                    if (pieData[i].name === name.name) {
+                        target = name.value;
+                        pointColor = colorSet.mainPieSet[i];
+                    }
+                }
+                const percent = ((target / total) * 100).toFixed(1);
+                toolpitArr = `<div style="text-align:left;font-size:12px"> <div style='font-size:16px;margin-bottom:8px'>${target}<span style="font-size:12px"> 条</span></div>  <div style="margin-bottom:8px"><span>${percent}%</span>占比</div><hr style='margin:-4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:10px;height:10px;border-radius:50%;background:${pointColor};margin-right:5px"></div><div>全国近一年${name.name}</div></div> </div>`;
+                return toolpitArr;
+             }
+             this.piechartOptions.series[0].itemStyle.color = function(params){
+                let colorList = colorSet.mainPieSet;
+                return colorList[params.dataIndex];
+             }
       }else{
          lineData = [120, 200, 150]
-         pieData=[{value: 1048, name: "电费"}, {value: 735, name: "铁塔服务费"}, {value: 580, name: "租费"}]
+         pieData=[
+            { value: 2587, name: "电费" ,fraction:'9-10'},
+            { value: 1626, name: "铁塔服务费",fraction:'8-9'},
+            { value: 1062, name: "租费",fraction:'6-8' },
+            { value: 985, name: "稽核总量",fraction:'0-6' },
+          ]
+          colorSet.mainSet = ['#5B8FF9','#5B8FF9','#5B8FF9'];
+          colorSet.mainPieSet =  [
+            "#5B8FF9",
+            "#5AD8A6",
+            "#E8684A",
+            "#F6BD16"
+          ]
+             this.linechartOptions.tooltip.formatter = (name)=>{
+                //const lineData = pieData;
+                const nameSet = this.linechartOptions.xAxis.data;
+                let total = 0;
+                let target = 0;
+                let toolpitArr = "";
+                let pointColor = "";
+                for (let i = 0; i < lineData.length; i++) {
+                    total += lineData[i];
+                    if (nameSet[i] === name.name) {
+                        target = lineData[i];
+                        pointColor = colorSet.mainSet[i];
+                    }
+                }
+                const percent = ((target / total) * 100).toFixed(1);
+                toolpitArr = `<div style="text-align:left;font-size:12px"> <div style='font-size:16px;margin-bottom:8px'>${target}<span style="font-size:12px"> 条</span></div>  <div style="margin-bottom:8px"><span>${percent}%</span>占比</div><hr style='margin:-4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:10px;height:10px;border-radius:50%;background:${pointColor};margin-right:5px"></div><div>全国近一年${name.name}</div></div> </div>`;
+                return toolpitArr;
+             }
+             this.linechartOptions.series[0].itemStyle.color = function(params){
+                let colorList = colorSet.mainSet;
+                return colorList[params.dataIndex];
+             }
+              this.piechartOptions.tooltip.formatter = (name)=>{
+                let total = 0;
+                let target = 0;
+                let toolpitArr = "";
+                let pointColor = "";
+                for (let i = 0; i < lineData.length; i++) {
+                    total += pieData[i].value;
+                    if (pieData[i].name === name.name) {
+                        target = pieData[i].value;
+                        pointColor = colorSet.mainPieSet[i];
+                    }
+                }
+                const percent = ((target / total) * 100).toFixed(1);
+                toolpitArr = `<div style="text-align:left;font-size:12px"> <div style='font-size:16px;margin-bottom:8px'>${target}<span style="font-size:12px"> 条</span></div>  <div style="margin-bottom:8px"><span>${percent}%</span>占比</div><hr style='margin:-4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:10px;height:10px;border-radius:50%;background:${pointColor};margin-right:5px"></div><div>全国近一年${name.name}</div></div> </div>`;
+                return toolpitArr;
+             }
+             this.piechartOptions.series[0].itemStyle.color = function(params){
+                let colorList = colorSet.mainPieSet;
+                return colorList[params.dataIndex];
+             }
+
       }
        this.linechartOptions.series[0].data = lineData;
       this.piechartOptions.series[0].data = pieData;
       lineChart.setOption(this.linechartOptions);
       piechart.setOption(this.piechartOptions);
     },
+
     callbackhandle(value){
       console.log(value);
     },
@@ -220,7 +327,7 @@ export default {
       this.getHeadData();
     },
     filterHandle(){
-        this.$store.dispatch("setCurrentBread", [
+        this.$store.commit("replaceBreadcrumb", [
         {
           path: "/elecfee/elecfeeDetai",
           breadcrumbName: "稽核详情",

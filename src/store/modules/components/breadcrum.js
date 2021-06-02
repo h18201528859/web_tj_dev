@@ -11,6 +11,11 @@ const router = {
         updateBreadcrumb(state, path) {
             state.breadcrumbArr = state.breadcrumbArr.concat(path);
         },
+        replaceBreadcrumb(state,path){
+            console.log(path)
+            const newBreadPath = state.breadcrumbArr.slice(0,state.breadcrumbArr.length-1);
+            state.breadcrumbArr = newBreadPath.concat(path);
+        },
         setCurrentMenu(state, data) {
             state.currentMenu = data;
         },
