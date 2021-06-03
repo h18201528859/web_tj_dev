@@ -1,13 +1,13 @@
-import { axiosget } from "../../../../utils/http";
+import { axiosget, axiospost } from "../../../../utils/http";
 
 const actions = {
-    getHeadData({ commit }) {
-        axiosget("/portal/business/getcheckfee").then(
+    getHeadData({ commit }, timeRange) {
+        axiospost("/Payment/GetSum", timeRange).then(
             (res) => {
-                if (+res.code === 200) {
-                    commit("updateHeadData", res.body);
+                if (+res.ret_code === 10000) {
+                    commit("updateHeadData", res.ret_data);
                 } else {
-                    console.error("数据错了");
+                    console.error(res.ret_message);
                 }
             },
             () => {

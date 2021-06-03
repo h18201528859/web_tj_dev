@@ -21,48 +21,48 @@
           <!-- <a @click="JumptobreadLink" :href="`#/${JSON.stringify(paths)}`">
           {{ route.breadcrumbName }}
         </a> -->
-       
-      </span>  
-    </template>
-  </a-breadcrumb>
-   <span class="city-wrap"  v-if="cityId!=='-1'">
-          <a-select :defaultValue="cityId!=='-1'&&cityArr[cityId].name" style="width: 120px" @change="handleChange">
-            <a-select-option v-for="i in cityArr" :key="i.id" :value="i.id" >
-              {{i.name}}
-            </a-select-option>
-          </a-select>
+        </span>
+      </template>
+    </a-breadcrumb>
+    <span class="city-wrap" v-if="cityId !== '-1'">
+      <a-select
+        :defaultValue="cityId !== '-1' && cityArr[cityId].name"
+        style="width: 120px"
+        @change="handleChange"
+      >
+        <a-select-option v-for="i in cityArr" :key="i.id" :value="i.id">
+          {{ i.name }}
+        </a-select-option>
+      </a-select>
     </span>
   </div>
 </template>
 <script>
-import { mapActions, mapState ,mapMutations} from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 import { cityArr } from "../../views/Elecfee/constants";
 export default {
   name: "Breadcrum",
   computed: {
     ...mapState({
-      breadcrumbArr: state=>state.breadcrum.breadcrumbArr,
-      cityTitle:(state) => state.elecfee.cityTitle,
-      cityId: state => state.elecfee.cityId
+      breadcrumbArr: (state) => state.breadcrum.breadcrumbArr,
+      cityTitle: (state) => state.elecfee.cityTitle,
+      cityId: (state) => state.elecfee.cityId,
     }),
   },
   data() {
     return {
       routes: this.breadcrumbArr,
-      cityArr
+      cityArr,
     };
   },
-  mounted(){
-     const { cityId = '-1',name } = this.$route.params;
-     const crumb = this.breadcrumbArr;
-     const breadname = crumb[crumb.length-1];
-    // console.log(this.$route,breadname,this.breadcrumbArr)
-     if(cityId!=='-1'){
-       this.updateCityId(cityId);
-     }
+  mounted() {
+    const { cityId = "-1" } = this.$route.params;
+    if (cityId !== "-1") {
+      this.updateCityId(cityId);
+    }
   },
   methods: {
-    ...mapMutations("elecfee",['updateCityId']),
+    ...mapMutations("elecfee", ["updateCityId"]),
     ...mapActions("elecfee", ["getUpdateCityTitle"]),
     JumptobreadLink(e) {
       let hashStr = e.target.hash.substr(2);
@@ -79,23 +79,23 @@ export default {
           updateBread = updateBread.splice(0, i + 1);
         }
       });
-       this.getUpdateCityTitle('');
-       this.updateCityId('-1');
+      this.getUpdateCityTitle("");
+      this.updateCityId("-1");
       this.$store.commit("setBreadcrumb", updateBread);
     },
-    handleChange(key){
-      const cityName = this.cityArr[key].name;     
+    handleChange(key) {
+      const cityName = this.cityArr[key].name;
       this.updateCityId(key);
       this.getUpdateCityTitle(cityName);
-      this.breadcrumbArr[2].breadcrumbName=`${this.cityArr[key].name}电费稽核`;
+      this.breadcrumbArr[2].breadcrumbName = `${this.cityArr[key].name}电费稽核`;
       this.$router.push({
-        name: 'elecfeecitydetail',
-        path:`/elecfee/elecfeeCityDetail/:id`+key,
-        params:{
-          cityId:key
-        }
+        name: "elecfeecitydetail",
+        path: `/elecfee/elecfeeCityDetail/:id` + key,
+        params: {
+          cityId: key,
+        },
       });
-    }
+    },
   },
 };
 </script>

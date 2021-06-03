@@ -8,21 +8,20 @@ const getHeaders = () => ({
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "x-requested-with,content-type",
 });
-const uploadGetHeaders = () => ({
-    "Content-Type": "multipart/form-data",
-});
-export function axiospost(url, data, uploadHeader) {
+
+export function axiospost(url, data, callback) {
     // axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
     return new Promise((resolve, reject) => {
         axios
             .post(url, data, {
-                headers: uploadHeader ? uploadGetHeaders() : getHeaders(),
+                headers: getHeaders(),
             })
             .then((res) => {
-                if (res.data.code === 200) {
+                if (+res.data.ret_code === 10000) {
                     resolve(res.data);
                 } else {
                     message.error("网络错误，请稍后重试");
+                    callback();
                 }
             })
             .catch((err) => {

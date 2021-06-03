@@ -53,14 +53,19 @@ export default {
   },
   watch: {
     currentData(newValue) {
-      this.upNumber = newValue.number;
-      this.downNumber = newValue.count;
+      if (this.headTitle === "电费") {
+        this.upNumber = newValue.total_number;
+        this.downNumber = newValue.total_amount;
+      } else {
+        this.upNumber = 0;
+        this.downNumber = 0;
+      }
     },
   },
   data() {
     return {
-      upNumber: this.currentData.number,
-      downNumber: this.currentData.count,
+      upNumber: this.currentData.total_number,
+      downNumber: this.currentData.total_amount,
     };
   },
   methods: {

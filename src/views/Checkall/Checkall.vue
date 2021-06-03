@@ -7,7 +7,7 @@
         :headTitle="i.headTitle"
         :icon="i.icon"
         :toolpit="i.toolpit"
-        :currentData="headData[k] || {}"
+        :currentData="headData || {}"
       />
     </div>
     <div class="overview-section">
@@ -208,7 +208,7 @@ export default {
     handleHeadData() {
       this.linechartOptions.series[0].data = this.lineData;
       this.piechartOptions.series[0].data = this.pieData;
-      this.getHeadData();
+      this.getHeadData(util.getAllTimeRange());
     },
     handleDetailData({ page, pageSize }) {
       this.getCheckallDetailData({ page: page, pageSize: pageSize });
@@ -224,19 +224,22 @@ export default {
       this.pieData.map((pie) => {
         this.checkallPieNumber += pie.value;
       });
-       piechart.on('legendselectchanged', function (options) {
-          var name = options.name, selected = options.selected;
-          var option = piechart.getOption();
-          var selectKey = [];
-          for (var prop in selected) {
-              if (hasOwnProperty.call(selected, prop)) selectKey.push(prop);
-          }
-          if (!selectKey.filter(function (key) {
-              return selected[key];
-          }).length) {
-              option.legend[0].selected[name] = true;
-          }
-          piechart.setOption(option);
+      piechart.on("legendselectchanged", function (options) {
+        var name = options.name,
+          selected = options.selected;
+        var option = piechart.getOption();
+        var selectKey = [];
+        for (var prop in selected) {
+          if (hasOwnProperty.call(selected, prop)) selectKey.push(prop);
+        }
+        if (
+          !selectKey.filter(function (key) {
+            return selected[key];
+          }).length
+        ) {
+          option.legend[0].selected[name] = true;
+        }
+        piechart.setOption(option);
       });
     },
     handleDetailPagesize(pageSize) {

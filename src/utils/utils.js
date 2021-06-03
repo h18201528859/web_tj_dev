@@ -24,17 +24,9 @@ export default {
         el.style.position = "absolute";
         el.style.left = "-9999px";
         document.body.appendChild(el);
-
-        // const selected = document.getSelection().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false;
-
         el.select();
         document.execCommand("copy");
         document.body.removeChild(el);
-
-        // if (selected) {
-        //     document.getSelection().removeAllRanges();
-        //     document.getSelection().addRange(selected);
-        // }
     },
     strBool(val) {
         return val === "true" ? true : false;
@@ -43,5 +35,14 @@ export default {
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
         window.pageYOffset = 0;
+    },
+    getAllTimeRange() {
+        const current = moment().format("YYYY-MM-DD HH:MM:SS");
+        const defaultTime = "1990-01-01 00:00:00";
+        const timeParams = {
+            start_time: defaultTime,
+            end_time: current,
+        };
+        return timeParams;
     },
 };
