@@ -53,13 +53,19 @@ export default {
     };
   },
   mounted(){
-     const { cityId = '-1',name } = this.$route.params;
-     const crumb = this.breadcrumbArr;
-     const breadname = crumb[crumb.length-1];
-    // console.log(this.$route,breadname,this.breadcrumbArr)
+     const { cityId = '-1'} = this.$route.params;
      if(cityId!=='-1'){
        this.updateCityId(cityId);
      }
+  },
+  watch:{
+    '$route.path':function(){
+      const { name } = this.$route;
+      if(name=='elecfee'){
+         this.updateCityId('-1');
+          this.getUpdateCityTitle('');
+      }
+    }
   },
   methods: {
     ...mapMutations("elecfee",['updateCityId']),

@@ -13,11 +13,18 @@ export const HeadCardItems = [
   }
 ];
 const colorSet = {
-  mainSet: [
-      "#5B8FF9",
-      "#5B8FF9",
-      "#5B8FF9",
-  ],
+    mainSet: [
+          "rgba(119,114,241,0.85)",
+          "rgba(119,114,241,0.85)",
+          "rgba(119,114,241,0.85)",
+          "rgba(119,114,241,0.85)",
+          "rgba(119,114,241,0.85)",
+          "rgba(119,114,241,0.85)",
+          "rgba(119,114,241,0.85)",
+          "rgba(119,114,241,0.85)",
+          "rgba(119,114,241,0.85)",
+          "rgba(119,114,241,0.85)",
+      ],
   mainPieSet: [
     "#5B8FF9",
     "#5AD8A6",
@@ -51,7 +58,7 @@ export const linechartOptions = {
   },
   xAxis: {
       type: "category",
-      data: ["北京", "上海", "广州"],
+      data: ["北京", "上海", "广州","深圳","河北","河南","湖南","江苏","湖北","广西"],
       toolpit: { show: true },
   },
   yAxis: {
@@ -61,7 +68,7 @@ export const linechartOptions = {
       {
           data: [],
           type: "bar",
-          barWidth: "40",
+          barWidth: "30",
           itemStyle: {
               color: function(params) {
                   let colorList = colorSet.mainSet;
@@ -110,15 +117,16 @@ export const piechartOptions = {
           let total = 0;
           let target = 0;
           let legendArr = [];
+          let fraction = ''
           for (let i = 0; i < pieData.length; i++) {
               total += pieData[i].value;
               if (pieData[i].name === name) {
                   target = pieData[i].value;
+                  fraction = pieData[i].fraction
               }
           }
           let percent = ((target / total) * 100).toFixed(1);
-          legendArr.push(`${name}    ${target}条  ${percent}%`);
-
+          legendArr.push(`${fraction}分   ${target}条  ${percent}%`);
           return legendArr;
       },
   },
@@ -144,6 +152,7 @@ export const piechartOptions = {
           },
           itemStyle: {},
           data: [],
+          barwidth:20
       },
   ],
 };
@@ -159,6 +168,7 @@ export const checkallColumns = [
       dataIndex: "type",
       key: "type",
       width: 150,
+      scopedSlots: { customRender: "type" },
   },
   {
       title: "9-10分",
@@ -198,13 +208,13 @@ export const checkallColumns = [
       title: "未通过数",
       dataIndex: "notpass",
       key: "notpass",
-     // scopedSlots: { customRender: "notpass" },
+     scopedSlots: { customRender: "notpass" },
   },
   {
       title: "未通过率",
       dataIndex: "notpassper",
       key: "notpassper",
-     // scopedSlots: { customRender: "notpassper" },
+    //   scopedSlots: { customRender: "notpassper" },
   },
 ];
 
@@ -214,31 +224,31 @@ export const checkdetailColumns = [
       dataIndex: "rank",
       key: "rank",
   },
-  {
-      title: "稽核类型",
-      dataIndex: "type",
-      key: "type",
-      width: 150,
-    //   filters: [
-    //       {
-    //           text: "电费",
-    //           value: "电费",
-    //       },
-    //       {
-    //           text: "铁塔服务费",
-    //           value: "铁塔服务费",
-    //       },
-    //       {
-    //           text: "租费",
-    //           value: "租费",
-    //       },
-    //   ],
-    //   onFilter: (value, record) => record.type.indexOf(value) === 0,
-      // ellipsis: true,
-  },
+//   {
+//       title: "稽核类型",
+//       dataIndex: "type",
+//       key: "type",
+//       width: 150,
+//     //   filters: [
+//     //       {
+//     //           text: "电费",
+//     //           value: "电费",
+//     //       },
+//     //       {
+//     //           text: "铁塔服务费",
+//     //           value: "铁塔服务费",
+//     //       },
+//     //       {
+//     //           text: "租费",
+//     //           value: "租费",
+//     //       },
+//     //   ],
+//     //   onFilter: (value, record) => record.type.indexOf(value) === 0,
+//       // ellipsis: true,
+//   },
   {
       title: "省份",
-      dataIndex: "province",
+      dataIndex: "type",
       key: "province",
       // ellipsis: true,
   },

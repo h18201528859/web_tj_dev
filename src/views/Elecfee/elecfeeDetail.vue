@@ -15,7 +15,7 @@
           数量
         </a-radio>
         <a-radio value="all">
-          全部
+          金额
         </a-radio>
       </a-radio-group>
     </a-form-item>
@@ -54,7 +54,7 @@
             </a-select>
          </div>
         </a-form-item>
-        <a-form-item label="">
+        <a-form-item label="" style="display:none">
           <div class="all-city">
             <a-radio-group v-decorator="['radio-city', {initialValue: 'a'}]">
               <a-radio value="a">

@@ -16,7 +16,7 @@ const actions = {
         );
     },
     getCheckallTableData({ commit }) {
-        axiosget("/portal/business/getcheckalltable").then(
+        axiosget("/portal/business/getelecfeetable").then(
             (res) => {
                 if (+res.code === 200) {
                     commit("updateCheckAllTable", res.data);
