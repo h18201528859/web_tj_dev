@@ -19,7 +19,7 @@ const actions = {
         commit('updateCityTitle', title);
     },
     getElecfeeTableData({ commit }) {
-        axiosget("/portal/business/getcheckalltable").then(
+        axiosget("/portal/business/getelecfeetable").then(
             (res) => {
                 if (+res.code === 200) {
                     commit("updateElecfeeTable", res.data);

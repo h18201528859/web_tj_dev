@@ -55,10 +55,19 @@ export default {
       cityArr,
     };
   },
-  mounted() {
-    const { cityId = "-1" } = this.$route.params;
-    if (cityId !== "-1") {
-      this.updateCityId(cityId);
+  mounted(){
+     const { cityId = '-1'} = this.$route.params;
+     if(cityId!=='-1'){
+       this.updateCityId(cityId);
+     }
+  },
+  watch:{
+    '$route.path':function(){
+      const { name } = this.$route;
+      if(name=='elecfee'){
+         this.updateCityId('-1');
+          this.getUpdateCityTitle('');
+      }
     }
   },
   methods: {

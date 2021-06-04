@@ -1,0 +1,116 @@
+{
+    "code":200,
+    "message":"OK",
+    "data":[{
+        "rank": "1",
+        "type": "北京",
+        "ninetoten": "134,156",
+        "eightto9": "134,156",
+        "sixto8": "134,156",
+        "zerotosix": "134,156",
+        "total": "3526,616",
+        "passtotal": "526,616",
+        "notpass": "345",
+        "notpassper": "1.2"
+      },{
+        "rank": "2",
+        "type": "上海",
+        "ninetoten": "134,156",
+        "eightto9": "134,156",
+        "sixto8": "134,156",
+        "zerotosix": "134,156",
+        "total": "3526,616",
+        "passtotal": "526,616",
+        "notpass": "345",
+        "notpassper": "1.2"
+      },{
+        "rank": "3",
+        "type": "广州",
+        "ninetoten": "134,156",
+        "eightto9": "134,156",
+        "sixto8": "134,156",
+        "zerotosix": "134,156",
+        "total": "3526,616",
+        "passtotal": "526,616",
+        "notpass": "345",
+        "notpassper": "1.2"
+      },{
+        "rank": "4",
+        "type": "北京",
+        "ninetoten": "134,156",
+        "eightto9": "134,156",
+        "sixto8": "134,156",
+        "zerotosix": "134,156",
+        "total": "3526,616",
+        "passtotal": "526,616",
+        "notpass": "345",
+        "notpassper": "1.2"
+      },{
+        "rank": "5",
+        "type": "上海",
+        "ninetoten": "134,156",
+        "eightto9": "134,156",
+        "sixto8": "134,156",
+        "zerotosix": "134,156",
+        "total": "3526,616",
+        "passtotal": "526,616",
+        "notpass": "345",
+        "notpassper": "1.2"
+      },{
+        "rank": "6",
+        "type": "广州",
+        "ninetoten": "134,156",
+        "eightto9": "134,156",
+        "sixto8": "134,156",
+        "zerotosix": "134,156",
+        "total": "3526,616",
+        "passtotal": "526,616",
+        "notpass": "345",
+        "notpassper": "1.2"
+      },{
+        "rank": "7",
+        "type": "北京",
+        "ninetoten": "134,156",
+        "eightto9": "134,156",
+        "sixto8": "134,156",
+        "zerotosix": "134,156",
+        "total": "3526,616",
+        "passtotal": "526,616",
+        "notpass": "345",
+        "notpassper": "1.2"
+      },{
+        "rank": "8",
+        "type": "上海",
+        "ninetoten": "134,156",
+        "eightto9": "134,156",
+        "sixto8": "134,156",
+        "zerotosix": "134,156",
+        "total": "3526,616",
+        "passtotal": "526,616",
+        "notpass": "345",
+        "notpassper": "1.2"
+      },{
+        "rank": "9",
+        "type": "广州",
+        "ninetoten": "134,156",
+        "eightto9": "134,156",
+        "sixto8": "134,156",
+        "zerotosix": "134,156",
+        "total": "3526,616",
+        "passtotal": "526,616",
+        "notpass": "345",
+        "notpassper": "1.2"
+      },{
+        "rank": "10",
+        "type": "广州",
+        "ninetoten": "134,156",
+        "eightto9": "134,156",
+        "sixto8": "134,156",
+        "zerotosix": "134,156",
+        "total": "3526,616",
+        "passtotal": "526,616",
+        "notpass": "345",
+        "notpassper": "1.2"
+      }
+    ]
+}

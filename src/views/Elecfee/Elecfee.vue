@@ -91,6 +91,10 @@
           :rowKey="(record, index) => index"
           :pagination="false"
         >
+          <template slot="type" slot-scope="text">
+            <router-link :to="{name: text,path: '/elecfee/elecfeeCityDetail/:cityId'+record.id, params: { cityId: record.id }}"> {{ text }}</router-link>
+            
+          </template>
           <template slot="notpass" slot-scope="text">
             <span class="red">{{ text }}</span>
           </template>
@@ -143,7 +147,7 @@ export default {
   data(){
     return {
       HeadCardItems,
-      lineData: [120, 200, 150],
+      lineData: [930, 780, 720,700,680,550,320,270,230,125],
       pieData: [
         { value: 2587, name: "电费" ,fraction:'9-10'},
         { value: 1626, name: "铁塔服务费",fraction:'8-9'},
@@ -167,6 +171,7 @@ export default {
     this.handleHeadData();
     this.getElecfeeTableData();
     const {params:{ cityId='-1' },name} = this.$route;
+    console.log(this.$route,'elecddsds')
     if(name == 'elecfeecitydetail'){
       const cityName = this.cityArr[cityId].name;
       this.getUpdateCityTitle(cityName);
@@ -181,16 +186,28 @@ export default {
     callback(key){
       const lineChart = this.$echarts.init(document.getElementById("linechart"));
       const piechart = this.$echarts.init(document.getElementById("piechart"));
+       const pieCharts = document.querySelector('.pie-chart');
       let lineData = [], pieData=[],colorSet={mainSet:[],mainPieSet:[]};
       if(key=='2'){
-           lineData = [110,240,190]
+           lineData = [980,760,745,710,690,520,436,360,320,220,40]
            pieData= [
                 { value: 1020, name: "电费" ,fraction:'9-10'},
                 { value: 1300, name: "铁塔服务费",fraction:'4-9'},
                 { value: 1340, name: "租费",fraction:'2-8' },
                 { value: 650, name: "稽核总量",fraction:'0-6' },
               ]
-              colorSet.mainSet = ['#47C7FD','#47C7FD','#47C7FD'];
+              colorSet.mainSet = [
+                "rgba(119,114,241,0.85)",
+                "rgba(119,114,241,0.85)",
+                "rgba(119,114,241,0.85)",
+                "rgba(119,114,241,0.85)",
+                "rgba(119,114,241,0.85)",
+                "rgba(119,114,241,0.85)",
+                "rgba(119,114,241,0.85)",
+                "rgba(119,114,241,0.85)",
+                "rgba(119,114,241,0.85)",
+                "rgba(119,114,241,0.85)",
+                ];
               colorSet.mainPieSet = ['#317CFF','#47C7FD','#F6AE16','#5AD8A6']
               if( this.linechartOptions && this.linechartOptions.tooltip){
                 this.linechartOptions.tooltip.formatter = (name)=>{
@@ -220,7 +237,7 @@ export default {
                 let target = 0;
                 let toolpitArr = "";
                 let pointColor = "";
-                for (let i = 0; i < lineData.length; i++) {
+                for (let i = 0; i < pieData.length; i++) {
                     total += pieData[i].value;
                     if (pieData[i].name === name.name) {
                         target = name.value;
@@ -235,15 +252,29 @@ export default {
                 let colorList = colorSet.mainPieSet;
                 return colorList[params.dataIndex];
              }
+            
+             pieCharts.style.display = "none"
       }else{
-         lineData = [120, 200, 150]
+         pieCharts.style.display = "block"
+        lineData = [930, 780, 720,700,680,550,320,270,230,125]
          pieData=[
             { value: 2587, name: "电费" ,fraction:'9-10'},
             { value: 1626, name: "铁塔服务费",fraction:'8-9'},
             { value: 1062, name: "租费",fraction:'6-8' },
             { value: 985, name: "稽核总量",fraction:'0-6' },
           ]
-          colorSet.mainSet = ['#5B8FF9','#5B8FF9','#5B8FF9'];
+          colorSet.mainSet = [
+            "rgba(119,114,241,0.85)",
+            "rgba(119,114,241,0.85)",
+            "rgba(119,114,241,0.85)",
+            "rgba(119,114,241,0.85)",
+            "rgba(119,114,241,0.85)",
+            "rgba(119,114,241,0.85)",
+            "rgba(119,114,241,0.85)",
+            "rgba(119,114,241,0.85)",
+            "rgba(119,114,241,0.85)",
+            "rgba(119,114,241,0.85)",
+            ];
           colorSet.mainPieSet =  [
             "#5B8FF9",
             "#5AD8A6",
@@ -277,7 +308,7 @@ export default {
                 let target = 0;
                 let toolpitArr = "";
                 let pointColor = "";
-                for (let i = 0; i < lineData.length; i++) {
+                for (let i = 0; i < pieData.length; i++) {
                     total += pieData[i].value;
                     if (pieData[i].name === name.name) {
                         target = pieData[i].value;
@@ -429,7 +460,7 @@ export default {
         .pieCenter {
           position: absolute;
           top: 47%;
-          left: 95px;
+          left: 102px;
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -555,4 +586,5 @@ export default {
 .jump-wrap .head-item:hover{
   box-shadow:none;
 }
+.legend-name{margin-right:16px}
 </style>
