@@ -158,6 +158,9 @@ export default {
     detailTotal(newValue) {
       this.totalPage = newValue;
     },
+    headData() {
+      this.drawLines();
+    },
   },
   computed: {
     ...mapState({
@@ -168,17 +171,13 @@ export default {
       detailPage: (state) => state.checkall.detailPage,
       detailPagesize: (state) => state.checkall.detailPagesize,
       detailTableLoading: (state) => state.checkall.detailTableLoading,
+      lineData: (state) => state.checkall.lineData,
+      pieData: (state) => state.checkall.pieData,
     }),
   },
   data() {
     return {
       headItems: HeadItems,
-      lineData: [120, 200, 150],
-      pieData: [
-        { value: 1048, name: "电费" },
-        { value: 735, name: "铁塔服务费" },
-        { value: 580, name: "租费" },
-      ],
       linechartOptions: linechartOptions,
       piechartOptions: piechartOptions,
       checkallPieNumber: 0,
@@ -206,9 +205,12 @@ export default {
       util.jumpTop();
     },
     handleHeadData() {
+      this.getHeadData(util.getAllTimeRange());
+      this.handleChart();
+    },
+    handleChart() {
       this.linechartOptions.series[0].data = this.lineData;
       this.piechartOptions.series[0].data = this.pieData;
-      this.getHeadData(util.getAllTimeRange());
     },
     handleDetailData({ page, pageSize }) {
       this.getCheckallDetailData({ page: page, pageSize: pageSize });
@@ -221,15 +223,13 @@ export default {
       lineChart.setOption(this.linechartOptions);
       const piechart = this.$echarts.init(document.getElementById("piechart"));
       piechart.setOption(this.piechartOptions);
-      this.pieData.map((pie) => {
-        this.checkallPieNumber += pie.value;
-      });
-      piechart.on("legendselectchanged", function (options) {
-        var name = options.name,
-          selected = options.selected;
-        var option = piechart.getOption();
-        var selectKey = [];
-        for (var prop in selected) {
+      this.checkallPieNumber = this.headData.total_amount;
+      piechart.on("legendselectchanged", (options) => {
+        let name = options.name;
+        let selected = options.selected;
+        let option = piechart.getOption();
+        let selectKey = [];
+        for (let prop in selected) {
           if (hasOwnProperty.call(selected, prop)) selectKey.push(prop);
         }
         if (

@@ -70,7 +70,6 @@ export default {
   },
   methods: {
     JumptoOtherPage(page = 1) {
-      console.log(page);
       switch (page) {
         case 1:
           window.location.hash = "/elecfee";

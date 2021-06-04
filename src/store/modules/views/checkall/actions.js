@@ -6,6 +6,7 @@ const actions = {
             (res) => {
                 if (+res.ret_code === 10000) {
                     commit("updateHeadData", res.ret_data);
+                    commit("updateCharts", res.ret_data);
                 } else {
                     console.error(res.ret_message);
                 }

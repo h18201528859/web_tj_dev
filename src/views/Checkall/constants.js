@@ -37,7 +37,7 @@ export const linechartOptions = {
             let toolpitArr = "";
             let pointColor = "";
             for (let i = 0; i < lineData.length; i++) {
-                total += lineData[i];
+                total += Number(lineData[i]);
                 if (nameSet[i] === name.name) {
                     target = lineData[i];
                     pointColor = colorSet.mainSet[i];
@@ -82,15 +82,14 @@ export const piechartOptions = {
             let target = 0;
             let total = 0;
             for (let i = 0; i < pieData.length; i++) {
-                total += pieData[i].value;
+                total += Number(pieData[i].value);
                 if (pieData[i].name === name.name) {
                     toolpitColor = colorSet.mainSet[i];
-                    target = name.value;
+                    target = Number(name.value);
                 }
             }
             const percent = ((target / total) * 100).toFixed(1);
-            let toolpitStr = `<div style='padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:10px;height:10px;border-radius:50%;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国${name.name}缴纳单</div></div>`;
-            return toolpitStr;
+            return `<div style='padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:10px;height:10px;border-radius:50%;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国${name.name}缴纳单</div></div>`;
         },
     },
     legend: {
@@ -111,12 +110,12 @@ export const piechartOptions = {
             let target = 0;
             let legendArr = [];
             for (let i = 0; i < pieData.length; i++) {
-                total += pieData[i].value;
+                total += Number(pieData[i].value);
                 if (pieData[i].name === name) {
-                    target = pieData[i].value;
+                    target = Number(pieData[i].value);
                 }
             }
-            let percent = ((target / total) * 100).toFixed(1);
+            const percent = ((target / total) * 100).toFixed(1);
             legendArr.push(`${name}    ${target}条  ${percent}%`);
             return legendArr;
         },

@@ -2,8 +2,8 @@
   "ret_message": "请求成功",
   "ret_code": "10000",
   "ret_data": {
-    "total_amount": "23493",
-    "total_number": "12123"
+    "total_amount": "234",
+    "total_number": "120"
   }
 }
 
