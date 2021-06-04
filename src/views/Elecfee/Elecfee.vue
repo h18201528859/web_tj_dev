@@ -91,9 +91,12 @@
           :rowKey="(record, index) => index"
           :pagination="false"
         >
-          <template slot="type" slot-scope="text">
+          <!-- <template slot="type" slot-scope="text">
             <router-link :to="{name: text,path: '/elecfee/elecfeeCityDetail/:cityId'+record.id, params: { cityId: record.id }}"> {{ text }}</router-link>
             
+          </template> -->
+          <template slot="type" slot-scope="text,record">
+            <router-link :to="{name:'elecfeecitydetail',path: '/elecfee/elecfeeCityDetail/'+record.rank, params: { cityId: record.rank }}"> {{ text, }}</router-link>
           </template>
           <template slot="notpass" slot-scope="text">
             <span class="red">{{ text }}</span>
@@ -154,6 +157,18 @@ export default {
         { value: 1062, name: "租费",fraction:'6-8' },
         { value: 985, name: "稽核总量",fraction:'0-6' },
       ],
+      cityData: [
+        { value: 930, name: "北京" ,fraction:'9-10'},
+        { value: 780, name: "上海",fraction:'8-9'},
+        { value: 720, name: "广州",fraction:'6-8' },
+        { value: 700, name: "深圳",fraction:'0-6' },
+        { value: 680, name: "河北",fraction:'9-10'},
+        { value: 550, name: "河南",fraction:'8-9'},
+        { value: 320, name: "湖南",fraction:'6-8' },
+        { value: 270, name: "江苏",fraction:'0-6' },
+        { value: 230, name:"湖北" ,fraction:'9-10'},
+        { value: 125, name: "广西",fraction:'8-9'},
+        ],
       linechartOptions,
       piechartOptions,
       checkallPieNumber: 0,
@@ -166,6 +181,29 @@ export default {
   },
   components: {
     HeadCardItem,
+  },
+   watch:{
+    '$route.path':function(val,old){
+      const { name='elecfee',params:{ cityId ='-1' } } = this.$route;
+      console.log(val,old,this.$route,cityId)
+      if(name=='elecfeecitydetail' && cityId!=='-1' ){
+        if(cityId!=='elecfee'){
+         const cityName = this.cityArr[cityId].name;
+          this.$store.dispatch("setCurrentBread", [
+            {
+              name:'elecfeecitydetail',
+                path: "/elecfee/elecfeeCityDetail/:cityId"+cityId,
+                breadcrumbName: `${cityName}电费稽核`,
+              },
+            ]);
+         this.getUpdateCityTitle(cityName);
+         this.updateCityId(cityId);
+        }
+      }else{
+         this.updateCityId('-1');
+          this.getUpdateCityTitle('');
+      }
+    }
   },
   created() {
     this.handleHeadData();
@@ -355,6 +393,9 @@ export default {
     handleHeadData() {
       this.linechartOptions.series[0].data = this.lineData;
       this.piechartOptions.series[0].data = this.pieData;
+        
+      console.log(this.cityData)
+      this.linechartOptions.series[0].cityData = this.cityData
       this.getHeadData();
     },
     filterHandle(){
@@ -373,6 +414,7 @@ export default {
       const lineChart = this.$echarts.init(
         document.getElementById("linechart")
       );
+      
       lineChart.setOption(this.linechartOptions);
       const piechart = this.$echarts.init(document.getElementById("piechart"));
       piechart.setOption(this.piechartOptions);

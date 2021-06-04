@@ -63,7 +63,7 @@ export default {
   },
   watch:{
     '$route.path':function(){
-      const { name } = this.$route;
+      const { name='elecfee' } = this.$route;
       if(name=='elecfee'){
          this.updateCityId('-1');
           this.getUpdateCityTitle('');
@@ -96,10 +96,16 @@ export default {
       const cityName = this.cityArr[key].name;
       this.updateCityId(key);
       this.getUpdateCityTitle(cityName);
-      this.breadcrumbArr[2].breadcrumbName = `${this.cityArr[key].name}电费稽核`;
+     this.breadcrumbArr[2].breadcrumbName = `${this.cityArr[key].name}电费稽核`;
+      //   this.$store.commit("replaceBreadcrumb", [
+      //   {
+      //     path: "/elecfee/elecfeeCityDetail",
+      //     breadcrumbName: `${cityName}电费稽核`,
+      //   },
+      // ]);
       this.$router.push({
         name: "elecfeecitydetail",
-        path: `/elecfee/elecfeeCityDetail/:id` + key,
+        path: `/elecfee/elecfeeCityDetail/:cityId` + key,
         params: {
           cityId: key,
         },

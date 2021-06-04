@@ -40,19 +40,23 @@ export const linechartOptions = {
       formatter: function(name) {
         const lineData = linechartOptions.series[0].data;
         const nameSet = linechartOptions.xAxis.data;
+       const cityData = linechartOptions.series[0].cityData
         let total = 0;
         let target = 0;
         let toolpitArr = "";
         let pointColor = "";
-        for (let i = 0; i < lineData.length; i++) {
-            total += lineData[i];
+        let fractionStr = ''
+        console.log(cityData)
+        for (let i = 0; i < cityData.length; i++) {
+            total += cityData[i].value;
             if (nameSet[i] === name.name) {
-                target = lineData[i];
+                target = cityData[i].value;
                 pointColor = colorSet.mainSet[i];
+                fractionStr =cityData[i].fraction
             }
         }
         const percent = ((target / total) * 100).toFixed(1);
-        toolpitArr = `<div style="text-align:left;font-size:12px"> <div style='font-size:16px;margin-bottom:8px'>${target}<span style="font-size:12px"> 条</span></div>  <div style="margin-bottom:8px"><span>${percent}%</span>占比</div><hr style='margin:-4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:10px;height:10px;border-radius:50%;background:${pointColor};margin-right:5px"></div><div>全国近一年${name.name}</div></div> </div>`;
+        toolpitArr = `<div style="text-align:left;font-size:12px"><div>${fractionStr}</div> <div style='font-size:16px;margin-bottom:8px'>${target}<span style="font-size:12px"> 条</span></div>  <div style="margin-bottom:8px"><span>${percent}%</span>占比</div><hr style='margin:-4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:10px;height:10px;border-radius:50%;background:${pointColor};margin-right:5px"></div><div>全国近一年${name.name}</div></div> </div>`;
         return toolpitArr;
     },
   },
@@ -67,6 +71,7 @@ export const linechartOptions = {
   series: [
       {
           data: [],
+          cityData:[],
           type: "bar",
           barWidth: "30",
           itemStyle: {
@@ -224,32 +229,11 @@ export const checkdetailColumns = [
       dataIndex: "rank",
       key: "rank",
   },
-//   {
-//       title: "稽核类型",
-//       dataIndex: "type",
-//       key: "type",
-//       width: 150,
-//     //   filters: [
-//     //       {
-//     //           text: "电费",
-//     //           value: "电费",
-//     //       },
-//     //       {
-//     //           text: "铁塔服务费",
-//     //           value: "铁塔服务费",
-//     //       },
-//     //       {
-//     //           text: "租费",
-//     //           value: "租费",
-//     //       },
-//     //   ],
-//     //   onFilter: (value, record) => record.type.indexOf(value) === 0,
-//       // ellipsis: true,
-//   },
   {
       title: "省份",
       dataIndex: "type",
-      key: "province",
+      key: "type",
+      scopedSlots: { customRender: "type" },
       // ellipsis: true,
   },
   {
@@ -298,7 +282,7 @@ export const checkdetailColumns = [
       dataIndex: "notpass",
       key: "notpass",
     //   sorter: (a, b) => a.notpass - b.notpass,
-    //   scopedSlots: { customRender: "notpass" },
+       scopedSlots: { customRender: "notpass" },
   },
   {
       title: "未通过率",
