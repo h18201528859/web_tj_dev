@@ -145,7 +145,7 @@ export default {
       elecfeeTable:(state) => state.elecfee.elecfeeTable,
       cityTitle:(state) => state.elecfee.cityTitle,
       cityId: state => state.elecfee.cityId
-    }),
+    })
   },
   data(){
     return {
@@ -169,6 +169,11 @@ export default {
         { value: 230, name:"湖北" ,fraction:'9-10'},
         { value: 125, name: "广西",fraction:'8-9'},
         ],
+        cityFilterData:{
+          '北京':{value: 930, ninetoten:'146',eightto9:'14,156','sixto8':'15,156','zerotosix':'134,156',total:100},
+          '上海':{value: 780, ninetoten:'146',eightto9:'14,156','sixto8':'15,156','zerotosix':'134,156',total:3516},
+          '广州':{value: 720, ninetoten:'146',eightto9:'14,156','sixto8':'15,156','zerotosix':'134,156',total:1200}
+        },
       linechartOptions,
       piechartOptions,
       checkallPieNumber: 0,
@@ -209,13 +214,13 @@ export default {
     this.handleHeadData();
     this.getElecfeeTableData();
     const {params:{ cityId='-1' },name} = this.$route;
-    console.log(this.$route,'elecddsds')
     if(name == 'elecfeecitydetail'){
       const cityName = this.cityArr[cityId].name;
       this.getUpdateCityTitle(cityName);
     }
   },
   mounted() {
+    
     this.drawLines();
   },
   methods: {
@@ -247,23 +252,37 @@ export default {
                 "rgba(119,114,241,0.85)",
                 ];
               colorSet.mainPieSet = ['#317CFF','#47C7FD','#F6AE16','#5AD8A6']
+              this.cityFilterData = {
+          '北京':{value: 860, ninetoten:'146',eightto9:'14,156','sixto8':'15,156','zerotosix':'134,156',total:1500},
+          '上海':{value: 370, ninetoten:'146',eightto9:'14,156','sixto8':'15,156','zerotosix':'134,156',total:3056},
+          '广州':{value: 680, ninetoten:'146',eightto9:'14,156','sixto8':'15,156','zerotosix':'134,156',total:1250}
+        }
               if( this.linechartOptions && this.linechartOptions.tooltip){
                 this.linechartOptions.tooltip.formatter = (name)=>{
-                    const nameSet = this.linechartOptions.xAxis.data;
-                    let total = 0;
-                    let target = 0;
-                    let toolpitArr = "";
-                    let pointColor = "";
-                    for (let i = 0; i < lineData.length; i++) {
-                        total += lineData[i];
-                        if (nameSet[i] === name.name) {
-                            target = lineData[i];
-                            pointColor = colorSet.mainSet[i];
-                        }
-                    }
-                    const percent = ((target / total) * 100).toFixed(1);
-                    toolpitArr = `<div style="text-align:left;font-size:12px"> <div style='font-size:16px;margin-bottom:8px'>${target}<span style="font-size:12px"> 条</span></div>  <div style="margin-bottom:8px"><span>${percent}%</span>占比</div><hr style='margin:-4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:10px;height:10px;border-radius:50%;background:${pointColor};margin-right:5px"></div><div>全国近一年${name.name}</div></div> </div>`;
-                    return toolpitArr;
+                     const cityFilterData = this.cityFilterData
+                      let total = 0;
+                      let target = 0;
+                      let toolpitArr = "";
+                      let pointColor = "";
+                      let ninetoten = 0;
+                      let eightto9= 0;
+                      let sixto8 = 0;
+                      let zerotosix = 0;
+                      let percent = 0;
+                      Object.keys(cityFilterData).forEach((item,index)=>{
+                          if(item==name.name){
+                              target = cityFilterData[item].value;
+                              total = cityFilterData[item].total;
+                              ninetoten = cityFilterData[item].ninetoten
+                              eightto9 = cityFilterData[item].eightto9
+                              sixto8 = cityFilterData[item].sixto8
+                              zerotosix = cityFilterData[item].zerotosix
+                              percent = ((target / total) * 100).toFixed(1);
+                              pointColor = colorSet.mainSet[index];
+                          }
+                      })
+                      toolpitArr = `<div style="text-align:left;font-size:12px"><div>0-6分<span> ${zerotosix}条</span><span style="margin-left:10px">${percent}%</span></div> <div>6-8分<span> ${sixto8}条</span><span style="margin-left:10px">${percent}%</span></div> <div>8-9分<span> ${eightto9}条</span><span style="margin-left:10px">${percent}%</span></div> <div>9-10分<span> ${ninetoten}条</span><span style="margin-left:10px">${percent}%</span></div> <hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:10px;height:10px;border-radius:50%;background:${pointColor};margin-right:5px"></div><div>${name.name}省 稽核条数/占比</div></div> </div>`;
+                      return toolpitArr;
                 }
               }
              this.linechartOptions.series[0].itemStyle.color = function(params){
@@ -319,23 +338,32 @@ export default {
             "#E8684A",
             "#F6BD16"
           ]
+        
              this.linechartOptions.tooltip.formatter = (name)=>{
-                //const lineData = pieData;
-                const nameSet = this.linechartOptions.xAxis.data;
-                let total = 0;
-                let target = 0;
-                let toolpitArr = "";
-                let pointColor = "";
-                for (let i = 0; i < lineData.length; i++) {
-                    total += lineData[i];
-                    if (nameSet[i] === name.name) {
-                        target = lineData[i];
-                        pointColor = colorSet.mainSet[i];
-                    }
-                }
-                const percent = ((target / total) * 100).toFixed(1);
-                toolpitArr = `<div style="text-align:left;font-size:12px"> <div style='font-size:16px;margin-bottom:8px'>${target}<span style="font-size:12px"> 条</span></div>  <div style="margin-bottom:8px"><span>${percent}%</span>占比</div><hr style='margin:-4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:10px;height:10px;border-radius:50%;background:${pointColor};margin-right:5px"></div><div>全国近一年${name.name}</div></div> </div>`;
-                return toolpitArr;
+                 const cityFilterData = this.cityFilterData
+                  let total = 0;
+                  let target = 0;
+                  let toolpitArr = "";
+                  let pointColor = "";
+                  let ninetoten = 0;
+                  let eightto9= 0;
+                  let sixto8 = 0;
+                  let zerotosix = 0;
+                  let percent = 0;
+                  Object.keys(cityFilterData).forEach((item,index)=>{
+                      if(item==name.name){
+                          target = cityFilterData[item].value;
+                          total = cityFilterData[item].total;
+                          ninetoten = cityFilterData[item].ninetoten
+                          eightto9 = cityFilterData[item].eightto9
+                          sixto8 = cityFilterData[item].sixto8
+                          zerotosix = cityFilterData[item].zerotosix
+                          percent = ((target / total) * 100).toFixed(1);
+                          pointColor = colorSet.mainSet[index];
+                      }
+                  })
+                  toolpitArr = `<div style="text-align:left;font-size:12px"><div>0-6分<span> ${zerotosix}条</span><span style="margin-left:10px">${percent}%</span></div> <div>6-8分<span> ${sixto8}条</span><span style="margin-left:10px">${percent}%</span></div> <div>8-9分<span> ${eightto9}条</span><span style="margin-left:10px">${percent}%</span></div> <div>9-10分<span> ${ninetoten}条</span><span style="margin-left:10px">${percent}%</span></div> <hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:10px;height:10px;border-radius:50%;background:${pointColor};margin-right:5px"></div><div>${name.name}省 稽核条数/占比</div></div> </div>`;
+                  return toolpitArr;
              }
              this.linechartOptions.series[0].itemStyle.color = function(params){
                 let colorList = colorSet.mainSet;
@@ -393,9 +421,10 @@ export default {
     handleHeadData() {
       this.linechartOptions.series[0].data = this.lineData;
       this.piechartOptions.series[0].data = this.pieData;
-        
-      console.log(this.cityData)
+  
+     
       this.linechartOptions.series[0].cityData = this.cityData
+      this.linechartOptions.series[0].cityFilterData = this.cityFilterData
       this.getHeadData();
     },
     filterHandle(){
