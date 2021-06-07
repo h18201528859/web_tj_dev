@@ -1,0 +1,35 @@
+{
+    "ret_message": "请求成功",
+    "ret_code": "10000", 
+    "ret_data":{
+        "all_data":{
+            "total_amount": "129284",
+            "amount_percentage": "34%",
+            "total_number": "1000",
+            "number_percentage": "0.1500, 0.1500, 0.4000, 0.3000"
+        },
+        "prv_data":[
+            {
+                "prv_name": "河南",
+                "total_amount": "8989",
+                "amount_percentage": "",
+                "total_number": "1000000",
+                "number_percentage": "0.1500, 0.1500, 0.4000, 0.3000"
+            },
+            {
+                "prv_name": "江苏",
+                "total_amount": "",
+                "amount_percentage": "",
+                "total_number": "1500000",
+                "number_percentage": "0.1000, 0.1000, 0.5000, 0.3000"
+            },
+            {
+                "prv_name": "北京",
+                "total_amount": "",
+                "amount_percentage": "",
+                "total_number": "1500",
+                "number_percentage": "0.1000, 0.1000, 0.5000, 0.3000"
+            }
+        ]
+    }
+}

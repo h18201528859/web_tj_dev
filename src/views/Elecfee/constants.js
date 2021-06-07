@@ -31,7 +31,7 @@ export const HeadCardItems = [
     tooltip: {
         trigger: "item",
         formatter: function(name) {
-         const cityFilterData = linechartOptions.series[0].cityFilterData
+         const cityFilterData = linechartOptions.series[0].cityFilterData;
           let total = 0;
           let target = 0;
           let toolpitArr = "";
@@ -45,14 +45,14 @@ export const HeadCardItems = [
               if(item==name.name){
                   target = cityFilterData[item].value;
                   total = cityFilterData[item].total;
-                  ninetoten = cityFilterData[item].ninetoten
-                  eightto9 = cityFilterData[item].eightto9
-                  sixto8 = cityFilterData[item].sixto8
-                  zerotosix = cityFilterData[item].zerotosix
+                  ninetoten = cityFilterData[item].ninetoten;
+                  eightto9 = cityFilterData[item].eightto9;
+                  sixto8 = cityFilterData[item].sixto8;
+                  zerotosix = cityFilterData[item].zerotosix;
                   percent = ((target / total) * 100).toFixed(1);
                   pointColor = colorSet.mainSet[index];
               }
-          })
+          });
           toolpitArr = `<div style="text-align:left;font-size:12px"><div>0-6分<span> ${zerotosix}元</span><span style="margin-left:10px">${percent}%</span></div> <div>6-8分<span> ${sixto8}元</span><span style="margin-left:10px">${percent}%</span></div> <div>8-9分<span> ${eightto9}元</span><span style="margin-left:10px">${percent}%</span></div> <div>9-10分<span> ${ninetoten}元</span><span style="margin-left:10px">${percent}%</span></div> <hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${pointColor};margin-right:5px"></div><div>${name.name}省 稽核条数/占比</div></div> </div>`;
           return toolpitArr;
       },
@@ -90,13 +90,13 @@ export const HeadCardItems = [
               let toolpitColor = "";
               let target = 0;
               let total = 0;
-              let fraction = ''
+              let fraction = '';
               for (let i = 0; i < pieData.length; i++) {
                   total += pieData[i].value;
                   if (pieData[i].name === name.name) {
                       toolpitColor = colorSet.mainPieSet[i];
                       target = name.value;
-                      fraction = pieData[i].fraction
+                      fraction = pieData[i].fraction;
                   }
               }
               const percent = ((target / total) * 100).toFixed(1);
@@ -122,12 +122,12 @@ export const HeadCardItems = [
             let total = 0;
             let target = 0;
             let legendArr = [];
-            let fraction = ''
+            let fraction = '';
             for (let i = 0; i < pieData.length; i++) {
                 total += pieData[i].value;
                 if (pieData[i].name === name) {
                     target = pieData[i].value;
-                    fraction = pieData[i].fraction
+                    fraction = pieData[i].fraction;
                 }
             }
             let percent = ((target / total) * 100).toFixed(1);

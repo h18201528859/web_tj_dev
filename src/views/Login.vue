@@ -120,7 +120,7 @@ export default {
           window.location.href = "#/checkall";
           // return false;
         }else{
-          return
+          return;
         }
         // if (values.remember) {
         //   sessionStorage.setItem("password", JSON.stringify(values));

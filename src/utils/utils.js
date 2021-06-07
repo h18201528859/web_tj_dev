@@ -36,13 +36,45 @@ export default {
         document.documentElement.scrollTop = 0;
         window.pageYOffset = 0;
     },
-    getAllTimeRange() {
+    getAllTimeRange(type = "all") {
         const current = moment().format("YYYY-MM-DD HH:MM:SS");
-        const defaultTime = "1990-01-01 00:00:00";
-        const timeParams = {
-            start_time: defaultTime,
-            end_time: current,
-        };
-        return timeParams;
+        if (type === "all") {
+            const defaultTime = "1990-01-01 00:00:00";
+            const timeParams = {
+                start_time: defaultTime,
+                end_time: current,
+            };
+            return timeParams;
+        } else if (type === "three") {
+            //获取近三个月的时间段
+            const lastThreeMonth = moment()
+                .subtract(1, "quarters")
+                .format("YYYY-MM-DD HH:mm:ss");
+            const timeParams = {
+                start_time: lastThreeMonth,
+                end_time: current,
+            };
+            return timeParams;
+        } else if (type === "six") {
+            //获取近6个月的时间段
+            const lastSixMonth = moment()
+                .subtract(6, "months")
+                .format("YYYY-MM-DD HH:mm:ss");
+            const timeParams = {
+                start_time: lastSixMonth,
+                end_time: current,
+            };
+            return timeParams;
+        } else if (type === "year") {
+            //获取近12个月的时间段
+            const lastYear = moment()
+                .subtract(1, "years")
+                .format("YYYY-MM-DD HH:mm:ss");
+            const timeParams = {
+                start_time: lastYear,
+                end_time: current,
+            };
+            return timeParams;
+        }
     },
 };

@@ -64,7 +64,7 @@ export default {
   watch:{
     '$route.path':function(){
       const { name='elecfee' } = this.$route;
-      console.log( this.$route)
+      console.log( this.$route);
       if(name=='elecfee'){
          this.updateCityId('-1');
          this.getUpdateCityTitle('');

@@ -2,7 +2,7 @@
 <template>
   <div class="head-item" @click="JumptoOtherPage(page)">
     <div class="left">
-      <img :src="icon" alt="image"  class="img"/>
+      <img :src="icon" alt="image" class="img" />
       <div class="right-item">
         <span>{{ headTitle }}</span>
       </div>
@@ -36,13 +36,13 @@ export default {
       type: String,
       default: require("./icon/1.png"),
     },
-    allText:{
+    allText: {
       type: String,
-      default: '总量/单',
+      default: "总量/单",
     },
-    monthText:{
+    monthText: {
       type: String,
-      default: '',
+      default: "",
     },
     currentData: {
       count: 0,
@@ -83,15 +83,15 @@ export default {
 <style lang="less" scoped>
 .head-item {
   width: 100%;
-    margin-right: 24px;
-    padding: 24px;
-    flex-flow: column;
-    justify-content: space-between;
-    background: hsl(0deg 0% 100%);
+  margin-right: 24px;
+  padding: 24px;
+  flex-flow: column;
+  justify-content: space-between;
+  background: hsl(0deg 0% 100%);
   .left {
     display: flex;
-    .img{
-      width:24px;
+    .img {
+      width: 24px;
       height: 24px;
     }
     .right-item {
@@ -109,31 +109,31 @@ export default {
       }
     }
   }
-  .count-box{
-    display:flex;
+  .count-box {
+    display: flex;
     justify-content: space-between;
-    padding-top:8px;
+    padding-top: 8px;
     width: 60%;
-    .fraction-text{
-      color:#7F828F;
-      margin-left:8px;
+    .fraction-text {
+      color: #7f828f;
+      margin-left: 8px;
     }
-    .all-text,.month-text{
-      font-size:24px;
+    .all-text,
+    .month-text {
+      font-size: 24px;
     }
-    .money-cont::before{
-      content: '';
+    .money-cont::before {
+      content: "";
       height: 24px;
-      width:1px ;
+      width: 1px;
       background: #cccccc;
       margin-right: 24px;
       position: relative;
       display: inline-block;
       top: 5px;
-      color:#7F828F;
+      color: #7f828f;
     }
   }
-
 }
 .head-item:last-child {
   margin-right: 0;
