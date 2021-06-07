@@ -5,6 +5,7 @@ module.exports = {
     "/lang/local?language=:language": "/getCurrentLanguage",
     ///////<-------------Checkall--------->/////
     "/POST/Payment/GetSum": "/getCheckallAmout",
+    "/POST/Payment/GetStatistics": "/getStatistics",
     "/portal/business/getcheckalltable": "/_getCheckallTableAmount",
     "/portal/business/getelecfeetable": "/_getelecfeeTableAmount",
     "/portal/business/getcheckalldetail?page=:page&pageSize=:pageSize":

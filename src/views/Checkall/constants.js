@@ -156,6 +156,7 @@ export const checkallColumns = [
         dataIndex: "type",
         key: "type",
         width: 150,
+        scopedSlots: { customRender: "type" },
 
         // ellipsis: true,
     },
@@ -218,6 +219,7 @@ export const checkdetailColumns = [
         dataIndex: "type",
         key: "type",
         width: 150,
+        scopedSlots: { customRender: "type" },
         filters: [
             {
                 text: "电费",

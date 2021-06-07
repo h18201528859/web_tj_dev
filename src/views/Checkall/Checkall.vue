@@ -13,11 +13,11 @@
     <div class="overview-section">
       <div class="overview-head">
         <p>稽核概况</p>
-        <a-radio-group defaultValue="all">
+        <a-radio-group defaultValue="all" @change="handleChartRange">
           <a-radio-button value="all"> 全部 </a-radio-button>
           <a-radio-button value="year"> 近一年 </a-radio-button>
-          <a-radio-button value="month"> 近三月 </a-radio-button>
-          <a-radio-button value="halfyear"> 近半年 </a-radio-button>
+          <a-radio-button value="three"> 近三月 </a-radio-button>
+          <a-radio-button value="six"> 近半年 </a-radio-button>
         </a-radio-group>
       </div>
       <div class="overview-chart">
@@ -51,6 +51,9 @@
           :rowKey="(record, index) => index"
           :pagination="false"
         >
+          <template slot="type">
+            <span>电费</span>
+          </template>
           <template slot="notpass" slot-scope="text">
             <span class="red">{{ text }}</span>
           </template>
@@ -91,6 +94,9 @@
           :pagination="false"
           :loading="detailTableLoading"
         >
+          <template slot="type">
+            <span>电费</span>
+          </template>
           <template slot="notpass" slot-scope="text">
             <span class="red">{{ text }}</span>
           </template>
@@ -207,6 +213,9 @@ export default {
     handleHeadData() {
       this.getHeadData(util.getAllTimeRange());
       this.handleChart();
+    },
+    handleChartRange(e) {
+      console.log(e);
     },
     handleChart() {
       this.linechartOptions.series[0].data = this.lineData;
