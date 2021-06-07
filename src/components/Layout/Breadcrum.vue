@@ -56,17 +56,18 @@ export default {
     };
   },
   mounted(){
-     const { cityId = '-1'} = this.$route.params;
-     if(cityId!=='-1'){
-       this.updateCityId(cityId);
-     }
+    //  const { cityId = '-1'} = this.$route.params;
+    //  if(cityId!=='-1'){
+    //    this.updateCityId(cityId);
+    //  }
   },
   watch:{
     '$route.path':function(){
       const { name='elecfee' } = this.$route;
+      console.log( this.$route)
       if(name=='elecfee'){
          this.updateCityId('-1');
-          this.getUpdateCityTitle('');
+         this.getUpdateCityTitle('');
       }
     }
   },
@@ -96,13 +97,13 @@ export default {
       const cityName = this.cityArr[key].name;
       this.updateCityId(key);
       this.getUpdateCityTitle(cityName);
-     this.breadcrumbArr[2].breadcrumbName = `${this.cityArr[key].name}电费稽核`;
-      //   this.$store.commit("replaceBreadcrumb", [
-      //   {
-      //     path: "/elecfee/elecfeeCityDetail",
-      //     breadcrumbName: `${cityName}电费稽核`,
-      //   },
-      // ]);
+    //  this.breadcrumbArr[2].breadcrumbName = `${this.cityArr[key].name}电费稽核`;
+        this.$store.commit("replaceBreadcrumb", [
+        {
+          path: "/elecfee/elecfeeCityDetail",
+          breadcrumbName: `${cityName}电费稽核`,
+        },
+      ]);
       this.$router.push({
         name: "elecfeecitydetail",
         path: `/elecfee/elecfeeCityDetail/:cityId` + key,

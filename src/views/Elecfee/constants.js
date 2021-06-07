@@ -14,16 +14,9 @@ export const HeadCardItems = [
   ];
   const colorSet = {
       mainSet: [
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
+            "rgba(91, 143, 249, 0.85)",
+            "rgba(91, 143, 249, 0.85)",
+            "rgba(91, 143, 249, 0.85)",
         ],
     mainPieSet: [
       "#5B8FF9",
@@ -60,13 +53,13 @@ export const HeadCardItems = [
                   pointColor = colorSet.mainSet[index];
               }
           })
-          toolpitArr = `<div style="text-align:left;font-size:12px"><div>0-6分<span> ${zerotosix}条</span><span style="margin-left:10px">${percent}%</span></div> <div>6-8分<span> ${sixto8}条</span><span style="margin-left:10px">${percent}%</span></div> <div>8-9分<span> ${eightto9}条</span><span style="margin-left:10px">${percent}%</span></div> <div>9-10分<span> ${ninetoten}条</span><span style="margin-left:10px">${percent}%</span></div> <hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:10px;height:10px;border-radius:50%;background:${pointColor};margin-right:5px"></div><div>${name.name}省 稽核条数/占比</div></div> </div>`;
+          toolpitArr = `<div style="text-align:left;font-size:12px"><div>0-6分<span> ${zerotosix}元</span><span style="margin-left:10px">${percent}%</span></div> <div>6-8分<span> ${sixto8}元</span><span style="margin-left:10px">${percent}%</span></div> <div>8-9分<span> ${eightto9}元</span><span style="margin-left:10px">${percent}%</span></div> <div>9-10分<span> ${ninetoten}元</span><span style="margin-left:10px">${percent}%</span></div> <hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${pointColor};margin-right:5px"></div><div>${name.name}省 稽核条数/占比</div></div> </div>`;
           return toolpitArr;
       },
     },
     xAxis: {
         type: "category",
-        data: ["北京", "上海", "广州","深圳","河北","河南","湖南","江苏","湖北","广西"],
+        data: ["北京", "上海", "广州"],//["北京", "上海", "广州","深圳","河北","河南","湖南","江苏","湖北","广西"],
         toolpit: { show: true },
     },
     yAxis: {
@@ -97,15 +90,17 @@ export const HeadCardItems = [
               let toolpitColor = "";
               let target = 0;
               let total = 0;
+              let fraction = ''
               for (let i = 0; i < pieData.length; i++) {
                   total += pieData[i].value;
                   if (pieData[i].name === name.name) {
                       toolpitColor = colorSet.mainPieSet[i];
                       target = name.value;
+                      fraction = pieData[i].fraction
                   }
               }
               const percent = ((target / total) * 100).toFixed(1);
-              let toolpitStr = `<div style='padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:10px;height:10px;border-radius:50%;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国${name.name}缴纳单</div></div>`;
+              let toolpitStr = `<div style='padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国电费${name.name}缴纳单 ${fraction}分 </div></div>`;
               return toolpitStr;
           },
       
