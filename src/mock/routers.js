@@ -6,16 +6,12 @@ module.exports = {
     ///////<-------------Checkall--------->/////
     "/POST/Payment/GetSum": "/getCheckallAmout",
     "/POST/Payment/GetStatistics": "/getStatistics",
+    "/POST/Payment/GetImageStatistics": "/getImageStatistics",
+
     "/portal/business/getcheckalltable": "/_getCheckallTableAmount",
     "/portal/business/getelecfeetable": "/_getelecfeeTableAmount",
     "/portal/business/getcheckalldetail?page=:page&pageSize=:pageSize":
         "/getCheckallDetail",
-
-    ///////<-------------VimEnv--------->/////
-
-    ///////<-------------Instrument MGS MGT--------->/////
-
-    ///////<-------------Instrument Package MGT--------->/////
 
     "/api/*": "/$1",
     "/*/*": "/$1_$2",
