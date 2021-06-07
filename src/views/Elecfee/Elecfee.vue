@@ -197,7 +197,7 @@ export default {
           this.$store.dispatch("setCurrentBread", [
             {
               name:'elecfeecitydetail',
-                path: "/elecfee/elecfeeCityDetail/:cityId"+cityId,
+                path: "/elecfee/elecfeeCityDetail/"+cityId,
                 breadcrumbName: `${cityName}电费稽核`,
               },
             ]);
