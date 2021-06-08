@@ -1,3 +1,7 @@
+import { 
+    provinceCode
+  } from "../../const/constant";
+  console.log(provinceCode)
 export const HeadCardItems = [
     {
         headTitle: "稽核报账单",
@@ -53,7 +57,18 @@ export const HeadCardItems = [
                   pointColor = colorSet.mainSet[index];
               }
           });
-          toolpitArr = `<div style="text-align:left;font-size:12px"><div>0-6分<span> ${zerotosix}元</span><span style="margin-left:10px">${percent}%</span></div> <div>6-8分<span> ${sixto8}元</span><span style="margin-left:10px">${percent}%</span></div> <div>8-9分<span> ${eightto9}元</span><span style="margin-left:10px">${percent}%</span></div> <div>9-10分<span> ${ninetoten}元</span><span style="margin-left:10px">${percent}%</span></div> <hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${pointColor};margin-right:5px"></div><div>${name.name}省 稽核条数/占比</div></div> </div>`;
+          toolpitArr = `<div style="font-size:12px;">
+         
+          <div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix}元</span><span style="margin-left:10px">${percent}%</span></div>
+          <div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8}元</span><span style="margin-left:10px">${percent}%</span></div> 
+          <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9}元</span><span style="margin-left:10px">${percent}%</span></div>
+          <div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten}元</span><span style="margin-left:6px;position:relative;left:-2px;">${percent}%</span></div>
+         
+       
+             <hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/>
+             <div style="display:flex;align-items:center">
+             <div style="width:6px;height:6px;background:${pointColor};margin-right:5px"></div>
+             <div>${name.name}省 稽核条数/占比</div></div> </div>`;
           return toolpitArr;
       },
     },

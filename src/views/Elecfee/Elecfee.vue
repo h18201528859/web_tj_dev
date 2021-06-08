@@ -421,7 +421,7 @@ export default {
                 return colorList[params.dataIndex];
              };
 
-        pieCharts.style.display = "none";
+  
       }
       this.linechartOptions.series[0].data = lineData;
       this.piechartOptions.series[0].data = pieData;
