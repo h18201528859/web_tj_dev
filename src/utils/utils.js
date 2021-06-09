@@ -37,7 +37,7 @@ export default {
         window.pageYOffset = 0;
     },
     getAllTimeRange(type = "all") {
-        const current = moment().format("YYYY-MM-DD HH:MM:SS");
+        let current = moment().format("YYYY-MM-DD HH:mm:ss");
         if (type === "all") {
             const defaultTime = "1990-01-01 00:00:00";
             const timeParams = {

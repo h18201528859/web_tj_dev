@@ -51,14 +51,22 @@
           :rowKey="(record, index) => index"
           :pagination="false"
         >
+          <template slot="rank" slot-scope="text, all, i">
+            <span>{{ i + 1 }}</span>
+          </template>
           <template slot="type">
             <span>电费</span>
           </template>
           <template slot="notpass" slot-scope="text">
             <span class="red">{{ text }}</span>
           </template>
-          <template slot="notpassper" slot-scope="text">
-            <span>{{ `${text}%` }}</span>
+          <template slot="notpassper" slot-scope="text, all">
+            <span>{{
+              `${(
+                (Number(all.notpass_number) / Number(all.total_amount)) *
+                100
+              ).toFixed(2)}%`
+            }}</span>
           </template>
         </a-table>
       </div>
@@ -67,9 +75,9 @@
       <div class="header">
         <p>稽核详情</p>
         <div class="operations">
-          <a-radio-group class="radio" defaultValue="count">
-            <a-radio-button value="count"> 数量 </a-radio-button>
-            <a-radio-button value="number"> 金额 </a-radio-button>
+          <a-radio-group class="radio" defaultValue="0" @change="handleType">
+            <a-radio-button value="0"> 数量 </a-radio-button>
+            <a-radio-button value="1"> 金额 </a-radio-button>
           </a-radio-group>
           <a-select
             class="select"
@@ -94,14 +102,22 @@
           :pagination="false"
           :loading="detailTableLoading"
         >
+          <template slot="rank" slot-scope="text, all, i">
+            <span>{{ i + 1 }}</span>
+          </template>
           <template slot="type">
             <span>电费</span>
           </template>
           <template slot="notpass" slot-scope="text">
             <span class="red">{{ text }}</span>
           </template>
-          <template slot="notpassper" slot-scope="text">
-            <span>{{ `${text}%` }}</span>
+          <template slot="notpassper" slot-scope="text, all">
+            <span>{{
+              `${(
+                (Number(all.notpass_number) / Number(all.total_amount)) *
+                100
+              ).toFixed(2)}%`
+            }}</span>
           </template>
         </a-table>
         <div class="pagination">
@@ -154,8 +170,7 @@ export default {
   },
   created() {
     this.handleHeadData();
-    this.getCheckallTableData();
-    this.handleDetailData({ page: 1, pageSize: 10 });
+    this.handleTableData(this.initParams);
   },
   mounted() {
     this.drawLines();
@@ -172,6 +187,7 @@ export default {
     ...mapState({
       headData: (state) => state.checkall.headData,
       checkallTable: (state) => state.checkall.checkallTable,
+      checkallParams: (state) => state.checkall.checkallParams,
       checkallDetail: (state) => state.checkall.checkallDetail,
       detailTotal: (state) => state.checkall.detailTotal,
       detailPage: (state) => state.checkall.detailPage,
@@ -190,14 +206,11 @@ export default {
       checkallTableColumns: checkallColumns,
       checkdetailTableColumns: checkdetailColumns,
       totalPage: 0,
+      initParams: util.getAllTimeRange("all"),
     };
   },
   methods: {
-    ...mapActions("checkall", [
-      "getHeadData",
-      "getCheckallTableData",
-      "getCheckallDetailData",
-    ]),
+    ...mapActions("checkall", ["getHeadData", "getCheckallTableData"]),
     JumpToDetail() {
       this.$store.dispatch("setCurrentBread", [
         {
@@ -215,15 +228,17 @@ export default {
       this.handleChart();
     },
     handleChartRange(e) {
-      console.log(e);
+      const timeRange = e.target.value;
+      const timeParams = util.getAllTimeRange(timeRange);
+      this.getCheckallTableData(Object.assign(timeParams, { page: 1 }));
+    },
+    handleType(e) {
+      const type = e.target.value;
+      this.getCheckallTableData({ object: type, page: 1 });
     },
     handleChart() {
       this.linechartOptions.series[0].data = this.lineData;
       this.piechartOptions.series[0].data = this.pieData;
-    },
-    handleDetailData({ page, pageSize }) {
-      this.getCheckallDetailData({ page: page, pageSize: pageSize });
-      this.totalPage = this.detailTotal;
     },
     drawLines() {
       const lineChart = this.$echarts.init(
@@ -251,11 +266,16 @@ export default {
         piechart.setOption(option);
       });
     },
+    handleTableData(params) {
+      const paramObj = Object.assign(this.checkallParams, params);
+      this.getCheckallTableData(paramObj);
+      this.totalPage = this.checkallDetail.length;
+    },
     handleDetailPagesize(pageSize) {
-      this.handleDetailData({ page: 1, pageSize: +pageSize });
+      this.handleTableData({ page: 1, pageSize: +pageSize });
     },
     handlePaginationChange(page, pageSize) {
-      this.handleDetailData({ page: page, pageSize: pageSize });
+      this.handleTableData({ page: +page, pageSize: +pageSize });
     },
   },
 };

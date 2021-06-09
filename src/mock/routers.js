@@ -7,6 +7,7 @@ module.exports = {
     "/POST/Payment/GetSum": "/getCheckallAmout",
     "/POST/Payment/GetStatistics": "/getStatistics",
     "/POST/Payment/GetImageStatistics": "/getImageStatistics",
+    "/POST/Payment/GetElecSum": "/getElecSum",
 
     "/portal/business/getcheckalltable": "/_getCheckallTableAmount",
     "/portal/business/getelecfeetable": "/_getelecfeeTableAmount",
