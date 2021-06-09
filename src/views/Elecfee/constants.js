@@ -4,15 +4,15 @@ import {
   const provity = [];
   provinceCode.filter((item,index)=>{
       if(index<10){
-      return provity.push(item.name)
+      return provity.push(item.name);
       }
-    })
+    });
 export const HeadCardItems = [
     {
         headTitle: "稽核报账单",
         icon: require("./icon/1.png"),
-        allText:'总量/单',
-        monthText:'当月/单'
+        allText: "总量/单",
+        monthText: "当月/单",
     },
     {
         headTitle: "稽核金额",
@@ -78,8 +78,8 @@ export const HeadCardItems = [
              <div style="display:flex;align-items:center">
              <div style="width:6px;height:6px;background:${pointColor};margin-right:5px"></div>
              <div>${name.name}省 稽核条数/占比</div></div> </div>`;
-          return toolpitArr;
-      },
+            return toolpitArr;
+        },
     },
     xAxis: {
         type: "category",
@@ -92,8 +92,8 @@ export const HeadCardItems = [
     series: [
         {
             data: [],
-            cityData:[],
-            cityFilterData:{},
+            cityData: [],
+            cityFilterData: {},
             type: "bar",
             barWidth: "30",
             itemStyle: {
@@ -104,9 +104,9 @@ export const HeadCardItems = [
             },
         },
     ],
-  };
-  
-  export const piechartOptions = {
+};
+
+export const piechartOptions = {
     tooltip: {
         trigger: "item",
         borderWidth:'0',
@@ -147,7 +147,7 @@ export const HeadCardItems = [
             let total = 0;
             let target = 0;
             let legendArr = [];
-            let fraction = '';
+            let fraction = "";
             for (let i = 0; i < pieData.length; i++) {
                 total += pieData[i].value;
                 if (pieData[i].name === name) {
@@ -182,12 +182,12 @@ export const HeadCardItems = [
             },
             itemStyle: {},
             data: [],
-            barwidth:20
+            barwidth: 20,
         },
     ],
-  };
-  
-  export const checkallColumns = [
+};
+
+export const checkallColumns = [
     {
         title: "排名",
         dataIndex: "rank",
@@ -210,19 +210,19 @@ export const HeadCardItems = [
         title: "8-9分",
         dataIndex: "eightto9",
         key: "eightto9",
-       // ellipsis: true,
+        // ellipsis: true,
     },
     {
         title: "6-8分",
         dataIndex: "sixto8",
         key: "sixto8",
-      //  ellipsis: true,
+        //  ellipsis: true,
     },
     {
         title: "0-6分",
         dataIndex: "zerotosix",
         key: "zerotosix",
-       // ellipsis: true,
+        // ellipsis: true,
     },
     {
         title: "总量",
@@ -238,17 +238,17 @@ export const HeadCardItems = [
         title: "未通过数",
         dataIndex: "notpass",
         key: "notpass",
-       scopedSlots: { customRender: "notpass" },
+        scopedSlots: { customRender: "notpass" },
     },
     {
         title: "未通过率",
         dataIndex: "notpassper",
         key: "notpassper",
-      //   scopedSlots: { customRender: "notpassper" },
+        //   scopedSlots: { customRender: "notpassper" },
     },
-  ];
-  
-  export const checkdetailColumns = [
+];
+
+export const checkdetailColumns = [
     {
         title: "排名",
         dataIndex: "rank",
@@ -266,29 +266,29 @@ export const HeadCardItems = [
         dataIndex: "ninetoten",
         key: "ninetoten",
         // defaultSortOrder: "descend",
-       // sorter: (a, b) => a.ninetoten - b.ninetoten,
-       // ellipsis: true,
+        // sorter: (a, b) => a.ninetoten - b.ninetoten,
+        // ellipsis: true,
     },
     {
         title: "8-9分",
         dataIndex: "eightto9",
         key: "eightto9",
         //sorter: (a, b) => a.eightto9 - b.eightto9,
-       // ellipsis: true,
+        // ellipsis: true,
     },
     {
         title: "6-8分",
         dataIndex: "sixto8",
         key: "sixto8",
-      //   sorter: (a, b) => a.sixto8 - b.sixto8,
-      //   ellipsis: true,
+        //   sorter: (a, b) => a.sixto8 - b.sixto8,
+        //   ellipsis: true,
     },
     {
         title: "0-6分",
         dataIndex: "zerotosix",
         key: "zerotosix",
-      //   sorter: (a, b) => a.zerotosix - b.zerotosix,
-      //   ellipsis: true,
+        //   sorter: (a, b) => a.zerotosix - b.zerotosix,
+        //   ellipsis: true,
     },
     {
         title: "总量",
@@ -300,49 +300,49 @@ export const HeadCardItems = [
         title: "通过数",
         dataIndex: "passtotal",
         key: "passtotal",
-       // sorter: (a, b) => a.passtotal - b.passtotal,
+        // sorter: (a, b) => a.passtotal - b.passtotal,
     },
     {
         title: "未通过数",
         dataIndex: "notpass",
         key: "notpass",
-      //   sorter: (a, b) => a.notpass - b.notpass,
-         scopedSlots: { customRender: "notpass" },
+        //   sorter: (a, b) => a.notpass - b.notpass,
+        scopedSlots: { customRender: "notpass" },
     },
     {
         title: "未通过率",
         dataIndex: "notpassper",
         key: "notpassper",
-      //   sorter: (a, b) => a.notpassper - b.notpassper,
-      //   scopedSlots: { customRender: "notpassper" },
+        //   sorter: (a, b) => a.notpassper - b.notpassper,
+        //   scopedSlots: { customRender: "notpassper" },
     },
-  ];
-  
-  export const cityArr = [
-      { name: "全国", id: 0 },
-      { name: "北京", id: 1 },
-      { name: "上海", id: 2 },
-      { name: "广州", id: 3 },
-      { name: "深圳", id: 4 },
-      { name: "河北", id: 5 },
-      { name: "河南", id: 6 },
-      { name: "湖南", id: 7 },
-      { name: "江苏", id: 8 },
-      { name: "湖北", id: 9 },
-      { name: "广西", id: 10 },
-      { name: "广东", id: 11 },
-      { name: "四川", id: 12 },
-      { name: "云南", id: 13 },
-      { name: "西藏", id: 14 },
-      { name: "新疆", id: 15 },
-      { name: "甘肃", id: 16 },
-      { name: "海南", id: 17 },
-      { name: "山东", id: 18 },
-      { name: "福建", id: 19 },
-      { name: "合肥", id: 20 },
-      { name: "浙江", id: 21 },
-      { name: "黑龙江", id: 22 },
-      { name: "辽宁", id: 23 },
-      { name: "内蒙古", id: 24 },
-      { name: "山西", id: 25 },
-    ];
+];
+
+export const cityArr = [
+    { name: "全国", id: 0 },
+    { name: "北京", id: 1 },
+    { name: "上海", id: 2 },
+    { name: "广州", id: 3 },
+    { name: "深圳", id: 4 },
+    { name: "河北", id: 5 },
+    { name: "河南", id: 6 },
+    { name: "湖南", id: 7 },
+    { name: "江苏", id: 8 },
+    { name: "湖北", id: 9 },
+    { name: "广西", id: 10 },
+    { name: "广东", id: 11 },
+    { name: "四川", id: 12 },
+    { name: "云南", id: 13 },
+    { name: "西藏", id: 14 },
+    { name: "新疆", id: 15 },
+    { name: "甘肃", id: 16 },
+    { name: "海南", id: 17 },
+    { name: "山东", id: 18 },
+    { name: "福建", id: 19 },
+    { name: "合肥", id: 20 },
+    { name: "浙江", id: 21 },
+    { name: "黑龙江", id: 22 },
+    { name: "辽宁", id: 23 },
+    { name: "内蒙古", id: 24 },
+    { name: "山西", id: 25 },
+];

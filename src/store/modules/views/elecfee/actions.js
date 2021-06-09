@@ -1,4 +1,4 @@
-import { axiosget,axiospost } from "../../../../utils/http";
+import { axiosget } from "../../../../utils/http";
 
 const actions = {
     getHeadData({ commit }) {
@@ -18,7 +18,7 @@ const actions = {
         const data = {
             "total_amount": "234",
             "total_number": "120"
-          }
+          };
         commit("updateHeadData", data);
     },
     getUpdateCityTitle({ commit }, title){

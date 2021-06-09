@@ -93,13 +93,6 @@
           :pagination="false"
           :customRow = "rowHandle"
         >
-          <!-- <template slot="type" slot-scope="text">
-            <router-link :to="{name: text,path: '/elecfee/elecfeeCityDetail/:cityId'+record.id, params: { cityId: record.id }}"> {{ text }}</router-link>
-            
-          </template> -->
-          <!-- <template slot="type" slot-scope="text,record">
-            <router-link :to="{name:'elecfeecitydetail',path: '/elecfee/elecfeeCityDetail/'+record.rank, params: { cityId: record.rank }}"> {{ text, }}</router-link>
-          </template> -->
           <template slot="notpass" slot-scope="text">
             <span class="red">{{ text }}</span>
           </template>
@@ -221,10 +214,10 @@ export default {
           this.$store.dispatch("setCurrentBread", [
             {
               name:'elecfeecitydetail',
-                path: "/elecfee/elecfeeCityDetail/"+cityId,
-                breadcrumbName: `${cityName}电费稽核`,
-              },
-            ]);
+              path: "/elecfee/elecfeeCityDetail/"+cityId,
+              breadcrumbName: `${cityName}电费稽核`,
+            },
+          ]);
          this.getUpdateCityTitle(cityName);
          this.updateCityId(cityId);
         this.checkdetailTableColumns[1].title='地市'  
@@ -288,7 +281,6 @@ export default {
            const newclumn = JSON.parse(JSON.stringify(checkdetailColumns))
            newclumn.splice(2,4)
             this.checkdetailTableColumns=newclumn
-            console.log( this.checkdetailTableColumns)
            pieData= [
                 { value: 1020, name: "电费" ,fraction:'9-10'},
                 { value: 1300, name: "铁塔服务费",fraction:'4-9'},

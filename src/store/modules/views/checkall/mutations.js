@@ -10,8 +10,12 @@ const mutations = {
         state.checkallTable = data;
     },
     updateCheckAllDetail(state, data) {
-        state.checkallDetail = data.body;
-        state.detailTotal = data.total;
+        state.checkallDetail = data;
+        state.detailTotal = data.length;
+    },
+    updateParams(state, data) {
+        //把更改的参数传进来，然后生成新的参数对象
+        state.checkallParams = data;
     },
     updateCurrentPage(state, data) {
         state.detailPage = data.page;

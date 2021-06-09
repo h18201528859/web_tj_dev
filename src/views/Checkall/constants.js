@@ -150,6 +150,7 @@ export const checkallColumns = [
         title: "排名",
         dataIndex: "rank",
         key: "rank",
+        scopedSlots: { customRender: "rank" },
     },
     {
         title: "类型",
@@ -168,14 +169,14 @@ export const checkallColumns = [
     },
     {
         title: "8-9分",
-        dataIndex: "eightto9",
-        key: "eightto9",
+        dataIndex: "eighttonine",
+        key: "eighttonine",
         ellipsis: true,
     },
     {
         title: "6-8分",
-        dataIndex: "sixto8",
-        key: "sixto8",
+        dataIndex: "sixtoeight",
+        key: "sixtoeigth",
         ellipsis: true,
     },
     {
@@ -186,18 +187,18 @@ export const checkallColumns = [
     },
     {
         title: "总量",
-        dataIndex: "total",
-        key: "total",
+        dataIndex: "total_amount",
+        key: "total_amount",
     },
     {
         title: "通过数",
-        dataIndex: "passtotal",
-        key: "passtotal",
+        dataIndex: "pass_number",
+        key: "pass_number",
     },
     {
         title: "未通过数",
-        dataIndex: "notpass",
-        key: "notpass",
+        dataIndex: "notpass_number",
+        key: "notpass_number",
         scopedSlots: { customRender: "notpass" },
     },
     {
@@ -213,6 +214,7 @@ export const checkdetailColumns = [
         title: "排名",
         dataIndex: "rank",
         key: "rank",
+        scopedSlots: { customRender: "rank" },
     },
     {
         title: "稽核类型",
@@ -239,8 +241,8 @@ export const checkdetailColumns = [
     },
     {
         title: "省份",
-        dataIndex: "province",
-        key: "province",
+        dataIndex: "prv_name",
+        key: "prv_name",
         // ellipsis: true,
     },
     {
@@ -253,16 +255,16 @@ export const checkdetailColumns = [
     },
     {
         title: "8-9分",
-        dataIndex: "eightto9",
-        key: "eightto9",
-        sorter: (a, b) => a.eightto9 - b.eightto9,
+        dataIndex: "eighttonine",
+        key: "eighttonine",
+        sorter: (a, b) => a.eighttonine - b.eighttonine,
         ellipsis: true,
     },
     {
         title: "6-8分",
-        dataIndex: "sixto8",
-        key: "sixto8",
-        sorter: (a, b) => a.sixto8 - b.sixto8,
+        dataIndex: "sixtoeight",
+        key: "sixtoeight",
+        sorter: (a, b) => a.sixtoeight - b.sixtoeight,
         ellipsis: true,
     },
     {
@@ -274,21 +276,21 @@ export const checkdetailColumns = [
     },
     {
         title: "总量",
-        dataIndex: "total",
-        key: "total",
-        sorter: (a, b) => a.total - b.total,
+        dataIndex: "total_amount",
+        key: "total_amount",
+        sorter: (a, b) => a.total_amount - b.total_amount,
     },
     {
         title: "通过数",
-        dataIndex: "passtotal",
-        key: "passtotal",
-        sorter: (a, b) => a.passtotal - b.passtotal,
+        dataIndex: "pass_number",
+        key: "pass_number",
+        sorter: (a, b) => a.pass_number - b.pass_number,
     },
     {
         title: "未通过数",
-        dataIndex: "notpass",
-        key: "notpass",
-        sorter: (a, b) => a.notpass - b.notpass,
+        dataIndex: "notpass_number",
+        key: "notpass_number",
+        sorter: (a, b) => a.notpass_number - b.notpass_number,
         scopedSlots: { customRender: "notpass" },
     },
     {
