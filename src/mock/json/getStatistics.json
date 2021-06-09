@@ -1,35 +1,181 @@
 {
-    "ret_message": "请求成功",
-    "ret_code": "10000", 
-    "ret_data":{
-        "all_data":{
-            "total_amount": "129284",
-            "amount_percentage": "34%",
-            "total_number": "1000",
-            "number_percentage": "0.1500, 0.1500, 0.4000, 0.3000"
+  "code":200,
+  "message":"OK",
+  "ret_data":{
+      "all_data":{
+          "total_amount": "129284",
+          "amount_percentage": "34%",
+          "total_number": "1000",
+          "number_percentage": "0.1500, 0.1500, 0.4000, 0.3000"
+      },
+      "prv_data":[{
+          "rank": "1",
+          "type": "北京",
+          "ninetoten": "134,156",
+          "eightto9": "134,156",
+          "sixto8": "134,156",
+          "zerotosix": "134,156",
+          "total": "3526,616",
+          "passtotal": "526,616",
+          "notpass": "345",
+          "notpassper": "1.2",
+          "prv_name": "北京",
+          "total_amount": "",
+          "amount_percentage": "",
+          "total_number": "1500",
+          "number_percentage": "0.1000, 0.1000, 0.5000, 0.3000"
+        },{
+          "rank": "2",
+          "type": "天津市",
+          "ninetoten": "134,156",
+          "eightto9": "134,156",
+          "sixto8": "134,156",
+          "zerotosix": "134,156",
+          "total": "3526,616",
+          "passtotal": "526,616",
+          "notpass": "345",
+          "notpassper": "1.2",
+          "prv_name": "天津市",
+          "total_amount": "",
+          "amount_percentage": "",
+          "total_number": "1500",
+          "number_percentage": "0.1000, 0.1000, 0.5000, 0.3000"
+        },{
+          "rank": "3",
+          "type": "上海市",
+          "ninetoten": "134,156",
+          "eightto9": "134,156",
+          "sixto8": "134,156",
+          "zerotosix": "134,156",
+          "total": "3526,616",
+          "passtotal": "526,616",
+          "notpass": "345",
+          "notpassper": "1.2",
+          "prv_name": "上海市",
+          "total_amount": "",
+          "amount_percentage": "",
+          "total_number": "1500",
+          "number_percentage": "0.1000, 0.1000, 0.5000, 0.3000"
         },
-        "prv_data":[
-            {
-                "prv_name": "河南",
-                "total_amount": "8989",
-                "amount_percentage": "",
-                "total_number": "1000000",
-                "number_percentage": "0.1500, 0.1500, 0.4000, 0.3000"
-            },
-            {
-                "prv_name": "江苏",
-                "total_amount": "",
-                "amount_percentage": "",
-                "total_number": "1500000",
-                "number_percentage": "0.1000, 0.1000, 0.5000, 0.3000"
-            },
-            {
-                "prv_name": "北京",
-                "total_amount": "",
-                "amount_percentage": "",
-                "total_number": "1500",
-                "number_percentage": "0.1000, 0.1000, 0.5000, 0.3000"
-            }
-        ]
-    }
+        {
+          "rank": "4",
+          "type": "重庆市",
+          "ninetoten": "134,156",
+          "eightto9": "134,156",
+          "sixto8": "134,156",
+          "zerotosix": "134,156",
+          "total": "3526,616",
+          "passtotal": "526,616",
+          "notpass": "345",
+          "notpassper": "1.2",
+          "prv_name": "重庆市",
+          "total_amount": "",
+          "amount_percentage": "",
+          "total_number": "1500",
+          "number_percentage": "0.1000, 0.1000, 0.5000, 0.3000"
+        },
+        {
+          "rank": "5",
+          "type": "河北省",
+          "ninetoten": "134,156",
+          "eightto9": "134,156",
+          "sixto8": "134,156",
+          "zerotosix": "134,156",
+          "total": "3526,616",
+          "passtotal": "526,616",
+          "notpass": "345",
+          "notpassper": "1.2",
+          "prv_name": "河北省",
+          "total_amount": "",
+          "amount_percentage": "",
+          "total_number": "1500",
+          "number_percentage": "0.1000, 0.1000, 0.5000, 0.3000"
+        },
+        {
+          "rank": "6",
+          "type": "山西省",
+          "ninetoten": "134,156",
+          "eightto9": "134,156",
+          "sixto8": "134,156",
+          "zerotosix": "134,156",
+          "total": "3526,616",
+          "passtotal": "526,616",
+          "notpass": "345",
+          "notpassper": "1.2",
+          "prv_name": "山西省",
+          "total_amount": "",
+          "amount_percentage": "",
+          "total_number": "1500",
+          "number_percentage": "0.1000, 0.1000, 0.5000, 0.3000"
+        },
+        {
+          "rank": "7",
+          "type": "黑龙江省",
+          "ninetoten": "134,156",
+          "eightto9": "134,156",
+          "sixto8": "134,156",
+          "zerotosix": "134,156",
+          "total": "3526,616",
+          "passtotal": "526,616",
+          "notpass": "345",
+          "notpassper": "1.2",
+          "prv_name": "黑龙江省",
+          "total_amount": "",
+          "amount_percentage": "",
+          "total_number": "1500",
+          "number_percentage": "0.1000, 0.1000, 0.5000, 0.3000"
+        },
+        {
+          "rank": "8",
+          "type": "吉林省",
+          "ninetoten": "134,156",
+          "eightto9": "134,156",
+          "sixto8": "134,156",
+          "zerotosix": "134,156",
+          "total": "3526,616",
+          "passtotal": "526,616",
+          "notpass": "345",
+          "notpassper": "1.2",
+          "prv_name": "吉林省",
+          "total_amount": "",
+          "amount_percentage": "",
+          "total_number": "1500",
+          "number_percentage": "0.1000, 0.1000, 0.5000, 0.3000"
+        },
+        {
+          "rank": "9",
+          "type": "辽宁省",
+          "ninetoten": "134,156",
+          "eightto9": "134,156",
+          "sixto8": "134,156",
+          "zerotosix": "134,156",
+          "total": "3526,616",
+          "passtotal": "526,616",
+          "notpass": "345",
+          "notpassper": "1.2",
+          "prv_name": "辽宁省",
+          "total_amount": "",
+          "amount_percentage": "",
+          "total_number": "1500",
+          "number_percentage": "0.1000, 0.1000, 0.5000, 0.3000"
+        },
+        {
+          "rank": "10",
+          "type": "青海省",
+          "ninetoten": "134,156",
+          "eightto9": "134,156",
+          "sixto8": "134,156",
+          "zerotosix": "134,156",
+          "total": "3526,616",
+          "passtotal": "526,616",
+          "notpass": "345",
+          "notpassper": "1.2",
+          "prv_name": "青海省",
+          "total_amount": "",
+          "amount_percentage": "",
+          "total_number": "1500",
+          "number_percentage": "0.1000, 0.1000, 0.5000, 0.3000"
+        }
+      ]
+  }
 }

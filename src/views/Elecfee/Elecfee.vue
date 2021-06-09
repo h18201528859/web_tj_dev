@@ -153,7 +153,7 @@ export default {
   data() {
     return {
       HeadCardItems,
-      lineData: [930, 780, 720],
+      lineData: [930, 780, 720,60, 320, 420,530, 280, 420,500],
       // colorSet,
       pieData: [
         { value: 2587, name: "电费", fraction: "9-10" },
@@ -227,7 +227,15 @@ export default {
             ]);
          this.getUpdateCityTitle(cityName);
          this.updateCityId(cityId);
+        this.checkdetailTableColumns[1].title='地市'  
          const lineColor =  [
+                  "rgba(119,114,241,0.85)",
+                  "rgba(119,114,241,0.85)",
+                  "rgba(119,114,241,0.85)",
+                   "rgba(119,114,241,0.85)",
+                  "rgba(119,114,241,0.85)",
+                  "rgba(119,114,241,0.85)",
+                   "rgba(119,114,241,0.85)",
                   "rgba(119,114,241,0.85)",
                   "rgba(119,114,241,0.85)",
                   "rgba(119,114,241,0.85)"
@@ -240,9 +248,17 @@ export default {
           const lineColorfee = [
                 "rgba(71, 199, 253, 0.85)",
                 "rgba(71, 199, 253, 0.85)",
+                "rgba(71, 199, 253, 0.85)",
+                 "rgba(71, 199, 253, 0.85)",
+                "rgba(71, 199, 253, 0.85)",
+                "rgba(71, 199, 253, 0.85)",
+                "rgba(71, 199, 253, 0.85)",
+                 "rgba(71, 199, 253, 0.85)",
+                "rgba(71, 199, 253, 0.85)",
                 "rgba(71, 199, 253, 0.85)"
                 ];
           this.echartsColors(lineColorfee);
+          this.checkdetailTableColumns[1].title='省份'  
       }
     },
   },
@@ -268,7 +284,11 @@ export default {
        const pieCharts = document.querySelector('.pie-chart');
       let lineData = [], pieData=[],colorSet={mainSet:[],mainPieSet:[]};
       if(key=='2'){
-           lineData = [980,760,745];
+           lineData = [980,760,745,980,760,745,980,760,745,980,];
+           const newclumn = JSON.parse(JSON.stringify(checkdetailColumns))
+           newclumn.splice(2,4)
+            this.checkdetailTableColumns=newclumn
+            console.log( this.checkdetailTableColumns)
            pieData= [
                 { value: 1020, name: "电费" ,fraction:'9-10'},
                 { value: 1300, name: "铁塔服务费",fraction:'4-9'},
@@ -276,6 +296,13 @@ export default {
                 { value: 650, name: "稽核总量",fraction:'0-6' },
               ];
                   colorSet.mainSet = [
+                  "rgba(71, 199, 253, 0.85)",
+                  "rgba(71, 199, 253, 0.85)",
+                  "rgba(71, 199, 253, 0.85)",
+                   "rgba(71, 199, 253, 0.85)",
+                  "rgba(71, 199, 253, 0.85)",
+                  "rgba(71, 199, 253, 0.85)",
+                   "rgba(71, 199, 253, 0.85)",
                   "rgba(71, 199, 253, 0.85)",
                   "rgba(71, 199, 253, 0.85)",
                   "rgba(71, 199, 253, 0.85)"
@@ -319,20 +346,23 @@ export default {
                 return colorList[params.dataIndex];
              };
               this.piechartOptions.tooltip.formatter = (name)=>{
-                let total = 0;
-                let target = 0;
-                let toolpitArr = "";
-                let pointColor = "";
-                for (let i = 0; i < pieData.length; i++) {
-                    total += pieData[i].value;
-                    if (pieData[i].name === name.name) {
-                        target = name.value;
-                        pointColor = colorSet.mainPieSet[i];
-                    }
-                }
-                const percent = ((target / total) * 100).toFixed(1);
-                toolpitArr = `<div style="text-align:left;font-size:12px"> <div style='font-size:16px;margin-bottom:8px'>${target}<span style="font-size:12px"> 条</span></div>  <div style="margin-bottom:8px"><span>${percent}%</span>占比</div><hr style='margin:-4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:10px;height:10px;border-radius:50%;background:${pointColor};margin-right:5px"></div><div>全国近一年${name.name}</div></div> </div>`;
-                return toolpitArr;
+
+                 const pieData = piechartOptions.series[0].data;
+              let toolpitColor = "";
+              let target = 0;
+              let total = 0;
+              let fraction = '';
+              for (let i = 0; i < pieData.length; i++) {
+                  total += pieData[i].value;
+                  if (pieData[i].name === name.name) {
+                      toolpitColor = colorSet.mainPieSet[i];
+                      target = name.value;
+                      fraction = pieData[i].fraction;
+                  }
+              }
+              const percent = ((target / total) * 100).toFixed(1);
+              let toolpitStr = `<div style='padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国电费缴纳单 ${fraction}分 </div></div>`;
+              return toolpitStr;
              };
              this.piechartOptions.series[0].itemStyle.color = function(params){
                 let colorList = colorSet.mainPieSet;
@@ -342,7 +372,9 @@ export default {
              pieCharts.style.display = "none";
       }else{
          pieCharts.style.display = "block";
-        lineData = [930, 780, 720];
+        lineData = [930, 780, 720,60, 320, 420,530, 280, 420,500];
+         const columndate = JSON.parse(JSON.stringify(checkdetailColumns))
+        this.checkdetailTableColumns=columndate
          pieData=[
             { value: 2587, name: "电费" ,fraction:'9-10'},
             { value: 1626, name: "铁塔服务费",fraction:'8-9'},
@@ -354,9 +386,23 @@ export default {
                     "rgba(91, 143, 249, 0.85)",
                     "rgba(91, 143, 249, 0.85)",
                     "rgba(91, 143, 249, 0.85)",
+                    "rgba(91, 143, 249, 0.85)",
+                    "rgba(91, 143, 249, 0.85)",
+                    "rgba(91, 143, 249, 0.85)",
+                    "rgba(91, 143, 249, 0.85)",
+                    "rgba(91, 143, 249, 0.85)",
+                    "rgba(91, 143, 249, 0.85)",
+                    "rgba(91, 143, 249, 0.85)"
                 ];
               }else{
                    colorSet.mainSet = [
+                  "rgba(119,114,241,0.85)",
+                  "rgba(119,114,241,0.85)",
+                  "rgba(119,114,241,0.85)",
+                   "rgba(119,114,241,0.85)",
+                  "rgba(119,114,241,0.85)",
+                  "rgba(119,114,241,0.85)",
+                   "rgba(119,114,241,0.85)",
                   "rgba(119,114,241,0.85)",
                   "rgba(119,114,241,0.85)",
                   "rgba(119,114,241,0.85)"
@@ -401,20 +447,24 @@ export default {
                 return colorList[params.dataIndex];
              };
               this.piechartOptions.tooltip.formatter = (name)=>{
-                let total = 0;
-                let target = 0;
-                let toolpitArr = "";
-                let pointColor = "";
-                for (let i = 0; i < pieData.length; i++) {
-                    total += pieData[i].value;
-                    if (pieData[i].name === name.name) {
-                        target = pieData[i].value;
-                        pointColor = colorSet.mainPieSet[i];
-                    }
-                }
-                const percent = ((target / total) * 100).toFixed(1);
-                toolpitArr = `<div style="text-align:left;font-size:12px"> <div style='font-size:16px;margin-bottom:8px'>${target}<span style="font-size:12px"> 条</span></div>  <div style="margin-bottom:8px"><span>${percent}%</span>占比</div><hr style='margin:-4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:10px;height:10px;border-radius:50%;background:${pointColor};margin-right:5px"></div><div>全国近一年${name.name}</div></div> </div>`;
-                return toolpitArr;
+              
+                 const pieData = piechartOptions.series[0].data;
+              let toolpitColor = "";
+              let target = 0;
+              let total = 0;
+              let fraction = '';
+              for (let i = 0; i < pieData.length; i++) {
+                  total += pieData[i].value;
+                  if (pieData[i].name === name.name) {
+                      toolpitColor = colorSet.mainPieSet[i];
+                      target = name.value;
+                      fraction = pieData[i].fraction;
+                  }
+              }
+              const percent = ((target / total) * 100).toFixed(1);
+              let toolpitStr = `<div style='padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国电费缴纳单 ${fraction}分 </div></div>`;
+              return toolpitStr;
+            
              };
              this.piechartOptions.series[0].itemStyle.color = function(params){
                 let colorList = colorSet.mainPieSet;
@@ -455,7 +505,7 @@ export default {
                       pointColor =colorMain[index];
                   }
               });
-             toolpitArr = `<div style="font-size:12px;"><div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix}元</span><span style="margin-left:10px">${percent}%</span></div><div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8}元</span><span style="margin-left:10px">${percent}%</span></div> <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9}元</span><span style="margin-left:10px">${percent}%</span></div><div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten}元</span><span style="margin-left:6px;position:relative;left:-2px;">${percent}%</span></div><hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${pointColor};margin-right:5px"></div><div>${name.name}省 稽核条数/占比</div></div> </div>`;
+             toolpitArr = `<div style="font-size:12px;"><div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix}元</span><span style="margin-left:10px">${percent}%</span></div><div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8}元</span><span style="margin-left:10px">${percent}%</span></div> <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9}元</span><span style="margin-left:10px">${percent}%</span></div><div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten}元</span><span style="margin-left:6px;position:relative;left:-2px;">${percent}%</span></div><hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${pointColor};margin-right:5px;display:inline-block"></div><div>${name.name}省 稽核条数/占比</div></div> </div>`;
                      return toolpitArr;
           };
           this.linechartOptions.series[0].itemStyle.color = function(params){

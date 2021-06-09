@@ -1,7 +1,12 @@
 import { 
     provinceCode
   } from "../../const/constant";
-  console.log(provinceCode)
+  const provity = [];
+  provinceCode.filter((item,index)=>{
+      if(index<10){
+      return provity.push(item.name)
+      }
+    })
 export const HeadCardItems = [
     {
         headTitle: "稽核报账单",
@@ -18,6 +23,13 @@ export const HeadCardItems = [
   ];
   const colorSet = {
       mainSet: [
+            "rgba(91, 143, 249, 0.85)",
+            "rgba(91, 143, 249, 0.85)",
+            "rgba(91, 143, 249, 0.85)",
+            "rgba(91, 143, 249, 0.85)",
+            "rgba(91, 143, 249, 0.85)",
+            "rgba(91, 143, 249, 0.85)",
+            "rgba(91, 143, 249, 0.85)",
             "rgba(91, 143, 249, 0.85)",
             "rgba(91, 143, 249, 0.85)",
             "rgba(91, 143, 249, 0.85)",
@@ -58,13 +70,10 @@ export const HeadCardItems = [
               }
           });
           toolpitArr = `<div style="font-size:12px;">
-         
           <div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix}元</span><span style="margin-left:10px">${percent}%</span></div>
           <div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8}元</span><span style="margin-left:10px">${percent}%</span></div> 
           <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9}元</span><span style="margin-left:10px">${percent}%</span></div>
           <div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten}元</span><span style="margin-left:6px;position:relative;left:-2px;">${percent}%</span></div>
-         
-       
              <hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/>
              <div style="display:flex;align-items:center">
              <div style="width:6px;height:6px;background:${pointColor};margin-right:5px"></div>
@@ -74,7 +83,7 @@ export const HeadCardItems = [
     },
     xAxis: {
         type: "category",
-        data: ["北京", "上海", "广州"],//["北京", "上海", "广州","深圳","河北","河南","湖南","江苏","湖北","广西"],
+        data: provity,//["北京", "上海", "广州","深圳","河北","河南","湖南","江苏","湖北","广西"],
         toolpit: { show: true },
     },
     yAxis: {
@@ -100,6 +109,7 @@ export const HeadCardItems = [
   export const piechartOptions = {
     tooltip: {
         trigger: "item",
+        borderWidth:'0',
           formatter: function(name) {
               const pieData = piechartOptions.series[0].data;
               let toolpitColor = "";
@@ -115,7 +125,7 @@ export const HeadCardItems = [
                   }
               }
               const percent = ((target / total) * 100).toFixed(1);
-              let toolpitStr = `<div style='padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国电费${name.name}缴纳单 ${fraction}分 </div></div>`;
+              let toolpitStr = `<div style='border:none;padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国电费${name.name}缴纳单 ${fraction}分 </div></div>`;
               return toolpitStr;
           },
       
