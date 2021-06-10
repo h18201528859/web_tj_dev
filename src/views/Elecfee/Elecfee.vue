@@ -93,11 +93,20 @@
           :pagination="false"
           :customRow = "rowHandle"
         >
+          <template slot="rank" slot-scope="text, all, i">
+            <span>{{ i + 1 }}</span>
+          </template>
           <template slot="notpass" slot-scope="text">
             <span class="red">{{ text }}</span>
           </template>
-          <template slot="notpassper" slot-scope="text">
-            <span>{{ `${text}%` }}</span>
+           <template slot="notpassper" >
+            <!-- <span>{{
+              `${(
+                (Number(all.notpass_number) / Number(all.total_amount)) *
+                100
+              ).toFixed(2)}%`
+            }}</span> -->
+            20%
           </template>
         </a-table>
         <div class="pagination">
@@ -139,6 +148,7 @@ export default {
     ...mapState({
       headData: (state) => state.elecfee.headData,
       elecfeeTable: (state) => state.elecfee.elecfeeTable,
+      checkallParams: (state) => state.checkall.checkallParams,
       cityTitle: (state) => state.elecfee.cityTitle,
       cityId: (state) => state.elecfee.cityId,
     }),
@@ -257,7 +267,7 @@ export default {
   },
   created() {
     this.handleHeadData();
-    this.getElecfeeTableData();
+    this.getElecfeeTableData(this.checkallParams);
   },
   mounted() {
     this.drawLines();
@@ -509,14 +519,13 @@ export default {
     callbackhandle(value){
       console.log(value);
     },
-    rowHandle(record){
+    rowHandle(record,index){
       return {
         on:{
           click:()=>{
-            const { rank } = record;
               this.updateCityId('-1');
               this.getUpdateCityTitle('');
-           this.getChangeCity(rank);
+              this.getChangeCity(index);
           }
         }
       };

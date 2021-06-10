@@ -38,19 +38,10 @@
               自选省份
             </a-radio>
           </a-radio-group>
-           <a-select default-value="lucy" style="width: 120px" @change="handleChange">
-              <a-select-option value="jack">
-                Jack
-              </a-select-option>
-              <a-select-option value="lucy">
-                Lucy
-              </a-select-option>
-              <a-select-option value="disabled">
-                Disabled
-              </a-select-option>
-              <a-select-option value="Yiminghe">
-                yiminghe
-              </a-select-option>
+           <a-select :defaultValue="cityId == '0' && cityArr[cityId].name" style="width: 120px" @change="handleChange">
+            <a-select-option v-for="i in cityArr" :key="i.id" :value="i.id">
+              {{ i.name }}
+            </a-select-option>
             </a-select>
          </div>
         </a-form-item>
@@ -196,7 +187,8 @@
 <script>
 import { 
     checkallColumns,
-    checkdetailColumns
+    checkdetailColumns,
+    cityArr
   } from "./constants";
 import {  mapState ,mapActions} from "vuex";
 
@@ -213,7 +205,9 @@ export default {
       checkAll: false,
       extendText:'收起',
       extendIcon:'down',
-      cityFlag:false
+      cityFlag:false,
+      cityArr,
+      cityId:'0'
     };
   },
   beforeCreate() {
@@ -434,6 +428,7 @@ export default {
 .from-box{
   position: relative;
   text-align: left;
+  width: 100%;
   .city-box{
     text-align: left;
     display: flex;
@@ -460,7 +455,7 @@ export default {
   }
   .extend-box{
     position: absolute;
-    right: -60px;
+    right: 20px;
     top: 0px;
   }
   .extend-text{

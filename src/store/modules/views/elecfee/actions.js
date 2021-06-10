@@ -1,5 +1,6 @@
-import { axiosget } from "../../../../utils/http";
-
+import { axiosget,axiospost  } from "../../../../utils/http";
+import API from "../../../../const/apis";
+console.log(API)
 const actions = {
     getHeadData({ commit }) {
         // axiosget("/Payment/GetSum").then(
@@ -24,16 +25,46 @@ const actions = {
     getUpdateCityTitle({ commit }, title){
         commit('updateCityTitle', title);
     },
-    getElecfeeTableData({ commit }) {
-        axiosget("/POST/Payment/GetStatistics").then(
+    getElecfeeTableData({ commit,rootState },params) {
+        // axiospost(API.getStatistics,params).then(
+        //     (res) => {
+        //         console.log(res)
+        //         if (+res.code === 10000) {
+        //             commit("updateElecfeeTable", res.ret_data.prv_data);
+        //         } else {
+        //             console.error("数据错了");
+        //         }
+        //     },
+        //     () => {
+        //         console.error("error");
+        //     }
+        // );
+
+        commit("updateDetailTableLoading", true);
+        const targetParams = Object.assign(
+            rootState.checkall.checkallParams,
+            params
+        );
+        commit("updateParams", targetParams);
+        commit("updateCurrentPage", targetParams);
+        console.log(targetParams, "===>请求参数");
+        axiospost(API.getStatistics, targetParams).then(
             (res) => {
-                if (+res.code === 200) {
+                console.log(res)
+                if (+res.ret_code === 10000) {
+                    
+                    commit("updateElecfeeAllTable", res.ret_data.all_data);
                     commit("updateElecfeeTable", res.ret_data.prv_data);
+                    setTimeout(() => {
+                        commit("updateDetailTableLoading", false);
+                    }, 300);
                 } else {
+                    commit("updateDetailTableLoading", false);
                     console.error("数据错了");
                 }
             },
             () => {
+                commit("updateDetailTableLoading", false);
                 console.error("error");
             }
         );

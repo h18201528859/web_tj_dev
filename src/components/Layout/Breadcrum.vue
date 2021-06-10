@@ -65,7 +65,7 @@ export default {
     '$route.path':function(){
       const { name='elecfee' } = this.$route;
       console.log( this.$route);
-      if(name=='elecfee'){
+      if(name!=='elecfeecitydetail'){
          this.updateCityId('-1');
          this.getUpdateCityTitle('');
       }

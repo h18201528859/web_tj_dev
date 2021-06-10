@@ -5,6 +5,9 @@ const mutations = {
     updateElecfeeTable(state, data) {
         state.elecfeeTable = data;
     },
+    updateElecfeeAllTable(state, data) {
+        state.checkElecfeeAllTable = data;
+    },
     updateCheckAllDetail(state, data) {
         state.elecfeeDetail = data.body;
         state.detailTotal = data.total;
@@ -15,6 +18,14 @@ const mutations = {
     },
     updateDetailTableLoading(state, loading) {
         state.detailTableLoading = loading;
+    },
+    updateParams(state, data) {
+        //把更改的参数传进来，然后生成新的参数对象
+        state.checkallParams = data;
+    },
+    updateCurrentPage(state, data) {
+        state.detailPage = data.page;
+        state.detailPagesize = data.pageSize;
     },
     updateCityTitle(state, cityName){
         const initCityTitle = {

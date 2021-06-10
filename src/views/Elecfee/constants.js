@@ -4,7 +4,7 @@ import {
   const provity = [];
   provinceCode.filter((item,index)=>{
       if(index<10){
-      return provity.push(item.name);
+        return provity.push(item.name.slice(0,2));
       }
     });
 export const HeadCardItems = [
@@ -85,10 +85,16 @@ export const HeadCardItems = [
         type: "category",
         data: provity,//["北京", "上海", "广州","深圳","河北","河南","湖南","江苏","湖北","广西"],
         toolpit: { show: true },
+        axisLabel:{
+            show:true,
+            interval: 0,  
+            rotate:0  
+        }
     },
     yAxis: {
         type: "value",
     },
+  
     series: [
         {
             data: [],
@@ -96,6 +102,9 @@ export const HeadCardItems = [
             cityFilterData: {},
             type: "bar",
             barWidth: "30",
+            barCategoryGap:'18',
+           
+               
             itemStyle: {
                 color: function(params) {
                     let colorList = colorSet.mainSet;
@@ -248,17 +257,17 @@ export const checkallColumns = [
     },
 ];
 
-export const checkdetailColumns = [
+export const checkdetailColumns =[
     {
         title: "排名",
         dataIndex: "rank",
         key: "rank",
+        scopedSlots: { customRender: "rank" },
     },
     {
         title: "省份",
-        dataIndex: "type",
-        key: "type",
-        scopedSlots: { customRender: "type" },
+        dataIndex: "prv_name",
+        key: "prv_name",
         // ellipsis: true,
     },
     {
@@ -266,58 +275,51 @@ export const checkdetailColumns = [
         dataIndex: "ninetoten",
         key: "ninetoten",
         // defaultSortOrder: "descend",
-        // sorter: (a, b) => a.ninetoten - b.ninetoten,
-        // ellipsis: true,
+      
     },
     {
         title: "8-9分",
-        dataIndex: "eightto9",
-        key: "eightto9",
-        //sorter: (a, b) => a.eightto9 - b.eightto9,
-        // ellipsis: true,
+        dataIndex: "eighttonine",
+        key: "eighttonine",
+       
     },
     {
         title: "6-8分",
-        dataIndex: "sixto8",
-        key: "sixto8",
-        //   sorter: (a, b) => a.sixto8 - b.sixto8,
-        //   ellipsis: true,
+        dataIndex: "sixtoeight",
+        key: "sixtoeight",
+      
     },
     {
         title: "0-6分",
         dataIndex: "zerotosix",
         key: "zerotosix",
-        //   sorter: (a, b) => a.zerotosix - b.zerotosix,
-        //   ellipsis: true,
+     
     },
     {
         title: "总量",
-        dataIndex: "total",
-        key: "total",
-        //sorter: (a, b) => a.total - b.total,
+        dataIndex: "total_amount",
+        key: "total_amount",
+       
     },
     {
         title: "通过数",
-        dataIndex: "passtotal",
-        key: "passtotal",
-        // sorter: (a, b) => a.passtotal - b.passtotal,
+        dataIndex: "pass_number",
+        key: "pass_number",
+        
     },
     {
         title: "未通过数",
-        dataIndex: "notpass",
-        key: "notpass",
-        //   sorter: (a, b) => a.notpass - b.notpass,
-        scopedSlots: { customRender: "notpass" },
+        dataIndex: "notpass_number",
+        key: "notpass_number",
+       
     },
     {
         title: "未通过率",
         dataIndex: "notpassper",
         key: "notpassper",
-        //   sorter: (a, b) => a.notpassper - b.notpassper,
-        //   scopedSlots: { customRender: "notpassper" },
+        scopedSlots: { customRender: "notpassper" },
     },
 ];
-
 export const cityArr = [
     { name: "全国", id: 0 },
     { name: "北京", id: 1 },
