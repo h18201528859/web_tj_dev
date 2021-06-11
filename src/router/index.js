@@ -18,7 +18,6 @@ import Login from "../views/Login.vue";
 import Checkall from "../views/Checkall/Checkall.vue";
 // import CheckDetail from "../views/CheckDetail/CheckDetail.vue";
 import CheckDetail from "../views/Elecfee/elecfeeDetail.vue";
-import Provincefee from "../views/Provincefee/Provincefee.vue";
 
 Vue.use(VueRouter);
 
@@ -81,17 +80,6 @@ const routes = [
                     import(
                         /* webpackChunkName: "homeabout" */ "../views/Elecfee/Elecfee.vue"
                     ),
-            },
-        ],
-    },
-    {
-        path: "/provincefee",
-        component: Layout,
-        children: [
-            {
-                path: "",
-                name: "provincefee",
-                component: Provincefee,
             },
         ],
     },
