@@ -1,6 +1,6 @@
 
 <template>
-  <div class="head-item" @click="JumptoOtherPage(page)">
+  <div class="head-item">
     <div class="left">
       <img :src="icon" alt="image" class="img" />
       <div class="right-item">
@@ -44,15 +44,32 @@ export default {
       type: String,
       default: "",
     },
+    type: {
+      type: String,
+      default: "",
+    },
     currentData: {
-      count: 0,
-      number: 0,
+      total_amount: {
+        total: 0,
+        month: 0,
+      },
+      total_number: {
+        total: 0,
+        month: 0,
+      },
     },
   },
   watch: {
     currentData(newValue) {
-      this.upElecfeeNumber = newValue.number;
-      this.downElecfeeNumber = newValue.count;
+      console.log(newValue, this.type, "=======");
+      this.currentData = newValue;
+      if (this.type === "amount") {
+        this.upElecfeeNumber = newValue.total_amount.total;
+        this.downElecfeeNumber = newValue.total_amount.month;
+      } else {
+        this.upElecfeeNumber = newValue.total_number.total;
+        this.downElecfeeNumber = newValue.total_number.month;
+      }
     },
   },
   data() {
@@ -61,22 +78,7 @@ export default {
       downElecfeeNumber: this.currentData.count,
     };
   },
-  methods: {
-    JumptoOtherPage(page = 1) {
-      console.log(page);
-      switch (page) {
-        case 1:
-          window.location.hash = "/elecfee";
-          break;
-        case 2:
-          break;
-        case 3:
-          break;
-        default:
-          break;
-      }
-    },
-  },
+  methods: {},
 };
 </script>
 
@@ -86,17 +88,20 @@ export default {
   margin-right: 24px;
   padding: 24px;
   flex-flow: column;
+  flex: 1;
   justify-content: space-between;
   background: hsl(0deg 0% 100%);
   .left {
     display: flex;
+    align-items: center;
     .img {
-      width: 24px;
-      height: 24px;
+      margin-bottom: -6px;
+      width: 44px;
+      height: 44px;
     }
     .right-item {
       span {
-        margin-left: 16px;
+        margin-left: 10px;
         font-size: 16px;
         font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 500;
@@ -111,22 +116,42 @@ export default {
   }
   .count-box {
     display: flex;
-    justify-content: space-between;
     padding-top: 8px;
-    width: 60%;
-    .fraction-text {
-      color: #7f828f;
-      margin-left: 8px;
+    padding-left: 5px;
+    text-align: left;
+    .all-cont {
+      flex: 1;
+      .all-text {
+        font-size: 28px;
+        font-weight: 400;
+        color: #343642;
+      }
+      .fraction-text {
+        font-size: 14px;
+        font-weight: 400;
+        color: #7f828f;
+        margin-left: 8px;
+      }
     }
-    .all-text,
-    .month-text {
-      font-size: 24px;
+    .money-cont {
+      flex: 1;
+      .month-text {
+        font-size: 28px;
+        font-weight: 400;
+        color: #343642;
+      }
+      .fraction-text {
+        font-size: 14px;
+        font-weight: 400;
+        color: #7f828f;
+        margin-left: 8px;
+      }
     }
     .money-cont::before {
       content: "";
       height: 24px;
       width: 1px;
-      background: #cccccc;
+      background: #e9ebef;
       margin-right: 24px;
       position: relative;
       display: inline-block;
@@ -137,8 +162,5 @@ export default {
 }
 .head-item:last-child {
   margin-right: 0;
-}
-.head-item:hover {
-  box-shadow: 0px -1px 8px 1px rgba(0, 0, 0, 0.2);
 }
 </style>

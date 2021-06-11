@@ -1,31 +1,24 @@
-import { axiosget,axiospost  } from "../../../../utils/http";
+import { axiosget, axiospost } from "../../../../utils/http";
 import API from "../../../../const/apis";
-console.log(API)
 const actions = {
     getHeadData({ commit }) {
-        // axiosget("/Payment/GetSum").then(
-        //     (res) => {
-        //          console.log(res,'res');
-        //         if (+res.ret_code === 10000) {
-        //             commit("updateHeadData", res.ret_data.all_data);
-        //         } else {
-        //             console.error("数据错了");
-        //         }
-        //     },
-        //     () => {
-        //         console.error("error");
-        //     }
-        // );
-        const data = {
-            "total_amount": "234",
-            "total_number": "120"
-          };
-        commit("updateHeadData", data);
+        axiospost(API.getElecSum).then(
+            (res) => {
+                if (+res.ret_code === 10000) {
+                    commit("updateHeadData", res.ret_data);
+                } else {
+                    console.error("数据错了");
+                }
+            },
+            () => {
+                console.error("error");
+            }
+        );
     },
-    getUpdateCityTitle({ commit }, title){
-        commit('updateCityTitle', title);
+    getUpdateCityTitle({ commit }, title) {
+        commit("updateCityTitle", title);
     },
-    getElecfeeTableData({ commit,rootState },params) {
+    getElecfeeTableData({ commit, rootState }, params) {
         // axiospost(API.getStatistics,params).then(
         //     (res) => {
         //         console.log(res)
@@ -47,12 +40,11 @@ const actions = {
         );
         commit("updateParams", targetParams);
         commit("updateCurrentPage", targetParams);
-        console.log(targetParams, "===>请求参数");
+        // console.log(targetParams, "===>请求参数");
         axiospost(API.getStatistics, targetParams).then(
             (res) => {
-                console.log(res)
+                // console.log(res);
                 if (+res.ret_code === 10000) {
-                    
                     commit("updateElecfeeAllTable", res.ret_data.all_data);
                     commit("updateElecfeeTable", res.ret_data.prv_data);
                     setTimeout(() => {
