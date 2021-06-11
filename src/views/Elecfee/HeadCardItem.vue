@@ -61,24 +61,23 @@ export default {
   },
   watch: {
     currentData(newValue) {
-      console.log(newValue, this.type, "=======");
       this.currentData = newValue;
-      if (this.type === "amount") {
-        this.upElecfeeNumber = newValue.total_amount.total;
-        this.downElecfeeNumber = newValue.total_amount.month;
-      } else {
-        this.upElecfeeNumber = newValue.total_number.total;
-        this.downElecfeeNumber = newValue.total_number.month;
-      }
+      this.upElecfeeNumber =
+        this.type === "amount"
+          ? newValue.total_amount.total
+          : newValue.total_number.total;
+      this.downElecfeeNumber =
+        this.type === "amount"
+          ? newValue.total_amount.month
+          : newValue.total_number.month;
     },
   },
   data() {
     return {
-      upElecfeeNumber: this.currentData.number,
-      downElecfeeNumber: this.currentData.count,
+      upElecfeeNumber: 0,
+      downElecfeeNumber: 0,
     };
   },
-  methods: {},
 };
 </script>
 

@@ -144,6 +144,7 @@ import {
   // colorSet
 } from "./constants";
 import { mapActions, mapState, mapMutations } from "vuex";
+import util from "../../utils/utils";
 export default {
   computed: {
     ...mapState({
@@ -560,6 +561,7 @@ export default {
           cityId: key,
         },
       });
+      util.jumpTop();
     },
     handleHeadData() {
       this.linechartOptions.series[0].data = this.lineData;
@@ -578,6 +580,7 @@ export default {
       this.$router.push({
         path: "/elecfee/elecfeeDetail",
       });
+      util.jumpTop();
     },
     drawLines() {
       this.checkallPieNumber = 0;
