@@ -151,10 +151,7 @@
       </a-form>
     </div>
     <div class="detail-section">
-      <div class="header">
-        <div class="title-front"></div>
-        稽核详情
-      </div>
+      <div class="header">稽核详情</div>
       <div class="table">
         <a-table
           :columns="checkdetailTableColumns"
@@ -404,29 +401,21 @@ export default {
   .detail-section {
     min-height: 280px;
     margin: 24px 0;
-    padding: 37px 24px;
+    padding: 24px;
     background: #ffffff;
     text-align: left;
     .header {
       display: flex;
-      p {
-        font-size: 16px;
-        font-family: PingFangSC-Regular, PingFang SC;
-        font-weight: bold;
-        color: #343642;
-      }
-      .select {
-        margin-left: 8px;
-      }
-      .button {
-        margin-left: 24px;
-      }
+      font-size: 16px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: bold;
+      color: #343642;
     }
     .table {
+      margin-top: 15px;
       .red {
         color: #f24444;
       }
-      margin-top: 15px;
       .pagination {
         display: flex;
         justify-content: space-between;
