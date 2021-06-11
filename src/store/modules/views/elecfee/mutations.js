@@ -19,6 +19,9 @@ const mutations = {
     updateParams(state, data) {
         state.checkallParams = data;
     },
+    updateType(state, data) {
+        state.currentType = data;
+    },
     updateCityTitle(state, cityName) {
         const initCityTitle = {
             surveyTitle: "电费稽核概况",

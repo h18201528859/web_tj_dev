@@ -16,15 +16,19 @@
       <div class="overview-head">
         <p>{{ cityTitle.surveyTitle }}</p>
         <div class="radio-box">
-          <a-radio-group defaultValue="amount">
-            <a-radio-button value="amount"> 数额统计 </a-radio-button>
-            <a-radio-button value="amountMoney"> 金额统计 </a-radio-button>
+          <a-radio-group defaultValue="0" @change="handleStatistic">
+            <a-radio-button value="0"> 数额统计 </a-radio-button>
+            <a-radio-button value="1"> 金额统计 </a-radio-button>
           </a-radio-group>
-          <a-radio-group defaultValue="all" class="amount-box">
+          <a-radio-group
+            defaultValue="all"
+            class="amount-box"
+            @change="handleChartRange"
+          >
             <a-radio-button value="all"> 全部 </a-radio-button>
             <a-radio-button value="year"> 近一年 </a-radio-button>
-            <a-radio-button value="month"> 近三月 </a-radio-button>
-            <a-radio-button value="halfyear"> 近半年 </a-radio-button>
+            <a-radio-button value="three"> 近三月 </a-radio-button>
+            <a-radio-button value="six"> 近半年 </a-radio-button>
           </a-radio-group>
           <a-button icon="filter" @click="filterHandle"> 筛选 </a-button>
         </div>
@@ -101,14 +105,18 @@
           <template slot="notpass" slot-scope="text">
             <span class="red">{{ text }}</span>
           </template>
-          <template slot="notpassper">
-            <!-- <span>{{
-              `${(
-                (Number(all.notpass_number) / Number(all.total_amount)) *
-                100
-              ).toFixed(2)}%`
-            }}</span> -->
-            20%
+          <template slot="notpassper" slot-scope="text, all">
+            <span>{{
+              all.ninetoten
+                ? `${(
+                    (Number(all.notpass_number) / Number(all.total_amount)) *
+                    100
+                  ).toFixed(2)}%`
+                : `${(
+                    (Number(all.notpass_amount) / Number(all.total_amount)) *
+                    100
+                  ).toFixed(2)}%`
+            }}</span>
           </template>
         </a-table>
         <div class="pagination">
@@ -149,8 +157,8 @@ import {
   HeadCardItems,
   linechartOptions,
   piechartOptions,
-  checkallColumns,
   checkdetailColumns,
+  elecfeeImgCoulmns,
   cityArr,
   // colorSet
 } from "./constants";
@@ -178,6 +186,7 @@ export default {
       detailPage: (state) => state.elecfee.detailPage,
       detailPagesize: (state) => state.elecfee.detailPagesize,
       detailTableLoading: (state) => state.elecfee.detailTableLoading,
+      currentType: (state) => state.elecfee.currentType,
     }),
   },
   data() {
@@ -232,8 +241,8 @@ export default {
       linechartOptions,
       piechartOptions,
       checkallPieNumber: 0,
-      checkallTableColumns: checkallColumns,
       checkdetailTableColumns: checkdetailColumns,
+      elecfeeImgCoulmns,
       totalPage: 0,
       mode: "top",
       cityArr,
@@ -299,13 +308,15 @@ export default {
   },
 
   methods: {
-    ...mapMutations("elecfee", ["updateCityId"]),
+    ...mapMutations("elecfee", ["updateCityId", "updateType"]),
     ...mapActions("elecfee", [
       "getHeadData",
       "getElecfeeTableData",
       "getUpdateCityTitle",
+      "getElecImgTableData",
     ]),
     callback(key) {
+      this.updateType(key);
       const lineChart = this.$echarts.init(
         document.getElementById("linechart")
       );
@@ -314,11 +325,13 @@ export default {
       let lineData = [],
         pieData = [],
         colorSet = { mainSet: [], mainPieSet: [] };
-      if (key == "2") {
+      if (+key === 2) {
+        this.getElecImgTableData({ page: 1 });
         lineData = [980, 760, 745, 980, 760, 745, 980, 760, 745, 980];
-        const newclumn = JSON.parse(JSON.stringify(checkdetailColumns));
-        newclumn.splice(2, 4);
-        this.checkdetailTableColumns = newclumn;
+        // const newclumn = JSON.parse(JSON.stringify(checkdetailColumns));
+        // newclumn.splice(2, 4);
+        // this.checkdetailTableColumns = newclumn;
+        this.checkdetailTableColumns = this.elecfeeImgCoulmns;
         pieData = [
           { value: 1020, name: "电费", fraction: "9-10" },
           { value: 1300, name: "铁塔服务费", fraction: "4-9" },
@@ -418,13 +431,15 @@ export default {
           let colorList = colorSet.mainPieSet;
           return colorList[params.dataIndex];
         };
-
         pieCharts.style.display = "none";
-      } else {
+      } else if (+key === 1) {
+        this.getElecfeeTableData({ page: 1 });
+        this.checkdetailTableColumns = checkdetailColumns;
         pieCharts.style.display = "block";
         lineData = [930, 780, 720, 60, 320, 420, 530, 280, 420, 500];
-        const columndate = JSON.parse(JSON.stringify(checkdetailColumns));
-        this.checkdetailTableColumns = columndate;
+        // const columndate = JSON.parse(JSON.stringify(checkdetailColumns));
+        // this.checkdetailTableColumns = columndate;
+
         pieData = [
           { value: 2587, name: "电费", fraction: "9-10" },
           { value: 1626, name: "铁塔服务费", fraction: "8-9" },
@@ -632,16 +647,45 @@ export default {
         piechart.setOption(option);
       });
     },
+    handleChartRange(e) {
+      const timeRange = e.target.value;
+      const timeParams = util.getAllTimeRange(timeRange);
+      if (+this.currentType === 1) {
+        this.getElecfeeTableData(Object.assign(timeParams, { page: 1 }));
+      } else {
+        this.getElecImgTableData(Object.assign(timeParams, { page: 1 }));
+      }
+    },
+    handleStatistic(e) {
+      if (+this.currentType === 1) {
+        this.getElecfeeTableData(
+          Object.assign({ object: e.target.value }, { page: 1 })
+        );
+      } else {
+        this.getElecImgTableData(
+          Object.assign({ object: e.target.value }, { page: 1 })
+        );
+      }
+    },
     handleTableData(params) {
       const paramObj = Object.assign(this.checkallParams, params);
       this.getElecfeeTableData(paramObj);
       this.totalPage = this.elecfeeTable.length;
     },
     handleDetailPagesize(pageSize) {
-      this.getElecfeeTableData({ page: 1, pageSize: +pageSize });
+      console.log(this.currentType);
+      if (+this.currentType === 1) {
+        this.getElecfeeTableData({ page: 1, pageSize: +pageSize });
+      } else {
+        this.getElecImgTableData({ page: 1, pageSize: +pageSize });
+      }
     },
     handlePaginationChange(page, pageSize) {
-      this.getElecfeeTableData({ page: +page, pageSize: +pageSize });
+      if (+this.currentType === 1) {
+        this.getElecfeeTableData({ page: +page, pageSize: +pageSize });
+      } else {
+        this.getElecImgTableData({ page: +page, pageSize: +pageSize });
+      }
     },
   },
 };
@@ -775,10 +819,10 @@ export default {
       }
     }
     .table {
+      margin-top: 15px;
       .red {
         color: #f24444;
       }
-      margin-top: 15px;
       .pagination {
         display: flex;
         justify-content: space-between;

@@ -30,13 +30,13 @@ module.exports = {
         ret_code: "10000",
         ret_data: {
             all_data: {
-                total_amount: "59383",
-                pass_number: "100",
-                notpass_number: "1000",
-                zerotosix: "399",
-                sixtoeight: "9933",
-                eighttonine: "989",
-                ninetoten: "299",
+                total_amount: faker.random.number(),
+                pass_number: faker.random.number(),
+                notpass_number: faker.random.number(),
+                zerotosix: faker.random.number(),
+                sixtoeight: faker.random.number(),
+                eighttonine: faker.random.number(),
+                ninetoten: faker.random.number(),
             },
             prv_data: _.times(10, function() {
                 return {
@@ -57,12 +57,12 @@ module.exports = {
         ret_code: "10000",
         ret_data: {
             all_data: {
-                total_amount: "120022",
-                notpass_amount: "2888",
-                total_number: "10000",
-                notpass_number: "2000",
+                total_amount: faker.random.number(),
+                notpass_amount: faker.random.number(),
+                total_number: faker.random.number(),
+                notpass_number: faker.random.number(),
             },
-            prv_data: _.times(15, function() {
+            prv_data: _.times(10, function() {
                 return {
                     prv_name: faker.address.state(),
                     total_amount: faker.random.number(),

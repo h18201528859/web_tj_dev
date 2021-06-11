@@ -5,10 +5,11 @@ const state = {
         scoreTitle: "各评分区间占比",
         tabProvinceTitle: "各省缴费单金额统计TOP10",
     },
+    currentType: "1",
     checkallParams: {
         start_time: "",
         end_time: "",
-        scope: "1",
+        scope: "0",
         object: "0",
         page: 1,
         pageSize: 10,

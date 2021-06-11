@@ -208,7 +208,7 @@
 </template>
 
 <script>
-import { checkallColumns, checkdetailColumns, cityArr } from "./constants";
+import { checkdetailColumns, cityArr } from "./constants";
 import { mapState, mapActions } from "vuex";
 
 export default {
@@ -216,7 +216,6 @@ export default {
     return {
       plainOptions: ["电费(缴费单)", "电费(电表图)", "铁塔服务费", "租费"],
       checkallPieNumber: 0,
-      checkallTableColumns: checkallColumns,
       checkdetailTableColumns: checkdetailColumns,
       checkedList: [],
       totalPage: 0,
