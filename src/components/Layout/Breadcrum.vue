@@ -26,12 +26,12 @@
     </a-breadcrumb>
     <span class="city-wrap" v-if="cityId !== '-1'">
       <a-select
-        :defaultValue="cityId !== '-1' && cityArr[cityId].name"
+        :defaultValue="cityId !== '-1' && elecfeeTable[cityId].prv_name"
         style="width: 120px"
         @change="handleChange"
       >
-        <a-select-option v-for="i in cityArr" :key="i.id" :value="i.id">
-          {{ i.name }}
+        <a-select-option v-for="(i,index) in elecfeeTable" :key="index" :value="index">
+          {{ i.prv_name }}
         </a-select-option>
       </a-select>
     </span>
@@ -39,12 +39,12 @@
 </template>
 <script>
 import { mapActions, mapState, mapMutations } from "vuex";
-import { cityArr } from "../../views/Elecfee/constants";
 export default {
   name: "Breadcrum",
   computed: {
     ...mapState({
       breadcrumbArr: (state) => state.breadcrum.breadcrumbArr,
+       elecfeeTable: (state) => state.elecfee.elecfeeTable,
       cityTitle: (state) => state.elecfee.cityTitle,
       cityId: (state) => state.elecfee.cityId,
     }),
@@ -52,19 +52,28 @@ export default {
   data() {
     return {
       routes: this.breadcrumbArr,
-      cityArr,
     };
   },
   mounted(){
-    //  const { cityId = '-1'} = this.$route.params;
-    //  if(cityId!=='-1'){
-    //    this.updateCityId(cityId);
-    //  }
+     const { params:{ cityId = '-1' },name = 'elecfee'} = this.$route;
+     if(name=="elecfeecitydetail"){
+       setTimeout(()=>{
+        const cityName = this.elecfeeTable[cityId].prv_name;
+        this.updateCityId(cityId);
+        this.getUpdateCityTitle(cityName);
+        this.$store.commit("replaceBreadcrumb", [
+            {
+              path: "/elecfee/elecfeeCityDetail",
+              breadcrumbName: `${cityName}电费稽核`,
+            },
+          ]);
+       },1000)
+       
+     }
   },
   watch:{
     '$route.path':function(){
       const { name='elecfee' } = this.$route;
-      console.log( this.$route);
       if(name!=='elecfeecitydetail'){
          this.updateCityId('-1');
          this.getUpdateCityTitle('');
@@ -94,10 +103,10 @@ export default {
       this.$store.commit("setBreadcrumb", updateBread);
     },
     handleChange(key) {
-      const cityName = this.cityArr[key].name;
+
+      const cityName = this.elecfeeTable[key].prv_name;
       this.updateCityId(key);
       this.getUpdateCityTitle(cityName);
-    //  this.breadcrumbArr[2].breadcrumbName = `${this.cityArr[key].name}电费稽核`;
         this.$store.commit("replaceBreadcrumb", [
         {
           path: "/elecfee/elecfeeCityDetail",

@@ -16,15 +16,19 @@
       <div class="overview-head">
         <p>{{ cityTitle.surveyTitle }}</p>
         <div class="radio-box">
-          <a-radio-group defaultValue="amount">
-            <a-radio-button value="amount"> 数额统计 </a-radio-button>
-            <a-radio-button value="amountMoney"> 金额统计 </a-radio-button>
+          <a-radio-group defaultValue="0" @change="handleStatistic">
+            <a-radio-button value="0"> 数额统计 </a-radio-button>
+            <a-radio-button value="1"> 金额统计 </a-radio-button>
           </a-radio-group>
-          <a-radio-group defaultValue="all" class="amount-box">
+          <a-radio-group
+            defaultValue="all"
+            class="amount-box"
+            @change="handleChartRange"
+          >
             <a-radio-button value="all"> 全部 </a-radio-button>
             <a-radio-button value="year"> 近一年 </a-radio-button>
-            <a-radio-button value="month"> 近三月 </a-radio-button>
-            <a-radio-button value="halfyear"> 近半年 </a-radio-button>
+            <a-radio-button value="three"> 近三月 </a-radio-button>
+            <a-radio-button value="six"> 近半年 </a-radio-button>
           </a-radio-group>
           <a-button icon="filter" @click="filterHandle"> 筛选 </a-button>
         </div>
@@ -66,9 +70,9 @@
         >
           <a-tab-pane
             class="citybut"
-            v-for="i in cityArr"
-            :key="i.id"
-            :tab="`${i.name}`"
+            v-for="(i,index) in elecfeeTable"
+            :key="index"
+            :tab="`${i.prv_name}`"
           >
           </a-tab-pane>
         </a-tabs>
@@ -93,21 +97,26 @@
           :rowKey="(record, index) => index"
           :pagination="false"
           :customRow="rowHandle"
+          :loading="detailTableLoading"
         >
           <template slot="rank" slot-scope="text, all, i">
             <span>{{ i + 1 }}</span>
           </template>
-          <template slot="notpass" slot-scope="text">
+          <template slot="notpass_number" slot-scope="text">
             <span class="red">{{ text }}</span>
           </template>
-          <template slot="notpassper">
-            <!-- <span>{{
-              `${(
-                (Number(all.notpass_number) / Number(all.total_amount)) *
-                100
-              ).toFixed(2)}%`
-            }}</span> -->
-            20%
+          <template slot="notpassper" slot-scope="text, all">
+            <span>{{
+              all.ninetoten
+                ? `${(
+                    (Number(all.notpass_number) / Number(all.total_amount)) *
+                    100
+                  ).toFixed(2)}%`
+                : `${(
+                    (Number(all.notpass_amount) / Number(all.total_amount)) *
+                    100
+                  ).toFixed(2)}%`
+            }}</span>
           </template>
         </a-table>
         <div class="pagination">
@@ -118,6 +127,7 @@
               <a-select
                 default-value="10"
                 style="min-width: 50px; margin: 0 5px"
+                @change="handleDetailPagesize"
               >
                 <a-select-option value="5"> 5</a-select-option>
                 <a-select-option value="10"> 10 </a-select-option>
@@ -127,7 +137,14 @@
               <span>条</span>
             </div>
           </div>
-          <a-pagination show-quick-jumper :default-current="1" :total="15" />
+          <a-pagination
+            show-quick-jumper
+            :default-current="1"
+            :total="totalPage"
+            :current="detailPage"
+            :pageSize="detailPagesize"
+            @change="handlePaginationChange"
+          />
         </div>
       </div>
     </div>
@@ -140,45 +157,53 @@ import {
   HeadCardItems,
   linechartOptions,
   piechartOptions,
-  checkallColumns,
   checkdetailColumns,
-  cityArr,
-  // colorSet
+  elecfeeImgCoulmns,
 } from "./constants";
 import { mapActions, mapState, mapMutations } from "vuex";
 import util from "../../utils/utils";
 export default {
+  components: {
+    HeadCardItem,
+  },
+  created() {
+    this.handleHeadData();
+    this.handleTableData(this.initParams);
+  },
+  mounted() {
+    this.drawLines();
+      const { name = 'elecfee',params:{ cityId = '-1'}} = this.$route;
+      if(name=="elecfeecitydetail"){
+        setTimeout(()=>{
+          const cityName = this.elecfeeTable[cityId].prv_name;
+          this.updateCityId(cityId);
+          this.getUpdateCityTitle(cityName);
+        },100)
+      }
+  },
   computed: {
     ...mapState({
       headData: (state) => state.elecfee.headData,
       elecfeeTable: (state) => state.elecfee.elecfeeTable,
-      checkallParams: (state) => state.checkall.checkallParams,
+      checkallParams: (state) => state.elecfee.checkallParams,
       cityTitle: (state) => state.elecfee.cityTitle,
       cityId: (state) => state.elecfee.cityId,
+      detailTotal: (state) => state.elecfee.detailTotal,
+      detailPage: (state) => state.elecfee.detailPage,
+      detailPagesize: (state) => state.elecfee.detailPagesize,
+      detailTableLoading: (state) => state.elecfee.detailTableLoading,
+      currentType: (state) => state.elecfee.currentType,
     }),
   },
   data() {
     return {
       HeadCardItems,
       lineData: [930, 780, 720, 60, 320, 420, 530, 280, 420, 500],
-      // colorSet,
       pieData: [
         { value: 2587, name: "电费", fraction: "9-10" },
         { value: 1626, name: "铁塔服务费", fraction: "8-9" },
         { value: 1062, name: "租费", fraction: "6-8" },
         { value: 985, name: "稽核总量", fraction: "0-6" },
-      ],
-      cityData: [
-        { value: 930, name: "北京", fraction: "9-10" },
-        { value: 780, name: "上海", fraction: "8-9" },
-        { value: 720, name: "广州", fraction: "6-8" },
-        { value: 700, name: "深圳", fraction: "0-6" },
-        { value: 680, name: "河北", fraction: "9-10" },
-        { value: 550, name: "河南", fraction: "8-9" },
-        { value: 320, name: "湖南", fraction: "6-8" },
-        { value: 270, name: "江苏", fraction: "0-6" },
-        { value: 230, name: "湖北", fraction: "9-10" },
-        { value: 125, name: "广西", fraction: "8-9" },
       ],
       cityFilterData: {
         北京: {
@@ -209,16 +234,14 @@ export default {
       linechartOptions,
       piechartOptions,
       checkallPieNumber: 0,
-      checkallTableColumns: checkallColumns,
       checkdetailTableColumns: checkdetailColumns,
-      totalPage: 15,
+      elecfeeImgCoulmns,
+      totalPage: 0,
       mode: "top",
-      cityArr,
+      initParams: util.getAllTimeRange("all"),
     };
   },
-  components: {
-    HeadCardItem,
-  },
+
   watch: {
     "$route.path": function () {
       const {
@@ -227,7 +250,7 @@ export default {
       } = this.$route;
       if (name == "elecfeecitydetail" && cityId !== "-1") {
         if (cityId !== "elecfee") {
-          const cityName = this.cityArr[cityId].name;
+          const cityName = this.elecfeeTable[cityId].prv_name;
           this.$store.dispatch("setCurrentBread", [
             {
               name: "elecfeecitydetail",
@@ -235,20 +258,12 @@ export default {
               breadcrumbName: `${cityName}电费稽核`,
             },
           ]);
+          
           this.getUpdateCityTitle(cityName);
           this.updateCityId(cityId);
           this.checkdetailTableColumns[1].title = "地市";
           const lineColor = [
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
+            "rgba(119,114,241,0.85)"
           ];
           this.echartsColors(lineColor);
         }
@@ -257,36 +272,26 @@ export default {
         this.getUpdateCityTitle("");
         const lineColorfee = [
           "rgba(71, 199, 253, 0.85)",
-          "rgba(71, 199, 253, 0.85)",
-          "rgba(71, 199, 253, 0.85)",
-          "rgba(71, 199, 253, 0.85)",
-          "rgba(71, 199, 253, 0.85)",
-          "rgba(71, 199, 253, 0.85)",
-          "rgba(71, 199, 253, 0.85)",
-          "rgba(71, 199, 253, 0.85)",
-          "rgba(71, 199, 253, 0.85)",
-          "rgba(71, 199, 253, 0.85)",
         ];
         this.echartsColors(lineColorfee);
         this.checkdetailTableColumns[1].title = "省份";
       }
     },
+    detailTotal(newValue) {
+      this.totalPage = newValue;
+    },
   },
-  created() {
-    this.handleHeadData();
-    this.getElecfeeTableData(this.checkallParams);
-  },
-  mounted() {
-    this.drawLines();
-  },
+
   methods: {
-    ...mapMutations("elecfee", ["updateCityId"]),
+    ...mapMutations("elecfee", ["updateCityId", "updateType"]),
     ...mapActions("elecfee", [
       "getHeadData",
       "getElecfeeTableData",
       "getUpdateCityTitle",
+      "getElecImgTableData",
     ]),
     callback(key) {
+      this.updateType(key);
       const lineChart = this.$echarts.init(
         document.getElementById("linechart")
       );
@@ -295,11 +300,10 @@ export default {
       let lineData = [],
         pieData = [],
         colorSet = { mainSet: [], mainPieSet: [] };
-      if (key == "2") {
+      if (+key === 2) {
+        this.getElecImgTableData({ page: 1 });
         lineData = [980, 760, 745, 980, 760, 745, 980, 760, 745, 980];
-        const newclumn = JSON.parse(JSON.stringify(checkdetailColumns));
-        newclumn.splice(2, 4);
-        this.checkdetailTableColumns = newclumn;
+        this.checkdetailTableColumns = this.elecfeeImgCoulmns;
         pieData = [
           { value: 1020, name: "电费", fraction: "9-10" },
           { value: 1300, name: "铁塔服务费", fraction: "4-9" },
@@ -307,16 +311,7 @@ export default {
           { value: 650, name: "稽核总量", fraction: "0-6" },
         ];
         colorSet.mainSet = [
-          "rgba(71, 199, 253, 0.85)",
-          "rgba(71, 199, 253, 0.85)",
-          "rgba(71, 199, 253, 0.85)",
-          "rgba(71, 199, 253, 0.85)",
-          "rgba(71, 199, 253, 0.85)",
-          "rgba(71, 199, 253, 0.85)",
-          "rgba(71, 199, 253, 0.85)",
-          "rgba(71, 199, 253, 0.85)",
-          "rgba(71, 199, 253, 0.85)",
-          "rgba(71, 199, 253, 0.85)",
+          "rgba(71, 199, 253, 0.85)"
         ];
         colorSet.mainPieSet = ["#317CFF", "#47C7FD", "#F6AE16", "#5AD8A6"];
         this.cityFilterData = {
@@ -367,16 +362,14 @@ export default {
                 zerotosix = cityFilterData[item].zerotosix;
                 percent = ((target / total) * 100).toFixed(1);
                 pointColor = colorSet.mainSet[index];
+              }else{
+                  pointColor = colorSet.mainSet[0];
               }
             });
             toolpitArr = `<div style="font-size:12px;"><div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix}元</span><span style="margin-left:10px">${percent}%</span></div><div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8}元</span><span style="margin-left:10px">${percent}%</span></div> <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9}元</span><span style="margin-left:10px">${percent}%</span></div><div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten}元</span><span style="margin-left:6px;position:relative;left:-2px;">${percent}%</span></div><hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${pointColor};margin-right:5px"></div><div>${name.name}省 稽核条数/占比</div></div> </div>`;
             return toolpitArr;
           };
         }
-        this.linechartOptions.series[0].itemStyle.color = function (params) {
-          let colorList = colorSet.mainSet;
-          return colorList[params.dataIndex];
-        };
         this.piechartOptions.tooltip.formatter = (name) => {
           const pieData = piechartOptions.series[0].data;
           let toolpitColor = "";
@@ -399,13 +392,12 @@ export default {
           let colorList = colorSet.mainPieSet;
           return colorList[params.dataIndex];
         };
-
         pieCharts.style.display = "none";
-      } else {
+      } else if (+key === 1) {
+        this.getElecfeeTableData({ page: 1 });
+        this.checkdetailTableColumns = checkdetailColumns;
         pieCharts.style.display = "block";
         lineData = [930, 780, 720, 60, 320, 420, 530, 280, 420, 500];
-        const columndate = JSON.parse(JSON.stringify(checkdetailColumns));
-        this.checkdetailTableColumns = columndate;
         pieData = [
           { value: 2587, name: "电费", fraction: "9-10" },
           { value: 1626, name: "铁塔服务费", fraction: "8-9" },
@@ -414,34 +406,16 @@ export default {
         ];
         if (this.$route.name == "elecfee") {
           colorSet.mainSet = [
-            "rgba(91, 143, 249, 0.85)",
-            "rgba(91, 143, 249, 0.85)",
-            "rgba(91, 143, 249, 0.85)",
-            "rgba(91, 143, 249, 0.85)",
-            "rgba(91, 143, 249, 0.85)",
-            "rgba(91, 143, 249, 0.85)",
-            "rgba(91, 143, 249, 0.85)",
-            "rgba(91, 143, 249, 0.85)",
-            "rgba(91, 143, 249, 0.85)",
-            "rgba(91, 143, 249, 0.85)",
+            "rgba(71, 199, 253, 0.85)",
+           
           ];
         } else {
           colorSet.mainSet = [
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
-            "rgba(119,114,241,0.85)",
             "rgba(119,114,241,0.85)",
           ];
         }
 
         colorSet.mainPieSet = ["#5B8FF9", "#5AD8A6", "#E8684A", "#F6BD16"];
-
         this.linechartOptions.tooltip.formatter = (name) => {
           const cityFilterData = this.cityFilterData;
           let total = 0;
@@ -463,15 +437,14 @@ export default {
               zerotosix = cityFilterData[item].zerotosix;
               percent = ((target / total) * 100).toFixed(1);
               pointColor = colorSet.mainSet[index];
+            }else {
+                 pointColor = colorSet.mainSet[0];
             }
           });
           toolpitArr = `<div style="font-size:12px;"><div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix}元</span><span style="margin-left:10px">${percent}%</span></div><div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8}元</span><span style="margin-left:10px">${percent}%</span></div> <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9}元</span><span style="margin-left:10px">${percent}%</span></div><div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten}元</span><span style="margin-left:6px;position:relative;left:-2px;">${percent}%</span></div><hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${pointColor};margin-right:5px"></div><div>${name.name}省 稽核条数/占比</div></div> </div>`;
           return toolpitArr;
         };
-        this.linechartOptions.series[0].itemStyle.color = function (params) {
-          let colorList = colorSet.mainSet;
-          return colorList[params.dataIndex];
-        };
+        
         this.piechartOptions.tooltip.formatter = (name) => {
           const pieData = piechartOptions.series[0].data;
           let toolpitColor = "";
@@ -490,6 +463,7 @@ export default {
           let toolpitStr = `<div style='padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国电费缴纳单 ${fraction}分 </div></div>`;
           return toolpitStr;
         };
+         this.linechartOptions.series[0].itemStyle.color =colorSet.mainSet
         this.piechartOptions.series[0].itemStyle.color = function (params) {
           let colorList = colorSet.mainPieSet;
           return colorList[params.dataIndex];
@@ -504,8 +478,6 @@ export default {
       const lineChart = this.$echarts.init(
         document.getElementById("linechart")
       );
-      // let lineData = [], pieData=[],colorSet={mainSet:[],mainPieSet:[]};
-      //  colorSet.mainSet = colorMain
       this.linechartOptions.tooltip.formatter = (name) => {
         const cityFilterData = this.cityFilterData;
         let total = 0;
@@ -527,15 +499,14 @@ export default {
             zerotosix = cityFilterData[item].zerotosix;
             percent = ((target / total) * 100).toFixed(1);
             pointColor = colorMain[index];
+          }else{
+             pointColor = colorMain[0];
           }
         });
         toolpitArr = `<div style="font-size:12px;"><div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix}元</span><span style="margin-left:10px">${percent}%</span></div><div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8}元</span><span style="margin-left:10px">${percent}%</span></div> <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9}元</span><span style="margin-left:10px">${percent}%</span></div><div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten}元</span><span style="margin-left:6px;position:relative;left:-2px;">${percent}%</span></div><hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${pointColor};margin-right:5px;display:inline-block"></div><div>${name.name}省 稽核条数/占比</div></div> </div>`;
         return toolpitArr;
       };
-      this.linechartOptions.series[0].itemStyle.color = function (params) {
-        // let colorList = colorSet.mainSet;
-        return colorMain[params.dataIndex];
-      };
+      
       lineChart.setOption(this.linechartOptions);
     },
     callbackhandle(value) {
@@ -554,7 +525,7 @@ export default {
     },
     getChangeCity(key) {
       this.updateCityId(key);
-      const cityName = this.cityArr[key].name;
+      const cityName = this.elecfeeTable[key].prv_name;
       this.getUpdateCityTitle(cityName);
       this.$router.push({
         name: "elecfeecitydetail",
@@ -568,7 +539,6 @@ export default {
     handleHeadData() {
       this.linechartOptions.series[0].data = this.lineData;
       this.piechartOptions.series[0].data = this.pieData;
-      this.linechartOptions.series[0].cityData = this.cityData;
       this.linechartOptions.series[0].cityFilterData = this.cityFilterData;
       this.getHeadData();
     },
@@ -612,6 +582,45 @@ export default {
         }
         piechart.setOption(option);
       });
+    },
+    handleChartRange(e) {
+      const timeRange = e.target.value;
+      const timeParams = util.getAllTimeRange(timeRange);
+      if (+this.currentType === 1) {
+        this.getElecfeeTableData(Object.assign(timeParams, { page: 1 }));
+      } else {
+        this.getElecImgTableData(Object.assign(timeParams, { page: 1 }));
+      }
+    },
+    handleStatistic(e) {
+      if (+this.currentType === 1) {
+        this.getElecfeeTableData(
+          Object.assign({ object: e.target.value }, { page: 1 })
+        );
+      } else {
+        this.getElecImgTableData(
+          Object.assign({ object: e.target.value }, { page: 1 })
+        );
+      }
+    },
+    handleTableData(params) {
+      const paramObj = Object.assign(this.checkallParams, params);
+      this.getElecfeeTableData(paramObj);
+      this.totalPage = this.elecfeeTable.length;
+    },
+    handleDetailPagesize(pageSize) {
+      if (+this.currentType === 1) {
+        this.getElecfeeTableData({ page: 1, pageSize: +pageSize });
+      } else {
+        this.getElecImgTableData({ page: 1, pageSize: +pageSize });
+      }
+    },
+    handlePaginationChange(page, pageSize) {
+      if (+this.currentType === 1) {
+        this.getElecfeeTableData({ page: +page, pageSize: +pageSize });
+      } else {
+        this.getElecImgTableData({ page: +page, pageSize: +pageSize });
+      }
     },
   },
 };
@@ -745,10 +754,10 @@ export default {
       }
     }
     .table {
+      margin-top: 15px;
       .red {
         color: #f24444;
       }
-      margin-top: 15px;
       .pagination {
         display: flex;
         justify-content: space-between;

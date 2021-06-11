@@ -45,12 +45,16 @@
                 <a-radio value="a"> 全部省份 </a-radio>
                 <a-radio value="b"> 自选省份 </a-radio>
               </a-radio-group>
-              <a-select
-                :defaultValue="cityId == '0' && cityArr[cityId].name"
-                style="width: 120px"
+               <a-select
+                mode="multiple"
+                :size="size"
+                placeholder="Please select"
+                :default-value="[]"
+                style="width: 200px"
                 @change="handleChange"
+                @popupScroll="popupScroll"
               >
-                <a-select-option v-for="i in cityArr" :key="i.id" :value="i.id">
+                 <a-select-option v-for="i in cityArr" :key="i.id" :value="i.id">
                   {{ i.name }}
                 </a-select-option>
               </a-select>
@@ -87,7 +91,7 @@
                   <a-radio-group
                     v-decorator="[
                       'radio-childFrationType',
-                      { initialValue: '' },
+                      { initialValue: '',required: true, validator:this.valtorFranction,trigger: 'change'},
                     ]"
                   >
                     <a-radio-button value="a"> 0-6分 </a-radio-button>
@@ -124,9 +128,15 @@
               </a-radio>
               <a-radio value="c">
                 自定义
-                <a-range-picker @change="onChangeDate">
-                  <a-icon slot="suffixIcon" type="calendar" />
-                </a-range-picker>
+                <a-range-picker
+                :show-time="{ format: 'HH:mm' }"
+                format="YYYY-MM-DD HH:mm"
+                :placeholder="['Start Time', 'End Time']"
+                @change="onChange"
+                @ok="onOk"
+              >
+                 <a-icon slot="suffixIcon" type="calendar" />
+              </a-range-picker>
               </a-radio>
             </a-radio-group>
           </a-form-item>
@@ -208,15 +218,18 @@
 </template>
 
 <script>
-import { checkallColumns, checkdetailColumns, cityArr } from "./constants";
+import { checkdetailColumns, cityArr } from "./constants";
 import { mapState, mapActions } from "vuex";
 
 export default {
   data() {
+    // const valtorFranction = (rule,value,callback) =>{
+    //     console.log(value,rule)
+    //      callback()
+    // }
     return {
       plainOptions: ["电费(缴费单)", "电费(电表图)", "铁塔服务费", "租费"],
       checkallPieNumber: 0,
-      checkallTableColumns: checkallColumns,
       checkdetailTableColumns: checkdetailColumns,
       checkedList: [],
       totalPage: 0,
@@ -227,6 +240,7 @@ export default {
       cityFlag: false,
       cityArr,
       cityId: "0",
+      size: 'default',
     };
   },
   beforeCreate() {
@@ -260,10 +274,14 @@ export default {
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
+        console.log(values,'fdffddf')
         if (!err) {
           values.radioChecked = this.checkedList;
         }
       });
+    },
+    popupScroll() {
+      console.log('popupScroll');
     },
     normFile(e) {
       if (Array.isArray(e)) {
@@ -277,6 +295,10 @@ export default {
     },
     handleChange(value) {
       console.log(`selected ${value}`);
+    },
+    valtorFranction  (rule,value,callback) {
+        console.log(value,rule,'fddfdfdfgg')
+         callback()
     },
     onChange(checkedList) {
       this.indeterminate =
@@ -305,6 +327,9 @@ export default {
     handlePaginationChange(page, pageSize) {
       this.getCheckallDetailData({ page: +page, pageSize: +pageSize });
     },
+    onOk(value) {
+      console.log('onOk: ', value);
+    }
   },
 };
 </script>

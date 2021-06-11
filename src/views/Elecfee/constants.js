@@ -23,26 +23,20 @@ export const HeadCardItems = [
 ];
 const colorSet = {
     mainSet: [
-        "rgba(91, 143, 249, 0.85)",
-        "rgba(91, 143, 249, 0.85)",
-        "rgba(91, 143, 249, 0.85)",
-        "rgba(91, 143, 249, 0.85)",
-        "rgba(91, 143, 249, 0.85)",
-        "rgba(91, 143, 249, 0.85)",
-        "rgba(91, 143, 249, 0.85)",
-        "rgba(91, 143, 249, 0.85)",
-        "rgba(91, 143, 249, 0.85)",
-        "rgba(91, 143, 249, 0.85)",
+        "rgba(91, 143, 249, 0.85)"
     ],
     mainPieSet: ["#5B8FF9", "#5AD8A6", "#E8684A", "#F6BD16"],
 };
 
 export const linechartOptions = {
     height: 240,
+    color:colorSet.mainSet,
     tooltip: {
         trigger: "item",
+        borderWidth: "0",
         formatter: function(name) {
             const cityFilterData = linechartOptions.series[0].cityFilterData;
+            console.log('cityFilterData',cityFilterData)
             let total = 0;
             let target = 0;
             let toolpitArr = "";
@@ -62,7 +56,10 @@ export const linechartOptions = {
                     zerotosix = cityFilterData[item].zerotosix;
                     percent = ((target / total) * 100).toFixed(1);
                     pointColor = colorSet.mainSet[index];
-                }
+                }else{
+                    pointColor = colorSet.mainSet[0];
+
+                 }
             });
             toolpitArr = `<div style="font-size:12px;">
           <div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix}元</span><span style="margin-left:10px">${percent}%</span></div>
@@ -93,16 +90,15 @@ export const linechartOptions = {
     series: [
         {
             data: [],
-            cityData: [],
+            // cityData: [],
             cityFilterData: {},
             type: "bar",
             barWidth: "30",
             barCategoryGap: "18",
-
+           // color:colorSet.mainSet,
             itemStyle: {
-                color: function(params) {
-                    let colorList = colorSet.mainSet;
-                    return colorList[params.dataIndex];
+                color:  function(name) {
+                    return name.color
                 },
             },
         },
@@ -111,6 +107,7 @@ export const linechartOptions = {
 
 export const piechartOptions = {
     tooltip: {
+        
         trigger: "item",
         borderWidth: "0",
         formatter: function(name) {
@@ -119,6 +116,7 @@ export const piechartOptions = {
             let target = 0;
             let total = 0;
             let fraction = "";
+            console.log(pieData)
             for (let i = 0; i < pieData.length; i++) {
                 total += pieData[i].value;
                 if (pieData[i].name === name.name) {
@@ -189,67 +187,6 @@ export const piechartOptions = {
     ],
 };
 
-export const checkallColumns = [
-    {
-        title: "排名",
-        dataIndex: "rank",
-        key: "rank",
-    },
-    {
-        title: "类型",
-        dataIndex: "type",
-        key: "type",
-        width: 150,
-        scopedSlots: { customRender: "type" },
-    },
-    {
-        title: "9-10分",
-        dataIndex: "ninetoten",
-        key: "ninetoten",
-        //ellipsis: true,
-    },
-    {
-        title: "8-9分",
-        dataIndex: "eightto9",
-        key: "eightto9",
-        // ellipsis: true,
-    },
-    {
-        title: "6-8分",
-        dataIndex: "sixto8",
-        key: "sixto8",
-        //  ellipsis: true,
-    },
-    {
-        title: "0-6分",
-        dataIndex: "zerotosix",
-        key: "zerotosix",
-        // ellipsis: true,
-    },
-    {
-        title: "总量",
-        dataIndex: "total",
-        key: "total",
-    },
-    {
-        title: "通过数",
-        dataIndex: "passtotal",
-        key: "passtotal",
-    },
-    {
-        title: "未通过数",
-        dataIndex: "notpass",
-        key: "notpass",
-        scopedSlots: { customRender: "notpass" },
-    },
-    {
-        title: "未通过率",
-        dataIndex: "notpassper",
-        key: "notpassper",
-        //   scopedSlots: { customRender: "notpassper" },
-    },
-];
-
 export const checkdetailColumns = [
     {
         title: "排名",
@@ -298,6 +235,43 @@ export const checkdetailColumns = [
         title: "未通过数",
         dataIndex: "notpass_number",
         key: "notpass_number",
+        scopedSlots: { customRender: "notpass_number" },
+    },
+    {
+        title: "未通过率",
+        dataIndex: "notpassper",
+        key: "notpassper",
+        scopedSlots: { customRender: "notpassper" },
+    },
+];
+export const elecfeeImgCoulmns = [
+    {
+        title: "排名",
+        dataIndex: "rank",
+        key: "rank",
+        scopedSlots: { customRender: "rank" },
+    },
+    {
+        title: "省份",
+        dataIndex: "prv_name",
+        key: "prv_name",
+        // ellipsis: true,
+    },
+    {
+        title: "总量",
+        dataIndex: "total_amount",
+        key: "total_amount",
+    },
+    {
+        title: "通过数",
+        dataIndex: "pass_amount",
+        key: "pass_amount",
+    },
+    {
+        title: "未通过数",
+        dataIndex: "notpass_amount",
+        key: "notpass_amount",
+        scopedSlots: { customRender: "notpass_amount" },
     },
     {
         title: "未通过率",
@@ -333,4 +307,5 @@ export const cityArr = [
     { name: "辽宁", id: 23 },
     { name: "内蒙古", id: 24 },
     { name: "山西", id: 25 },
+
 ];
