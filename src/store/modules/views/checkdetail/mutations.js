@@ -1,7 +1,7 @@
 const mutations = {
     updateCheckAllDetail(state, data) {
-        state.checkallDetail = data.body;
-        state.detailTotal = data.total;
+        state.checkallDetail = data.ret_data.prv_data;
+        state.detailTotal = data.ret_data.prv_data.length || 0;
     },
     updateCurrentPage(state, data) {
         state.detailPage = data.page;

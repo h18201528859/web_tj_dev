@@ -16,9 +16,8 @@ import Login from "../views/Login.vue";
 
 //views
 import Checkall from "../views/Checkall/Checkall.vue";
-// import Elecfee from "../views/Elecfee/Elecfee.vue";
-// import ElecfeeDetail from "../views/Elecfee/elecfeeDetail.vue";
-import CheckDetail from "../views/CheckDetail/CheckDetail.vue";
+// import CheckDetail from "../views/CheckDetail/CheckDetail.vue";
+import CheckDetail from "../views/Elecfee/elecfeeDetail.vue";
 import Provincefee from "../views/Provincefee/Provincefee.vue";
 
 Vue.use(VueRouter);
@@ -69,19 +68,19 @@ const routes = [
             },
             {
                 path: "/elecfee/elecfeeDetail",
-                name:'elecfeeDetail',
-                component:   () =>
-                import(
-                    /* webpackChunkName: "home" */ "../views/Elecfee/elecfeeDetail.vue"
-                ),
+                name: "elecfeeDetail",
+                component: () =>
+                    import(
+                        /* webpackChunkName: "home" */ "../views/Elecfee/elecfeeDetail.vue"
+                    ),
             },
             {
                 path: "/elecfee/elecfeeCityDetail/:cityId",
-                name:'elecfeecitydetail',
-                component:  () =>
-                import(
-                    /* webpackChunkName: "homeabout" */ "../views/Elecfee/Elecfee.vue"
-                ),
+                name: "elecfeecitydetail",
+                component: () =>
+                    import(
+                        /* webpackChunkName: "homeabout" */ "../views/Elecfee/Elecfee.vue"
+                    ),
             },
         ],
     },

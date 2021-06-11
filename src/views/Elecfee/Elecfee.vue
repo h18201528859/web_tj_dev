@@ -119,7 +119,9 @@
                 default-value="10"
                 style="min-width: 50px; margin: 0 5px"
               >
+                <a-select-option value="5"> 5</a-select-option>
                 <a-select-option value="10"> 10 </a-select-option>
+                <a-select-option value="15"> 15 </a-select-option>
                 <a-select-option value="20"> 20 </a-select-option>
               </a-select>
               <span>条</span>
@@ -699,9 +701,6 @@ export default {
       }
     }
     .overview-table {
-      .red {
-        color: #f24444;
-      }
       .title {
         display: flex;
         margin-bottom: 16px;

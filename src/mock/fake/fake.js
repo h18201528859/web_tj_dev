@@ -25,7 +25,7 @@ module.exports = {
                 eighttonine: "989",
                 ninetoten: "299",
             },
-            prv_data: _.times(15, function() {
+            prv_data: _.times(10, function() {
                 return {
                     prv_name: faker.address.state(),
                     ninetoten: faker.random.number(),
