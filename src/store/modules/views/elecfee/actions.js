@@ -1,4 +1,4 @@
-import { axiosget, axiospost } from "../../../../utils/http";
+import { axiospost } from "../../../../utils/http";
 import API from "../../../../const/apis";
 const actions = {
     getHeadData({ commit }) {
@@ -19,20 +19,6 @@ const actions = {
         commit("updateCityTitle", title);
     },
     getElecfeeTableData({ commit, rootState }, params) {
-        // axiospost(API.getStatistics,params).then(
-        //     (res) => {
-        //         console.log(res)
-        //         if (+res.code === 10000) {
-        //             commit("updateElecfeeTable", res.ret_data.prv_data);
-        //         } else {
-        //             console.error("数据错了");
-        //         }
-        //     },
-        //     () => {
-        //         console.error("error");
-        //     }
-        // );
-
         commit("updateDetailTableLoading", true);
         const targetParams = Object.assign(
             rootState.checkall.checkallParams,
@@ -58,28 +44,6 @@ const actions = {
             () => {
                 commit("updateDetailTableLoading", false);
                 console.error("error");
-            }
-        );
-    },
-    getCheckallDetailData({ commit }, { page, pageSize }) {
-        commit("updateCurrentPage", { page, pageSize });
-        commit("updateDetailTableLoading", true);
-        axiosget("/portal/business/getcheckalldetail", {
-            page,
-            pageSize,
-        }).then(
-            (res) => {
-                if (+res.code === 200) {
-                    commit("updateCheckAllDetail", res);
-                    setTimeout(() => {
-                        commit("updateDetailTableLoading", false);
-                    }, 100);
-                } else {
-                    commit("updateDetailTableLoading", false);
-                }
-            },
-            () => {
-                commit("updateDetailTableLoading", false);
             }
         );
     },

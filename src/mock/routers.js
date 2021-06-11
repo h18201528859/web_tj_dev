@@ -9,11 +9,6 @@ module.exports = {
     "/POST/Payment/GetImageStatistics": "/getImageStatistics",
     "/POST/Payment/GetElecSum": "/getElecSum",
 
-    "/portal/business/getcheckalltable": "/_getCheckallTableAmount",
-    "/portal/business/getelecfeetable": "/_getelecfeeTableAmount",
-    "/portal/business/getcheckalldetail?page=:page&pageSize=:pageSize":
-        "/getCheckallDetail",
-
     "/api/*": "/$1",
     "/*/*": "/$1_$2",
     "/*/*/*": "/$1_$2_$3",

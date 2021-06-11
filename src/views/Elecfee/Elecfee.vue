@@ -93,6 +93,7 @@
           :rowKey="(record, index) => index"
           :pagination="false"
           :customRow="rowHandle"
+          :loading="detailTableLoading"
         >
           <template slot="rank" slot-scope="text, all, i">
             <span>{{ i + 1 }}</span>
@@ -118,6 +119,7 @@
               <a-select
                 default-value="10"
                 style="min-width: 50px; margin: 0 5px"
+                @change="handleDetailPagesize"
               >
                 <a-select-option value="5"> 5</a-select-option>
                 <a-select-option value="10"> 10 </a-select-option>
@@ -127,7 +129,14 @@
               <span>条</span>
             </div>
           </div>
-          <a-pagination show-quick-jumper :default-current="1" :total="15" />
+          <a-pagination
+            show-quick-jumper
+            :default-current="1"
+            :total="totalPage"
+            :current="detailPage"
+            :pageSize="detailPagesize"
+            @change="handlePaginationChange"
+          />
         </div>
       </div>
     </div>
@@ -148,13 +157,27 @@ import {
 import { mapActions, mapState, mapMutations } from "vuex";
 import util from "../../utils/utils";
 export default {
+  components: {
+    HeadCardItem,
+  },
+  created() {
+    this.handleHeadData();
+    this.handleTableData(this.initParams);
+  },
+  mounted() {
+    this.drawLines();
+  },
   computed: {
     ...mapState({
       headData: (state) => state.elecfee.headData,
       elecfeeTable: (state) => state.elecfee.elecfeeTable,
-      checkallParams: (state) => state.checkall.checkallParams,
+      checkallParams: (state) => state.elecfee.checkallParams,
       cityTitle: (state) => state.elecfee.cityTitle,
       cityId: (state) => state.elecfee.cityId,
+      detailTotal: (state) => state.elecfee.detailTotal,
+      detailPage: (state) => state.elecfee.detailPage,
+      detailPagesize: (state) => state.elecfee.detailPagesize,
+      detailTableLoading: (state) => state.elecfee.detailTableLoading,
     }),
   },
   data() {
@@ -211,14 +234,13 @@ export default {
       checkallPieNumber: 0,
       checkallTableColumns: checkallColumns,
       checkdetailTableColumns: checkdetailColumns,
-      totalPage: 15,
+      totalPage: 0,
       mode: "top",
       cityArr,
+      initParams: util.getAllTimeRange("all"),
     };
   },
-  components: {
-    HeadCardItem,
-  },
+
   watch: {
     "$route.path": function () {
       const {
@@ -271,14 +293,11 @@ export default {
         this.checkdetailTableColumns[1].title = "省份";
       }
     },
+    detailTotal(newValue) {
+      this.totalPage = newValue;
+    },
   },
-  created() {
-    this.handleHeadData();
-    this.getElecfeeTableData(this.checkallParams);
-  },
-  mounted() {
-    this.drawLines();
-  },
+
   methods: {
     ...mapMutations("elecfee", ["updateCityId"]),
     ...mapActions("elecfee", [
@@ -612,6 +631,17 @@ export default {
         }
         piechart.setOption(option);
       });
+    },
+    handleTableData(params) {
+      const paramObj = Object.assign(this.checkallParams, params);
+      this.getElecfeeTableData(paramObj);
+      this.totalPage = this.elecfeeTable.length;
+    },
+    handleDetailPagesize(pageSize) {
+      this.getElecfeeTableData({ page: 1, pageSize: +pageSize });
+    },
+    handlePaginationChange(page, pageSize) {
+      this.getElecfeeTableData({ page: +page, pageSize: +pageSize });
     },
   },
 };
