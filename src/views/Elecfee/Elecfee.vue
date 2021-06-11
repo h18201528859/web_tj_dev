@@ -178,7 +178,7 @@ export default {
           const cityName = this.elecfeeTable[cityId].prv_name;
           this.updateCityId(cityId);
           this.getUpdateCityTitle(cityName);
-        },100)
+        },100);
       }
   },
   computed: {
@@ -463,7 +463,7 @@ export default {
           let toolpitStr = `<div style='padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国电费缴纳单 ${fraction}分 </div></div>`;
           return toolpitStr;
         };
-         this.linechartOptions.series[0].itemStyle.color =colorSet.mainSet
+         this.linechartOptions.series[0].itemStyle.color =colorSet.mainSet;
         this.piechartOptions.series[0].itemStyle.color = function (params) {
           let colorList = colorSet.mainPieSet;
           return colorList[params.dataIndex];

@@ -1,4 +1,4 @@
-import { axiosget, axiospost } from "../../../../utils/http";
+import { axiospost } from "../../../../utils/http";
 import API from "../../../../const/apis";
 const actions = {
     getHeadData({ commit }) {
@@ -19,20 +19,6 @@ const actions = {
         commit("updateCityTitle", title);
     },
     getElecfeeTableData({ commit, rootState }, params) {
-        // axiospost(API.getStatistics,params).then(
-        //     (res) => {
-        //         console.log(res)
-        //         if (+res.code === 10000) {
-        //             commit("updateElecfeeTable", res.ret_data.prv_data);
-        //         } else {
-        //             console.error("数据错了");
-        //         }
-        //     },
-        //     () => {
-        //         console.error("error");
-        //     }
-        // );
-
         commit("updateDetailTableLoading", true);
         const targetParams = Object.assign(
             rootState.checkall.checkallParams,
@@ -43,7 +29,6 @@ const actions = {
         // console.log(targetParams, "===>请求参数");
         axiospost(API.getStatistics, targetParams).then(
             (res) => {
-                // console.log(res);
                 if (+res.ret_code === 10000) {
                     commit("updateElecfeeAllTable", res.ret_data.all_data);
                     commit("updateElecfeeTable", res.ret_data.prv_data);
@@ -61,25 +46,30 @@ const actions = {
             }
         );
     },
-    getCheckallDetailData({ commit }, { page, pageSize }) {
-        commit("updateCurrentPage", { page, pageSize });
+    getElecImgTableData({ commit, rootState }, params) {
         commit("updateDetailTableLoading", true);
-        axiosget("/portal/business/getcheckalldetail", {
-            page,
-            pageSize,
-        }).then(
+        const targetParams = Object.assign(
+            rootState.checkall.checkallParams,
+            params
+        );
+        commit("updateParams", targetParams);
+        commit("updateCurrentPage", targetParams);
+        axiospost(API.getImageStatistics, targetParams).then(
             (res) => {
-                if (+res.code === 200) {
-                    commit("updateCheckAllDetail", res);
+                if (+res.ret_code === 10000) {
+                    commit("updateElecfeeAllTable", res.ret_data.all_data);
+                    commit("updateElecfeeTable", res.ret_data.prv_data);
                     setTimeout(() => {
                         commit("updateDetailTableLoading", false);
-                    }, 100);
+                    }, 300);
                 } else {
                     commit("updateDetailTableLoading", false);
+                    console.error("数据错了");
                 }
             },
             () => {
                 commit("updateDetailTableLoading", false);
+                console.error("error");
             }
         );
     },

@@ -67,7 +67,7 @@ export default {
               breadcrumbName: `${cityName}电费稽核`,
             },
           ]);
-       },1000)
+       },1000);
        
      }
   },

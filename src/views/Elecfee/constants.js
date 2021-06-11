@@ -36,7 +36,7 @@ export const linechartOptions = {
         borderWidth: "0",
         formatter: function(name) {
             const cityFilterData = linechartOptions.series[0].cityFilterData;
-            console.log('cityFilterData',cityFilterData)
+            console.log('cityFilterData',cityFilterData);
             let total = 0;
             let target = 0;
             let toolpitArr = "";
@@ -98,7 +98,7 @@ export const linechartOptions = {
            // color:colorSet.mainSet,
             itemStyle: {
                 color:  function(name) {
-                    return name.color
+                    return name.color;
                 },
             },
         },
@@ -116,7 +116,7 @@ export const piechartOptions = {
             let target = 0;
             let total = 0;
             let fraction = "";
-            console.log(pieData)
+            console.log(pieData);
             for (let i = 0; i < pieData.length; i++) {
                 total += pieData[i].value;
                 if (pieData[i].name === name.name) {

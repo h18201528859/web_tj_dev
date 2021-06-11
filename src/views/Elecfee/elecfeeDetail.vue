@@ -274,7 +274,7 @@ export default {
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
-        console.log(values,'fdffddf')
+        console.log(values,'fdffddf');
         if (!err) {
           values.radioChecked = this.checkedList;
         }
@@ -297,8 +297,8 @@ export default {
       console.log(`selected ${value}`);
     },
     valtorFranction  (rule,value,callback) {
-        console.log(value,rule,'fddfdfdfgg')
-         callback()
+        console.log(value,rule,'fddfdfdfgg');
+         callback();
     },
     onChange(checkedList) {
       this.indeterminate =
