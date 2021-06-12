@@ -176,6 +176,9 @@
           <template slot="notpass" slot-scope="text">
             <span class="red">{{ text }}</span>
           </template>
+            <template slot="type">
+            <span>电费</span>
+          </template>
           <template slot="notpassper" slot-scope="text, all">
             <span>{{
               `${(
@@ -218,19 +221,16 @@
 </template>
 
 <script>
-import { checkdetailColumns, cityArr } from "./constants";
+import { efecfeeTabColumns, cityArr } from "./constants";
 import { mapState, mapActions } from "vuex";
 
 export default {
   data() {
-    // const valtorFranction = (rule,value,callback) =>{
-    //     console.log(value,rule)
-    //      callback()
-    // }
+   
     return {
       plainOptions: ["电费(缴费单)", "电费(电表图)", "铁塔服务费", "租费"],
       checkallPieNumber: 0,
-      checkdetailTableColumns: checkdetailColumns,
+      checkdetailTableColumns: efecfeeTabColumns,
       checkedList: [],
       totalPage: 0,
       indeterminate: true,
@@ -264,6 +264,20 @@ export default {
     this.getCheckallDetailData({ page: 1, pageSize: 10 });
     this.totalPage = this.checkallDetail.length;
   },
+  beforeRouteEnter(to, from, next){
+      const { name } = from  
+      next((vm)=>{
+         if(name=='elecfeecitydetail'){
+              vm.extendText ="收起";
+              vm.extendIcon = "down";
+              vm.cityFlag = false;
+          }else{
+                vm.extendText ="展开";
+              vm.extendIcon = "up";
+              vm.cityFlag = true;
+          }
+      })
+  },
   methods: {
     ...mapActions("checkdetail", ["getCheckallDetailData"]),
 
@@ -274,7 +288,6 @@ export default {
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
-        console.log(values,'fdffddf');
         if (!err) {
           values.radioChecked = this.checkedList;
         }

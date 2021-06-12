@@ -280,6 +280,98 @@ export const elecfeeImgCoulmns = [
         scopedSlots: { customRender: "notpassper" },
     },
 ];
+export const efecfeeTabColumns = [
+    {
+        title: "排名",
+        dataIndex: "rank",
+        key: "rank",
+        scopedSlots: { customRender: "rank" },
+    },
+    {
+        title: "稽核类型",
+        dataIndex: "type",
+        key: "type",
+        width: 150,
+        scopedSlots: { customRender: "type" },
+        filters: [
+            {
+                text: "电费",
+                value: "电费",
+            },
+            {
+                text: "铁塔服务费",
+                value: "铁塔服务费",
+            },
+            {
+                text: "租费",
+                value: "租费",
+            },
+        ],
+        onFilter: (value, record) => record.type.indexOf(value) === 0,
+        // ellipsis: true,
+    },
+    {
+        title: "省份",
+        dataIndex: "prv_name",
+        key: "prv_name",
+        // ellipsis: true,
+    },
+    {
+        title: "9-10分",
+        dataIndex: "ninetoten",
+        key: "ninetoten",
+        // defaultSortOrder: "descend",
+        sorter: (a, b) => a.ninetoten - b.ninetoten,
+        ellipsis: true,
+    },
+    {
+        title: "8-9分",
+        dataIndex: "eighttonine",
+        key: "eighttonine",
+        sorter: (a, b) => a.eighttonine - b.eighttonine,
+        ellipsis: true,
+    },
+    {
+        title: "6-8分",
+        dataIndex: "sixtoeight",
+        key: "sixtoeight",
+        sorter: (a, b) => a.sixtoeight - b.sixtoeight,
+        ellipsis: true,
+    },
+    {
+        title: "0-6分",
+        dataIndex: "zerotosix",
+        key: "zerotosix",
+        sorter: (a, b) => a.zerotosix - b.zerotosix,
+        ellipsis: true,
+    },
+    {
+        title: "总量",
+        dataIndex: "total_amount",
+        key: "total_amount",
+        sorter: (a, b) => a.total_amount - b.total_amount,
+    },
+    {
+        title: "通过数",
+        dataIndex: "pass_number",
+        key: "pass_number",
+        sorter: (a, b) => a.pass_number - b.pass_number,
+    },
+    {
+        title: "未通过数",
+        dataIndex: "notpass_number",
+        key: "notpass_number",
+        sorter: (a, b) => a.notpass_number - b.notpass_number,
+        scopedSlots: { customRender: "notpass" },
+    },
+    {
+        title: "未通过率",
+        dataIndex: "notpassper",
+        key: "notpassper",
+        sorter: (a, b) => a.notpassper - b.notpassper,
+        scopedSlots: { customRender: "notpassper" },
+    },
+];
 export const cityArr = [
     { name: "全国", id: 0 },
     { name: "北京", id: 1 },

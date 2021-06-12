@@ -105,6 +105,9 @@
           <template slot="notpass_number" slot-scope="text">
             <span class="red">{{ text }}</span>
           </template>
+          <template slot="notpass_amount" slot-scope="text">
+            <span class="red">{{ text }}</span>
+          </template>
           <template slot="notpassper" slot-scope="text, all">
             <span>{{
               all.ninetoten
@@ -162,6 +165,12 @@ import {
 } from "./constants";
 import { mapActions, mapState, mapMutations } from "vuex";
 import util from "../../utils/utils";
+const countryTitle =  {
+    surveyTitle: "电费稽核概况",
+    provinceTitle: "各地市缴费单稽核数量统计TOP10",
+    scoreTitle: "分区间占比",
+    tabProvinceTitle: "各地市缴费单稽核数量详单",
+}
 export default {
   components: {
     HeadCardItem,
@@ -174,11 +183,17 @@ export default {
     this.drawLines();
       const { name = 'elecfee',params:{ cityId = '-1'}} = this.$route;
       if(name=="elecfeecitydetail"){
-        setTimeout(()=>{
-          const cityName = this.elecfeeTable[cityId].prv_name;
+        setTimeout(()=>{     
+          const lineColor = [
+            "rgba(119,114,241,0.85)"
+          ];
+           this.echartsColors(lineColor);   
+           const cityName = this.elecfeeTable[cityId].prv_name;
+          this.getUpdateCityTitle(cityName,countryTitle);
           this.updateCityId(cityId);
-          this.getUpdateCityTitle(cityName);
-        },100);
+          const pieColor =  ['rgba(119, 114, 241, 0.85)', 'rgba(206, 119, 251, 0.85)', "rgba(90, 220, 255, 0.85)", "rgba(71, 167, 253, 0.85)"]
+            this.pieEchartsColor(pieColor)
+         },500);
       }
   },
   computed: {
@@ -259,22 +274,27 @@ export default {
             },
           ]);
           
-          this.getUpdateCityTitle(cityName);
+          this.getUpdateCityTitle({cityName,countryTitle});
           this.updateCityId(cityId);
           this.checkdetailTableColumns[1].title = "地市";
           const lineColor = [
             "rgba(119,114,241,0.85)"
           ];
-          this.echartsColors(lineColor);
+           const pieColor =  ['rgba(119, 114, 241, 0.85)', 'rgba(206, 119, 251, 0.85)', "rgba(90, 220, 255, 0.85)", "rgba(71, 167, 253, 0.85)"]
+           this.echartsColors(lineColor);
+            this.piechartOptions.series[0].itemStyle.color  = []         
+             this.pieEchartsColor(pieColor)   
         }
       } else {
         this.updateCityId("-1");
         this.getUpdateCityTitle("");
         const lineColorfee = [
-          "rgba(71, 199, 253, 0.85)",
+          "rgba(91, 143, 249, 0.85)",
         ];
         this.echartsColors(lineColorfee);
         this.checkdetailTableColumns[1].title = "省份";
+         const pieColor =  ["#317CFF", "#47C7FD", "#F6AE16", "#5AD8A6"]
+          this.pieEchartsColor(pieColor)
       }
     },
     detailTotal(newValue) {
@@ -340,6 +360,9 @@ export default {
             total: 1250,
           },
         };
+          if (this.$route.name !== "elecfee") {
+            this.elecfeeImgCoulmns[1].title = "地市";
+          }
         if (this.linechartOptions && this.linechartOptions.tooltip) {
           this.linechartOptions.tooltip.formatter = (name) => {
             const cityFilterData = this.cityFilterData;
@@ -388,10 +411,9 @@ export default {
           let toolpitStr = `<div style='padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国电费缴纳单 ${fraction}分 </div></div>`;
           return toolpitStr;
         };
-        this.piechartOptions.series[0].itemStyle.color = function (params) {
-          let colorList = colorSet.mainPieSet;
-          return colorList[params.dataIndex];
-        };
+        this.linechartOptions.series[0].itemStyle.color =  colorSet.mainSet
+        this.piechartOptions.series[0].itemStyle.color = colorSet.mainPieSet;
+     
         pieCharts.style.display = "none";
       } else if (+key === 1) {
         this.getElecfeeTableData({ page: 1 });
@@ -404,18 +426,23 @@ export default {
           { value: 1062, name: "租费", fraction: "6-8" },
           { value: 985, name: "稽核总量", fraction: "0-6" },
         ];
+          colorSet.mainPieSet = ["#5B8FF9", "#5AD8A6", "#E8684A", "#F6BD16"];
         if (this.$route.name == "elecfee") {
           colorSet.mainSet = [
-            "rgba(71, 199, 253, 0.85)",
-           
+            "rgba(91, 143, 249, 0.85)",
           ];
+           this.piechartOptions.series[0].itemStyle.color = function (params) {
+              let colorList = colorSet.mainPieSet;
+              return colorList[params.dataIndex];
+            };
         } else {
           colorSet.mainSet = [
             "rgba(119,114,241,0.85)",
           ];
-        }
+            this.piechartOptions.series[0].itemStyle.color = ['rgba(119, 114, 241, 0.85)', 'rgba(206, 119, 251, 0.85)', "rgba(90, 220, 255, 0.85)", "rgba(71, 167, 253, 0.85)"]
 
-        colorSet.mainPieSet = ["#5B8FF9", "#5AD8A6", "#E8684A", "#F6BD16"];
+        }
+      
         this.linechartOptions.tooltip.formatter = (name) => {
           const cityFilterData = this.cityFilterData;
           let total = 0;
@@ -464,10 +491,7 @@ export default {
           return toolpitStr;
         };
          this.linechartOptions.series[0].itemStyle.color =colorSet.mainSet;
-        this.piechartOptions.series[0].itemStyle.color = function (params) {
-          let colorList = colorSet.mainPieSet;
-          return colorList[params.dataIndex];
-        };
+        
       }
       this.linechartOptions.series[0].data = lineData;
       this.piechartOptions.series[0].data = pieData;
@@ -506,8 +530,45 @@ export default {
         toolpitArr = `<div style="font-size:12px;"><div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix}元</span><span style="margin-left:10px">${percent}%</span></div><div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8}元</span><span style="margin-left:10px">${percent}%</span></div> <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9}元</span><span style="margin-left:10px">${percent}%</span></div><div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten}元</span><span style="margin-left:6px;position:relative;left:-2px;">${percent}%</span></div><hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${pointColor};margin-right:5px;display:inline-block"></div><div>${name.name}省 稽核条数/占比</div></div> </div>`;
         return toolpitArr;
       };
-      
+       this.linechartOptions.series[0].itemStyle.color =colorMain;
       lineChart.setOption(this.linechartOptions);
+    },
+    pieEchartsColor(colorPie){
+        const piechart = this.$echarts.init(document.getElementById("piechart"));
+       
+         this.piechartOptions.tooltip.formatter = (name) => {
+          const pieData = piechartOptions.series[0].data;
+          let toolpitColor = "";
+          let target = 0;
+          let total = 0;
+          let fraction = "";
+          for (let i = 0; i < pieData.length; i++) {
+            total += pieData[i].value;
+            if (pieData[i].name === name.name) {
+              toolpitColor = colorPie;
+              target = name.value;
+              fraction = pieData[i].fraction;
+            }else{
+               toolpitColor = colorPie;
+            }
+          }
+          const percent = ((target / total) * 100).toFixed(1);
+          let toolpitStr = `<div style='padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国电费缴纳单 ${fraction}分 </div></div>`;
+          return toolpitStr;
+        };
+       const  pieData = [
+          { value: 2587, name: "电费", fraction: "9-10", itemStyle:{normal:{color:''}}},
+          { value: 1626, name: "铁塔服务费", fraction: "8-9", itemStyle:{normal:{color:''}} },
+          { value: 1062, name: "租费", fraction: "6-8", itemStyle:{normal:{color:''}} },
+          { value: 985, name: "稽核总量", fraction: "0-6" , itemStyle:{normal:{color:''}}},
+        ];
+        pieData.map((item,index)=>{
+          item.itemStyle.normal.color = colorPie[index]
+        })
+          this.piechartOptions.series[0].itemStyle.color =colorPie;
+           this.piechartOptions.series[0].color =colorPie
+        this.piechartOptions.series[0].data = pieData;
+       piechart.setOption(this.piechartOptions);
     },
     callbackhandle(value) {
       console.log(value);
@@ -519,6 +580,7 @@ export default {
             this.updateCityId("-1");
             this.getUpdateCityTitle("");
             this.getChangeCity(index);
+            sessionStorage.setItem('record',JSON.stringify(record))
           },
         },
       };
@@ -526,7 +588,7 @@ export default {
     getChangeCity(key) {
       this.updateCityId(key);
       const cityName = this.elecfeeTable[key].prv_name;
-      this.getUpdateCityTitle(cityName);
+      this.getUpdateCityTitle(cityName,countryTitle);
       this.$router.push({
         name: "elecfeecitydetail",
         path: `/elecfee/elecfeeCityDetail/:id` + key,
