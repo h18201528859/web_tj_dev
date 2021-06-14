@@ -50,7 +50,7 @@
                 :size="size"
                 placeholder="Please select"
                 :default-value="[]"
-                style="width: 200px"
+                style="width: 290px"
                 @change="handleChange"
                 @popupScroll="popupScroll"
               >
@@ -106,7 +106,7 @@
                 <a-input-number
                   placeholder=""
                   class="radio-ipt"
-                />-<a-input-number placeholder="" class="radio-ipt" />分
+                /><span class="line-radio">-</span><a-input-number placeholder="" class="radio-ipt" />分
               </a-radio>
             </a-radio-group>
           </a-form-item>
@@ -115,7 +115,7 @@
               <a-radio value="a"> 不限 </a-radio>
               <a-radio value="b" class="radio-time">
                 时间段
-                <a-form-item class="child-fraction">
+                <a-form-item class="child-fraction-time">
                   <a-radio-group
                     v-decorator="['radio-childTimeType', { initialValue: '' }]"
                   >
@@ -134,6 +134,7 @@
                 :placeholder="['Start Time', 'End Time']"
                 @change="onChange"
                 @ok="onOk"
+                class="range-date"
               >
                  <a-icon slot="suffixIcon" type="calendar" />
               </a-range-picker>
@@ -486,12 +487,16 @@ export default {
     margin-left: 28px;
     display: inline;
     .child-fraction {
-      margin-left: 8px;
+      margin-left: 25px;
+      .ant-radio-button-wrapper{
+        padding:0 18px;
+      }
+    }
+    .child-fraction-time{
+        margin-left: 25px;
     }
   }
-  .radio-auto {
-    margin-left: 22px;
-  }
+  
   .reset-btn {
     margin-right: 16px;
   }
@@ -511,7 +516,10 @@ export default {
     text-align: left;
   }
   .radio-ipt {
-    width: 100px;
+    width: 80px;
+  }
+  .line-radio{
+    padding:0 5px;
   }
 }
 .serach-btn {
@@ -522,5 +530,8 @@ export default {
   height: 14px;
   background: #0068ff;
   margin: 3px 8px 3px;
+}
+.range-date{
+  width:290px!important;
 }
 </style>
