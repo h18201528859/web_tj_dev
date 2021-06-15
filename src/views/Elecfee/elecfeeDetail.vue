@@ -48,7 +48,7 @@
                <a-select
                 mode="multiple"
                 :size="size"
-                placeholder="Please select"
+                placeholder="请输入或选择"
                 :default-value="[]"
                 style="width: 290px"
                 @change="handleChange"
@@ -106,6 +106,7 @@
                 <a-input-number
                   placeholder=""
                   class="radio-ipt"
+                  style="margin-left:20px"
                 /><span class="line-radio">-</span><a-input-number placeholder="" class="radio-ipt" />分
               </a-radio>
             </a-radio-group>
@@ -131,10 +132,11 @@
                 <a-range-picker
                 :show-time="{ format: 'HH:mm' }"
                 format="YYYY-MM-DD HH:mm"
-                :placeholder="['Start Time', 'End Time']"
+                :placeholder="['2020.10.25 00:00', '2020.10.25 00:00']"
                 @change="onChange"
                 @ok="onOk"
                 class="range-date"
+                style="margin-left:20px"
               >
                  <a-icon slot="suffixIcon" type="calendar" />
               </a-range-picker>
@@ -162,7 +164,7 @@
       </a-form>
     </div>
     <div class="detail-section">
-      <div class="header">稽核详情</div>
+      <div class="header">稽核详单</div>
       <div class="table">
         <a-table
           :columns="checkdetailTableColumns"
@@ -237,7 +239,7 @@ export default {
       indeterminate: true,
       checkAll: false,
       extendText: "收起",
-      extendIcon: "down",
+      extendIcon: "up",
       cityFlag: false,
       cityArr,
       cityId: "0",
@@ -270,11 +272,11 @@ export default {
       next((vm)=>{
          if(name=='elecfeecitydetail'){
               vm.extendText ="收起";
-              vm.extendIcon = "down";
+              vm.extendIcon = "up";
               vm.cityFlag = false;
           }else{
                 vm.extendText ="展开";
-              vm.extendIcon = "up";
+              vm.extendIcon = "down";
               vm.cityFlag = true;
           }
       })
@@ -311,7 +313,6 @@ export default {
       console.log(`selected ${value}`);
     },
     valtorFranction  (rule,value,callback) {
-        console.log(value,rule,'fddfdfdfgg');
          callback();
     },
     onChange(checkedList) {

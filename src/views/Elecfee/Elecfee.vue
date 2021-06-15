@@ -70,9 +70,9 @@
         >
           <a-tab-pane
             class="citybut"
-            v-for="(i,index) in elecfeeTable"
+            v-for="(i,index) in provinceCode"
             :key="index"
-            :tab="`${i.prv_name}`"
+            :tab="`${i.name}`"
           >
           </a-tab-pane>
         </a-tabs>
@@ -163,6 +163,7 @@ import {
   checkdetailColumns,
   elecfeeImgCoulmns,
 } from "./constants";
+import { provinceCode } from '../../const/constant'
 import { mapActions, mapState, mapMutations } from "vuex";
 import util from "../../utils/utils";
 const countryTitle =  {
@@ -180,7 +181,7 @@ export default {
     this.handleTableData(this.initParams);
   },
   mounted() {
-    this.drawLines();
+   // this.drawLines();
       const { name = 'elecfee',params:{ cityId = '-1'}} = this.$route;
       if(name=="elecfeecitydetail"){
         setTimeout(()=>{     
@@ -213,12 +214,13 @@ export default {
   data() {
     return {
       HeadCardItems,
+      provinceCode,
       lineData: [930, 780, 720, 60, 320, 420, 530, 280, 420, 500],
       pieData: [
-        { value: 2587, name: "电费", fraction: "9-10" },
-        { value: 1626, name: "铁塔服务费", fraction: "8-9" },
-        { value: 1062, name: "租费", fraction: "6-8" },
-        { value: 985, name: "稽核总量", fraction: "0-6" },
+        { value: 2587, name: "电费", fraction: "9-10", itemStyle:{normal:{color:'#5B8FF9'}}  },
+        { value: 1626, name: "铁塔服务费", fraction: "8-9" , itemStyle:{normal:{color:'#5AD8A6'}}},
+        { value: 1062, name: "租费", fraction: "6-8", itemStyle:{normal:{color:'#E8684A'}} },
+        { value: 985, name: "稽核总量", fraction: "0-6" , itemStyle:{normal:{color:'#F6BD16'}}},
       ],
       cityFilterData: {
         北京: {
@@ -293,13 +295,16 @@ export default {
         ];
         this.echartsColors(lineColorfee);
         this.checkdetailTableColumns[1].title = "省份";
-         const pieColor =  ["#317CFF", "#47C7FD", "#F6AE16", "#5AD8A6"]
-          this.pieEchartsColor(pieColor)
+        const pieColor =   ["#5B8FF9", "#5AD8A6", "#E8684A", "#F6BD16"]
+        this.pieEchartsColor(pieColor)
       }
     },
     detailTotal(newValue) {
       this.totalPage = newValue;
     },
+    elecfeeTable(val){
+      this.drawLines()
+    }
   },
 
   methods: {
@@ -325,10 +330,10 @@ export default {
         lineData = [980, 760, 745, 980, 760, 745, 980, 760, 745, 980];
         this.checkdetailTableColumns = this.elecfeeImgCoulmns;
         pieData = [
-          { value: 1020, name: "电费", fraction: "9-10" },
-          { value: 1300, name: "铁塔服务费", fraction: "4-9" },
-          { value: 1340, name: "租费", fraction: "2-8" },
-          { value: 650, name: "稽核总量", fraction: "0-6" },
+          { value: 1020, name: "电费", fraction: "9-10", itemStyle:{normal:{color:''}} },
+          { value: 1300, name: "铁塔服务费", fraction: "4-9", itemStyle:{normal:{color:''}} },
+          { value: 1340, name: "租费", fraction: "2-8", itemStyle:{normal:{color:''}} },
+          { value: 650, name: "稽核总量", fraction: "0-6", itemStyle:{normal:{color:''}} },
         ];
         colorSet.mainSet = [
           "rgba(71, 199, 253, 0.85)"
@@ -421,26 +426,33 @@ export default {
         pieCharts.style.display = "block";
         lineData = [930, 780, 720, 60, 320, 420, 530, 280, 420, 500];
         pieData = [
-          { value: 2587, name: "电费", fraction: "9-10" },
-          { value: 1626, name: "铁塔服务费", fraction: "8-9" },
-          { value: 1062, name: "租费", fraction: "6-8" },
-          { value: 985, name: "稽核总量", fraction: "0-6" },
+          { value: 2587, name: "电费", fraction: "9-10", itemStyle:{normal:{color:''}} },
+          { value: 1626, name: "铁塔服务费", fraction: "8-9", itemStyle:{normal:{color:''}} },
+          { value: 1062, name: "租费", fraction: "6-8", itemStyle:{normal:{color:''}} },
+          { value: 985, name: "稽核总量", fraction: "0-6", itemStyle:{normal:{color:''}} },
         ];
           colorSet.mainPieSet = ["#5B8FF9", "#5AD8A6", "#E8684A", "#F6BD16"];
         if (this.$route.name == "elecfee") {
           colorSet.mainSet = [
             "rgba(91, 143, 249, 0.85)",
           ];
-           this.piechartOptions.series[0].itemStyle.color = function (params) {
-              let colorList = colorSet.mainPieSet;
-              return colorList[params.dataIndex];
-            };
+          //  this.piechartOptions.series[0].itemStyle.color = function (params) {
+          //     let colorList = colorSet.mainPieSet;
+          //     return colorList[params.dataIndex];
+          //   };
+              pieData.map((item,index)=>{
+                item.itemStyle.normal.color =  colorSet.mainPieSet[index]
+              })
         } else {
           colorSet.mainSet = [
             "rgba(119,114,241,0.85)",
           ];
-            this.piechartOptions.series[0].itemStyle.color = ['rgba(119, 114, 241, 0.85)', 'rgba(206, 119, 251, 0.85)', "rgba(90, 220, 255, 0.85)", "rgba(71, 167, 253, 0.85)"]
-
+          const colornew = ['rgba(119, 114, 241, 0.85)', 'rgba(206, 119, 251, 0.85)', "rgba(90, 220, 255, 0.85)", "rgba(71, 167, 253, 0.85)"]
+          pieData.map((item,index)=>{
+            item.itemStyle.normal.color = colornew[index]
+          })
+           // this.piechartOptions.series[0].itemStyle.color = ['rgba(119, 114, 241, 0.85)', 'rgba(206, 119, 251, 0.85)', "rgba(90, 220, 255, 0.85)", "rgba(71, 167, 253, 0.85)"]
+          this.piechartOptions.series[0].color =colornew
         }
       
         this.linechartOptions.tooltip.formatter = (name) => {
@@ -495,6 +507,7 @@ export default {
       }
       this.linechartOptions.series[0].data = lineData;
       this.piechartOptions.series[0].data = pieData;
+     
       lineChart.setOption(this.linechartOptions);
       piechart.setOption(this.piechartOptions);
     },
@@ -565,7 +578,7 @@ export default {
         pieData.map((item,index)=>{
           item.itemStyle.normal.color = colorPie[index]
         })
-          this.piechartOptions.series[0].itemStyle.color =colorPie;
+          // this.piechartOptions.series[0].itemStyle.color =colorPie;
            this.piechartOptions.series[0].color =colorPie
         this.piechartOptions.series[0].data = pieData;
        piechart.setOption(this.piechartOptions);
@@ -577,10 +590,15 @@ export default {
       return {
         on: {
           click: () => {
-            this.updateCityId("-1");
-            this.getUpdateCityTitle("");
-            this.getChangeCity(index);
-            sessionStorage.setItem('record',JSON.stringify(record))
+            const {
+              name = "elecfee",
+            } = this.$route;
+            if (name !== "elecfeecitydetail" ) {
+              this.updateCityId("-1");
+              this.getUpdateCityTitle("");
+              this.getChangeCity(index);
+              sessionStorage.setItem('record',JSON.stringify(record))
+            }
           },
         },
       };
@@ -602,6 +620,7 @@ export default {
       this.linechartOptions.series[0].data = this.lineData;
       this.piechartOptions.series[0].data = this.pieData;
       this.linechartOptions.series[0].cityFilterData = this.cityFilterData;
+   
       this.getHeadData();
     },
     filterHandle() {
@@ -621,6 +640,14 @@ export default {
       const lineChart = this.$echarts.init(
         document.getElementById("linechart")
       );
+      const xAxisData = [],rerLineData = [];
+      for(let i=0;i<this.elecfeeTable.length;i++){
+         const name = this.elecfeeTable[i].prv_name.length>=3?this.elecfeeTable[i].prv_name.slice(0,2):this.elecfeeTable[i].prv_name;
+          xAxisData.push(name)
+         // rerLineData.push()
+      }
+
+        this.linechartOptions.xAxis.data = xAxisData
       lineChart.setOption(this.linechartOptions);
       const piechart = this.$echarts.init(document.getElementById("piechart"));
       piechart.setOption(this.piechartOptions);

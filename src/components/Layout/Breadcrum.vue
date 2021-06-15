@@ -26,18 +26,19 @@
     </a-breadcrumb>
     <span class="city-wrap" v-if="cityId !== '-1'">
       <a-select
-        :defaultValue="cityId !== '-1' && elecfeeTable[cityId].prv_name"
+        :defaultValue="cityId !== '-1' && provinceCode[cityId].name"
         style="width: 120px"
         @change="handleChange"
       >
-        <a-select-option v-for="(i,index) in elecfeeTable" :key="index" :value="index">
-          {{ i.prv_name }}
+        <a-select-option v-for="(i,index) in provinceCode" :key="index" :value="index">
+          {{ i.name }}
         </a-select-option>
       </a-select>
     </span>
   </div>
 </template>
 <script>
+import { provinceCode } from '../../const/constant'
 import { mapActions, mapState, mapMutations } from "vuex";
 export default {
   name: "Breadcrum",
@@ -52,13 +53,14 @@ export default {
   data() {
     return {
       routes: this.breadcrumbArr,
+      provinceCode
     };
   },
   mounted(){
      const { params:{ cityId = '-1' },name = 'elecfee'} = this.$route;
      if(name=="elecfeecitydetail"){
        setTimeout(()=>{
-        const cityName = this.elecfeeTable[cityId].prv_name;
+        const cityName = this.provinceCode[cityId].name;
         this.updateCityId(cityId);
         this.getUpdateCityTitle(cityName);
         this.$store.commit("replaceBreadcrumb", [

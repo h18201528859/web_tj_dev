@@ -36,7 +36,6 @@ export const linechartOptions = {
         borderWidth: "0",
         formatter: function(name) {
             const cityFilterData = linechartOptions.series[0].cityFilterData;
-            console.log('cityFilterData',cityFilterData);
             let total = 0;
             let target = 0;
             let toolpitArr = "";
