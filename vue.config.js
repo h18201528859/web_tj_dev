@@ -1,7 +1,14 @@
+const path = require("path");
+const fs = require("fs");
 const devProxy = ["/api"]; // proxy route
 let proEnv = require("./config/pro.env");
 // let devEnv = require("./config/dev.env");
 const env = process.env.NODE_ENV;
+const lessToJs = require("less-vars-to-js");
+const themeVariables = lessToJs(
+    fs.readFileSync(path.join(__dirname, "./src/theme.less"), "utf8")
+);
+
 // generate proxy object
 let proxyObj = {};
 if (env === "development") {
@@ -33,5 +40,13 @@ module.exports = {
         proxy: proxyObj,
     },
     //webpack配置
-    css: {},
+    css: {
+        loaderOptions: {
+            less: {
+                // If you are using less-loader@5 please spread the lessOptions to options directly
+                modifyVars: themeVariables,
+                javascriptEnabled: true,
+            },
+        },
+    },
 };

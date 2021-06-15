@@ -30,8 +30,8 @@
           @click="() => (collapsed = !collapsed)"
         />
         <div class="header-operation">
-          <div class="header-operation--item">消息中心</div>
-          <div class="header-operation--item">帮助中心</div>
+          <!-- <div class="header-operation--item">消息中心</div>
+          <div class="header-operation--item">帮助中心</div> -->
           <div class="header-operation--item">
             <a-dropdown>
               <a-menu slot="overlay">
@@ -74,9 +74,9 @@ export default {
   },
   mounted() {
     const loginName = window.sessionStorage.getItem("username");
-    if (typeof(loginName)==='string') {
+    if (typeof loginName === "string") {
       this.UserName = loginName;
-    }else{
+    } else {
       window.location.href = "#/login";
     }
   },

@@ -118,7 +118,9 @@ export default {
   },
 };
 </script>
-<style lang="less" scoped>
-// .layout-siderbar {
-// }
+
+<style>
+.ant-menu-item.ant-menu-item-selected > span {
+  color: white;
+}
 </style>

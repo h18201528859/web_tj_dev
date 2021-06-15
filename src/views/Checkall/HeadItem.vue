@@ -102,6 +102,7 @@ export default {
     align-items: center;
     img {
       width: 72px;
+      margin-top: 5px;
     }
     .right-item {
       span {
