@@ -22,15 +22,13 @@ export const HeadCardItems = [
     },
 ];
 const colorSet = {
-    mainSet: [
-        "rgba(91, 143, 249, 0.85)"
-    ],
+    mainSet: ["rgba(91, 143, 249, 0.85)"],
     mainPieSet: ["#5B8FF9", "#5AD8A6", "#E8684A", "#F6BD16"],
 };
 
 export const linechartOptions = {
     height: 240,
-    color:colorSet.mainSet,
+    color: colorSet.mainSet,
     tooltip: {
         trigger: "item",
         borderWidth: "0",
@@ -55,10 +53,9 @@ export const linechartOptions = {
                     zerotosix = cityFilterData[item].zerotosix;
                     percent = ((target / total) * 100).toFixed(1);
                     pointColor = colorSet.mainSet[index];
-                }else{
+                } else {
                     pointColor = colorSet.mainSet[0];
-
-                 }
+                }
             });
             toolpitArr = `<div style="font-size:12px;">
           <div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix}元</span><span style="margin-left:10px">${percent}%</span></div>
@@ -94,9 +91,9 @@ export const linechartOptions = {
             type: "bar",
             barWidth: "30",
             barCategoryGap: "18",
-           // color:colorSet.mainSet,
+            // color:colorSet.mainSet,
             itemStyle: {
-                color:  function(name) {
+                color: function(name) {
                     return name.color;
                 },
             },
@@ -106,7 +103,6 @@ export const linechartOptions = {
 
 export const piechartOptions = {
     tooltip: {
-        
         trigger: "item",
         borderWidth: "0",
         formatter: function(name) {
@@ -290,7 +286,7 @@ export const efecfeeTabColumns = [
         title: "稽核类型",
         dataIndex: "type",
         key: "type",
-        width: 150,
+        width: 120,
         scopedSlots: { customRender: "type" },
         filters: [
             {
@@ -360,6 +356,7 @@ export const efecfeeTabColumns = [
         title: "未通过数",
         dataIndex: "notpass_number",
         key: "notpass_number",
+        width: 120,
         sorter: (a, b) => a.notpass_number - b.notpass_number,
         scopedSlots: { customRender: "notpass" },
     },
@@ -367,6 +364,7 @@ export const efecfeeTabColumns = [
         title: "未通过率",
         dataIndex: "notpassper",
         key: "notpassper",
+        width: 120,
         sorter: (a, b) => a.notpassper - b.notpassper,
         scopedSlots: { customRender: "notpassper" },
     },
@@ -398,5 +396,4 @@ export const cityArr = [
     { name: "辽宁", id: 23 },
     { name: "内蒙古", id: 24 },
     { name: "山西", id: 25 },
-
 ];

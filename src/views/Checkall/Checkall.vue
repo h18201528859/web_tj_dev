@@ -79,16 +79,6 @@
             <a-radio-button value="0"> 数量 </a-radio-button>
             <a-radio-button value="1"> 金额 </a-radio-button>
           </a-radio-group>
-          <a-select
-            class="select"
-            :default-value="['elec', 'tower', 'rent']"
-            mode="multiple"
-            style="width: 240px"
-          >
-            <a-select-option value="elec"> 电费 </a-select-option>
-            <a-select-option value="tower"> 铁塔 </a-select-option>
-            <a-select-option value="rent"> 租费 </a-select-option>
-          </a-select>
           <a-button class="button" @click="JumpToDetail" type="primary"
             >查看更多
           </a-button>
