@@ -220,7 +220,7 @@ export const checkdetailColumns = [
         title: "稽核类型",
         dataIndex: "type",
         key: "type",
-        width: 150,
+        width: 120,
         scopedSlots: { customRender: "type" },
         filters: [
             {
@@ -289,6 +289,7 @@ export const checkdetailColumns = [
     {
         title: "未通过数",
         dataIndex: "notpass_number",
+        width: 120,
         key: "notpass_number",
         sorter: (a, b) => a.notpass_number - b.notpass_number,
         scopedSlots: { customRender: "notpass" },
@@ -296,6 +297,7 @@ export const checkdetailColumns = [
     {
         title: "未通过率",
         dataIndex: "notpassper",
+        width: 120,
         key: "notpassper",
         sorter: (a, b) => a.notpassper - b.notpassper,
         scopedSlots: { customRender: "notpassper" },
