@@ -77,4 +77,10 @@ export default {
             return timeParams;
         }
     },
+    transferNum(num = 0) {
+        if (typeof num === "string") {
+            num = Number(num);
+        }
+        return num.toLocaleString();
+    },
 };

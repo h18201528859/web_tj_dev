@@ -237,7 +237,7 @@ export default {
       lineChart.setOption(this.linechartOptions);
       const piechart = this.$echarts.init(document.getElementById("piechart"));
       piechart.setOption(this.piechartOptions);
-      this.checkallPieNumber = this.headData.total_amount;
+      this.checkallPieNumber = util.transferNum(this.headData.total_amount);
       piechart.on("legendselectchanged", (options) => {
         let name = options.name;
         let selected = options.selected;
