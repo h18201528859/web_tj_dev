@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import util from "../../utils/utils";
 export default {
   name: "HeadItem",
   props: {
@@ -54,8 +55,8 @@ export default {
   watch: {
     currentData(newValue) {
       if (this.headTitle === "电费") {
-        this.upNumber = newValue.total_number;
-        this.downNumber = newValue.total_amount;
+        this.upNumber = util.transferNum(newValue.total_number);
+        this.downNumber = util.transferNum(newValue.total_amount);
       } else {
         this.upNumber = 0;
         this.downNumber = 0;
@@ -64,8 +65,8 @@ export default {
   },
   data() {
     return {
-      upNumber: this.currentData.total_number,
-      downNumber: this.currentData.total_amount,
+      upNumber: util.transferNum(Number(this.currentData.total_number)),
+      downNumber: util.transferNum(Number(this.currentData.total_amount)),
     };
   },
   methods: {

@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import util from "../../utils/utils";
 export default {
   name: "HeadItem",
   props: {
@@ -64,12 +65,12 @@ export default {
       this.currentData = newValue;
       this.upElecfeeNumber =
         this.type === "amount"
-          ? newValue.total_amount.total
-          : newValue.total_number.total;
+          ? util.transferNum(newValue.total_amount.total)
+          : util.transferNum(newValue.total_number.total);
       this.downElecfeeNumber =
         this.type === "amount"
-          ? newValue.total_amount.month
-          : newValue.total_number.month;
+          ? util.transferNum(newValue.total_amount.month)
+          : util.transferNum(newValue.total_number.month);
     },
   },
   data() {
