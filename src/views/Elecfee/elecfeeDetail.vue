@@ -80,9 +80,10 @@
               </a-select>
             </div>
           </a-form-item>
-          <a-form-item label="稽核得分" default-value="vertical">
+          <a-form-item label="稽核得分" default-value="vertical" >
             <a-radio-group
               v-decorator="['radio-frationType', { initialValue: 'a' }]"
+              @change="alternate"
             >
               <a-radio value="a"> 全部 </a-radio>
               <a-radio value="b" class="radio-fraction">
@@ -107,7 +108,7 @@
                   placeholder=""
                   class="radio-ipt"
                   style="margin-left:20px"
-                /><span class="line-radio">-</span><a-input-number placeholder="" class="radio-ipt" />分
+                /><span class="line-radio">-</span><a-input-number placeholder="" class="radio-ipt" style="margin-right:9px" />分
               </a-radio>
             </a-radio-group>
           </a-form-item>
@@ -144,11 +145,11 @@
             </a-radio-group>
           </a-form-item>
         </div>
-        <a-form-item class="btn-wrap" v-if="extendIcon == 'up'">
+        <a-form-item class="btn-wrap" v-if="extendIcon == 'down'">
           <a-button class="reset-btn" @click="cancelHandle"> 清空 </a-button>
           <a-button type="primary" html-type="submit"> 搜索 </a-button>
         </a-form-item>
-        <a-form-item class="btn-wrap" v-if="extendIcon == 'down'">
+        <a-form-item class="btn-wrap" v-if="extendIcon == 'up'">
           <a-button type="primary" html-type="submit" class="serach-btn">
             搜索
           </a-button>
@@ -231,7 +232,7 @@ export default {
   data() {
    
     return {
-      plainOptions: ["电费(缴费单)", "电费(电表图)", "铁塔服务费", "租费"],
+      plainOptions: ["电费(缴费单)", "电费(电表图)"],
       checkallPieNumber: 0,
       checkdetailTableColumns: efecfeeTabColumns,
       checkedList: [],
@@ -308,6 +309,10 @@ export default {
 
     onChangeDate(date, dateString) {
       console.log(date, dateString);
+    },
+    alternate(e){
+       console.log('radio checked', e.target.value);
+       // this.form.setFieldsValue('radio-childFrationType',  { initialValue: ''})
     },
     handleChange(value) {
       console.log(`selected ${value}`);

@@ -121,7 +121,7 @@ export const piechartOptions = {
                 }
             }
             const percent = ((target / total) * 100).toFixed(1);
-            let toolpitStr = `<div style='border:none;padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国电费${name.name}缴纳单 ${fraction}分 </div></div>`;
+            let toolpitStr = `<div style='border:none;padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国电费缴纳单 ${fraction}分 </div></div>`;
             return toolpitStr;
         },
     },
@@ -288,21 +288,7 @@ export const efecfeeTabColumns = [
         key: "type",
         width: 120,
         scopedSlots: { customRender: "type" },
-        filters: [
-            {
-                text: "电费",
-                value: "电费",
-            },
-            {
-                text: "铁塔服务费",
-                value: "铁塔服务费",
-            },
-            {
-                text: "租费",
-                value: "租费",
-            },
-        ],
-        onFilter: (value, record) => record.type.indexOf(value) === 0,
+       
         // ellipsis: true,
     },
     {

@@ -56,7 +56,7 @@
             <p class="pieCenter-title">稽核量</p>
             <p class="pieCenter-number">{{ checkallPieNumber }}</p>
           </div>
-          <div id="piechart" style="height: 100%; width: 80%"></div>
+          <div id="piechart" style="height: 100%; width: 100%"></div>
         </div>
       </div>
       <div v-if="cityId == '-1'">
@@ -297,12 +297,15 @@ export default {
         this.checkdetailTableColumns[1].title = "省份";
         const pieColor =   ["#5B8FF9", "#5AD8A6", "#E8684A", "#F6BD16"]
         this.pieEchartsColor(pieColor)
+        setTimeout(()=>{
+          location.reload()
+        },0)
       }
     },
     detailTotal(newValue) {
       this.totalPage = newValue;
     },
-    elecfeeTable(val){
+    elecfeeTable(){
       this.drawLines()
     }
   },
@@ -549,25 +552,24 @@ export default {
     pieEchartsColor(colorPie){
         const piechart = this.$echarts.init(document.getElementById("piechart"));
        
-         this.piechartOptions.tooltip.formatter = (name) => {
-          const pieData = piechartOptions.series[0].data;
-          let toolpitColor = "";
-          let target = 0;
-          let total = 0;
-          let fraction = "";
-          for (let i = 0; i < pieData.length; i++) {
-            total += pieData[i].value;
-            if (pieData[i].name === name.name) {
-              toolpitColor = colorPie;
-              target = name.value;
-              fraction = pieData[i].fraction;
-            }else{
-               toolpitColor = colorPie;
+         this.piechartOptions.legend.formatter = (name) => {
+        const pieData = piechartOptions.series[0].data;
+            let total = 0;
+            let target = 0;
+            let legendArr = [];
+            let fraction = "";
+            for (let i = 0; i < pieData.length; i++) {
+                total += pieData[i].value;
+                if (pieData[i].name === name) {
+                    target = pieData[i].value;
+                    fraction = pieData[i].fraction;
+                }
             }
-          }
-          const percent = ((target / total) * 100).toFixed(1);
-          let toolpitStr = `<div style='padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国电费缴纳单 ${fraction}分 </div></div>`;
-          return toolpitStr;
+            let percent = ((target / total) * 100).toFixed(1);
+           
+            legendArr.push(`${fraction}分   ${target}条  ${percent}%`);
+            console.log('999')
+            return legendArr;
         };
        const  pieData = [
           { value: 2587, name: "电费", fraction: "9-10", itemStyle:{normal:{color:''}}},
@@ -578,7 +580,28 @@ export default {
         pieData.map((item,index)=>{
           item.itemStyle.normal.color = colorPie[index]
         })
-          // this.piechartOptions.series[0].itemStyle.color =colorPie;
+        this.piechartOptions.tooltip.formatter = (name) => {
+          const pieData = piechartOptions.series[0].data;
+          let toolpitColor = "";
+          let target = 0;
+          let total = 0;
+          let fraction = "";
+          for (let i = 0; i < pieData.length; i++) {
+            total += pieData[i].value;
+            if (pieData[i].name === name.name) {
+              toolpitColor =colorPie[i];
+              target = name.value;
+              fraction = pieData[i].fraction;
+            }
+          }
+          const percent = ((target / total) * 100).toFixed(1);
+          let toolpitStr = `<div style='padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国电费缴纳单 ${fraction}分 </div></div>`;
+          return toolpitStr;
+        };
+       
+        
+      
+          
            this.piechartOptions.series[0].color =colorPie
         this.piechartOptions.series[0].data = pieData;
        piechart.setOption(this.piechartOptions);
@@ -640,11 +663,11 @@ export default {
       const lineChart = this.$echarts.init(
         document.getElementById("linechart")
       );
-      const xAxisData = [],rerLineData = [];
+      const xAxisData = [];
       for(let i=0;i<this.elecfeeTable.length;i++){
          const name = this.elecfeeTable[i].prv_name.length>=3?this.elecfeeTable[i].prv_name.slice(0,2):this.elecfeeTable[i].prv_name;
           xAxisData.push(name)
-         // rerLineData.push()
+       
       }
 
         this.linechartOptions.xAxis.data = xAxisData

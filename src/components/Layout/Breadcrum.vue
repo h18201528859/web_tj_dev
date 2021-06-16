@@ -26,7 +26,7 @@
     </a-breadcrumb>
     <span class="city-wrap" v-if="cityId !== '-1'">
       <a-select
-        :defaultValue="cityId !== '-1' && provinceCode[cityId].name"
+        :defaultValue="cityId !== '-1' && elecfeeTable[cityId].prv_name"
         style="width: 120px"
         @change="handleChange"
       >
