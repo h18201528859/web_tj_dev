@@ -34,7 +34,7 @@
         </div>
       </div>
       <div class="tabs-box">
-        <a-tabs default-active-key="1" @change="callback">
+        <a-tabs default-active-key="tabsKey" @change="callback">
           <a-tab-pane key="1" tab="缴费单"> </a-tab-pane>
           <a-tab-pane key="2" tab="电表图" force-render> </a-tab-pane>
         </a-tabs>
@@ -188,7 +188,12 @@ export default {
     } = this.$route;
     if (name == "elecfeecitydetail") {
       setTimeout(() => {
-        const lineColor = ["rgba(119,114,241,0.85)"];
+        let lineColor;
+         if(+this.tabsKey==2){
+            lineColor = ["rgba(71, 199, 253, 0.85)"]
+          }else{
+            lineColor = ["rgba(119,114,241,0.85)"];
+          }
         this.echartsColors(lineColor);
         const cityName = this.elecfeeTable[cityId].prv_name;
         this.getUpdateCityTitle(cityName, countryTitle);
@@ -221,7 +226,8 @@ export default {
     return {
       HeadCardItems,
       provinceCode,
-      lineData: [930, 780, 720, 60, 320, 420, 530, 280, 420, 500],
+      lineData: [],
+      tabsKey:'1',
       pieData: [
         {
           value: 2587,
@@ -248,32 +254,7 @@ export default {
           itemStyle: { normal: { color: "#F6BD16" } },
         },
       ],
-      cityFilterData: {
-        北京: {
-          value: 930,
-          ninetoten: "146",
-          eightto9: "14,156",
-          sixto8: "15,156",
-          zerotosix: "134,156",
-          total: 100,
-        },
-        上海: {
-          value: 780,
-          ninetoten: "146",
-          eightto9: "14,156",
-          sixto8: "15,156",
-          zerotosix: "134,156",
-          total: 3516,
-        },
-        广州: {
-          value: 720,
-          ninetoten: "146",
-          eightto9: "14,156",
-          sixto8: "15,156",
-          zerotosix: "134,156",
-          total: 1200,
-        },
-      },
+      cityFilterData: {},
       linechartOptions,
       piechartOptions,
       checkallPieNumber: 0,
@@ -305,7 +286,14 @@ export default {
           this.getUpdateCityTitle({ cityName, countryTitle });
           this.updateCityId(cityId);
           this.checkdetailTableColumns[1].title = "地市";
-          const lineColor = ["rgba(119,114,241,0.85)"];
+          let lineColor;
+          console.log(this.tabsKey,'dssdsd')
+          if(+this.tabsKey==2){
+            lineColor = ["rgba(71, 199, 253, 0.85)"]
+          }else{
+            lineColor = ["rgba(119,114,241,0.85)"];
+           }
+         
           const pieColor = [
             "rgba(119, 114, 241, 0.85)",
             "rgba(206, 119, 251, 0.85)",
@@ -319,7 +307,13 @@ export default {
       } else {
         this.updateCityId("-1");
         this.getUpdateCityTitle("");
-        const lineColorfee = ["rgba(91, 143, 249, 0.85)"];
+         let lineColorfee;
+          if(+this.tabsKey==2){
+            lineColorfee = ["rgba(71, 199, 253, 0.85)"]
+          }else{
+           lineColorfee = ["rgba(91, 143, 249, 0.85)"];
+          }
+          console.log('dssdjjs+++++++++d',this.tabsKey,lineColorfee)
         this.echartsColors(lineColorfee);
         this.checkdetailTableColumns[1].title = "省份";
         const pieColor = ["#5B8FF9", "#5AD8A6", "#E8684A", "#F6BD16"];
@@ -329,7 +323,24 @@ export default {
     detailTotal(newValue) {
       this.totalPage = newValue;
     },
-    elecfeeTable(){
+   elecfeeTable(data){
+      
+      let desciplineData = [],param = {},name;
+      data.forEach((item)=>{
+           name = item.prv_name.length>=3?item.prv_name.slice(0,2):item.prv_name  
+           param[name] = {
+              value: item.total_amount,
+              ninetoten: item.ninetoten,
+              eightto9: item.eighttonine,
+              sixto8:item.sixtoeight,
+              zerotosix: item.zerotosix,
+              total: item.total_amount,
+           }      
+         desciplineData.push(item.total_amount)
+      })
+      this.lineData  = desciplineData
+      
+       this.cityFilterData = param
       this.drawLines()
     }
   },
@@ -344,6 +355,7 @@ export default {
     ]),
     callback(key) {
       this.updateType(key);
+      this.tabsKey = key;
       const lineChart = this.$echarts.init(
         document.getElementById("linechart")
       );
@@ -384,32 +396,7 @@ export default {
         ];
         colorSet.mainSet = ["rgba(71, 199, 253, 0.85)"];
         colorSet.mainPieSet = ["#317CFF", "#47C7FD", "#F6AE16", "#5AD8A6"];
-        this.cityFilterData = {
-          北京: {
-            value: 860,
-            ninetoten: "146",
-            eightto9: "14,156",
-            sixto8: "15,156",
-            zerotosix: "134,156",
-            total: 1500,
-          },
-          上海: {
-            value: 370,
-            ninetoten: "146",
-            eightto9: "14,156",
-            sixto8: "15,156",
-            zerotosix: "134,156",
-            total: 3056,
-          },
-          广州: {
-            value: 680,
-            ninetoten: "146",
-            eightto9: "14,156",
-            sixto8: "15,156",
-            zerotosix: "134,156",
-            total: 1250,
-          },
-        };
+        
         if (this.$route.name !== "elecfee") {
           this.elecfeeImgCoulmns[1].title = "地市";
         }
@@ -499,15 +486,13 @@ export default {
         colorSet.mainPieSet = ["#5B8FF9", "#5AD8A6", "#E8684A", "#F6BD16"];
         if (this.$route.name == "elecfee") {
           colorSet.mainSet = ["rgba(91, 143, 249, 0.85)"];
-          //  this.piechartOptions.series[0].itemStyle.color = function (params) {
-          //     let colorList = colorSet.mainPieSet;
-          //     return colorList[params.dataIndex];
-          //   };
+        
           pieData.map((item, index) => {
             item.itemStyle.normal.color = colorSet.mainPieSet[index];
           });
         } else {
-          colorSet.mainSet = ["rgba(119,114,241,0.85)"];
+          
+          colorSet.mainSet = ["rgba(71, 199, 253, 0.85)"]// ["rgba(119,114,241,0.85)"];//["rgba(91, 143, 249, 0.85)"] 
           const colornew = [
             "rgba(119, 114, 241, 0.85)",
             "rgba(206, 119, 251, 0.85)",
@@ -609,6 +594,7 @@ export default {
         return toolpitArr;
       };
       this.linechartOptions.series[0].itemStyle.color = colorMain;
+      console.log('+++++++++++++++++++++',colorMain)
       lineChart.setOption(this.linechartOptions);
     },
     pieEchartsColor(colorPie){
@@ -700,9 +686,7 @@ export default {
       util.jumpTop();
     },
     handleHeadData() {
-      this.linechartOptions.series[0].data = this.lineData;
-      this.piechartOptions.series[0].data = this.pieData;
-      this.linechartOptions.series[0].cityFilterData = this.cityFilterData;
+   
 
       this.getHeadData();
     },
@@ -733,7 +717,25 @@ export default {
         xAxisData.push(name);
         // rerLineData.push()
       }
-
+       const {
+        name = "elecfee",
+        params: { cityId = "-1" },
+      } = this.$route;
+      let lineColor;
+      if (name == "elecfeecitydetail" && cityId !== "-1") {
+       
+        //  if(+this.tabsKey==1){
+            lineColor = ["rgba(71, 199, 253, 0.85)"]
+          // }else{
+          //  lineColor = ["rgba(91, 143, 249, 0.85)"];
+          // }
+      }else{
+         lineColor =["rgba(71, 199, 253, 0.85)"];
+      }
+      this.linechartOptions.series[0].data = this.lineData;
+      this.piechartOptions.series[0].data = this.pieData;
+      this.linechartOptions.series[0].cityFilterData = this.cityFilterData;
+       this.linechartOptions.series[0].itemStyle.color = lineColor;
       this.linechartOptions.xAxis.data = xAxisData;
       lineChart.setOption(this.linechartOptions);
       const piechart = this.$echarts.init(document.getElementById("piechart"));

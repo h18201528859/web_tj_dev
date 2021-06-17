@@ -113,7 +113,7 @@
             </a-radio-group>
           </a-form-item>
           <a-form-item label="稽核时间" default-value="vertical">
-            <a-radio-group v-decorator="['radio-time', { initialValue: 'a' }]">
+            <a-radio-group v-decorator="['radio-time', { initialValue: 'a' }]" @change="transferChange">
               <a-radio value="a"> 不限 </a-radio>
               <a-radio value="b" class="radio-time">
                 时间段
@@ -311,8 +311,18 @@ export default {
       console.log(date, dateString);
     },
     alternate(e){
-       console.log('radio checked', e.target.value);
-       // this.form.setFieldsValue('radio-childFrationType',  { initialValue: ''})
+      if(e.target.value!=='b'){
+        this.form.setFieldsValue({
+            'radio-childFrationType': ''
+          })
+       }
+    },
+    transferChange(e){
+      if(e.target.value!=='b'){
+        this.form.setFieldsValue({
+            'radio-childTimeType': ''
+          })
+       }
     },
     handleChange(value) {
       console.log(`selected ${value}`);
