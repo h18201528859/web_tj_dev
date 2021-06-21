@@ -45,7 +45,7 @@
                 <a-radio value="a"> 全部省份 </a-radio>
                 <a-radio value="b"> 自选省份 </a-radio>
               </a-radio-group>
-               <a-select
+               <!-- <a-select
                 mode="multiple"
                 :size="size"
                 placeholder="请输入或选择"
@@ -57,6 +57,25 @@
                  <a-select-option v-for="i in cityArr" :key="i.id" :value="i.id">
                   {{ i.name }}
                 </a-select-option>
+              </a-select> -->
+              <a-select :default-value="[]"  mode="multiple"
+                :size="size"
+                style="width: 200px" @change="handleChange">
+                <a-select-opt-group>
+                  <span slot="label">直辖市</span>
+                   <a-select-option v-for="i in cityArr" :key="i.id" :value="i.id">
+                      {{ i.name }}
+                    </a-select-option>
+                 
+                </a-select-opt-group>
+                <a-select-opt-group label="省份">
+                  <a-select-option value="山东省">
+                    山东省
+                  </a-select-option>
+                  <a-select-option value="河南省">
+                    河南省
+                  </a-select-option>
+                </a-select-opt-group>
               </a-select>
             </div>
           </a-form-item>

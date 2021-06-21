@@ -359,6 +359,14 @@ export default {
       const lineChart = this.$echarts.init(
         document.getElementById("linechart")
       );
+      const boxWrap =  document.getElementById("linechart")
+      const childLine = boxWrap.getElementsByTagName('div')[0]
+       const canvasBox = boxWrap.getElementsByTagName('canvas')[0]
+      console.log(childLine)
+      boxWrap.style.width="100%"
+      childLine.style.width="1000"
+      canvasBox.style.width="1000"
+    // console.log(canvasBox.setAttribute('width','100%'))
       const piechart = this.$echarts.init(document.getElementById("piechart"));
       const pieCharts = document.querySelector(".pie-chart");
       let lineData = [],
@@ -594,7 +602,6 @@ export default {
         return toolpitArr;
       };
       this.linechartOptions.series[0].itemStyle.color = colorMain;
-      console.log('+++++++++++++++++++++',colorMain)
       lineChart.setOption(this.linechartOptions);
     },
     pieEchartsColor(colorPie){
@@ -723,12 +730,7 @@ export default {
       } = this.$route;
       let lineColor;
       if (name == "elecfeecitydetail" && cityId !== "-1") {
-       
-        //  if(+this.tabsKey==1){
             lineColor = ["rgba(71, 199, 253, 0.85)"]
-          // }else{
-          //  lineColor = ["rgba(91, 143, 249, 0.85)"];
-          // }
       }else{
          lineColor =["rgba(71, 199, 253, 0.85)"];
       }
