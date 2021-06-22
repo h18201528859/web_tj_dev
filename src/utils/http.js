@@ -17,7 +17,7 @@ export function axiospost(url, data, callback) {
                 headers: getHeaders(),
             })
             .then((res) => {
-                if (+res.data.ret_code === 10000) {
+                if (+res.data.ret_code === 0) {
                     resolve(res.data);
                 } else {
                     message.error("网络错误，请稍后重试");

@@ -16,11 +16,11 @@
     <div class="right">
       <div class="item">
         <span class="number">{{ upNumber }}</span>
-        <span class="count">单</span>
+        <span class="count">万单</span>
       </div>
       <div class="item">
         <span class="number">{{ downNumber }}</span>
-        <span class="count">元</span>
+        <span class="count">亿元</span>
       </div>
     </div>
   </div>
@@ -55,8 +55,10 @@ export default {
   watch: {
     currentData(newValue) {
       if (this.headTitle === "电费") {
-        this.upNumber = util.transferNum(newValue.total_number);
-        this.downNumber = util.transferNum(newValue.total_amount);
+        this.upNumber = util.transferNum(Number(newValue.total_number) / 10000);
+        this.downNumber = util.transferNum(
+          Number(newValue.total_amount) / 100000000
+        );
       } else {
         this.upNumber = 0;
         this.downNumber = 0;
@@ -65,8 +67,10 @@ export default {
   },
   data() {
     return {
-      upNumber: util.transferNum(Number(this.currentData.total_number)),
-      downNumber: util.transferNum(Number(this.currentData.total_amount)),
+      upNumber: util.transferNum(Number(this.currentData.total_number) / 10000),
+      downNumber: util.transferNum(
+        Number(this.currentData.total_amount) / 100000000
+      ),
     };
   },
   methods: {

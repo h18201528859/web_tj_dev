@@ -5,7 +5,7 @@ faker.locale = "zh_CN";
 module.exports = {
     getCheckallAmout: {
         ret_message: "请求成功",
-        ret_code: "10000",
+        ret_code: "0",
         ret_data: {
             total_amount: faker.random.number(),
             total_number: faker.random.number(),
@@ -13,7 +13,7 @@ module.exports = {
     },
     getElecSum: {
         ret_message: "请求成功",
-        ret_code: "10000",
+        ret_code: "0",
         ret_data: {
             total_amount: {
                 total: faker.random.number(),
@@ -27,7 +27,7 @@ module.exports = {
     },
     getStatistics: {
         ret_message: "请求成功",
-        ret_code: "10000",
+        ret_code: "0",
         ret_data: {
             all_data: {
                 total_amount: faker.random.number(),
@@ -54,7 +54,7 @@ module.exports = {
     },
     getImageStatistics: {
         ret_message: "请求成功",
-        ret_code: "10000",
+        ret_code: "0",
         ret_data: {
             all_data: {
                 total_amount: faker.random.number(),
