@@ -8,6 +8,7 @@ module.exports = {
     "/POST/Payment/GetStatistics": "/getStatistics",
     "/POST/Payment/GetImageStatistics": "/getImageStatistics",
     "/POST/Payment/GetElecSum": "/getElecSum",
+    "/POST/Payment/GetElecPrvSum": "/getElecPrvSum",
 
     "/api/*": "/$1",
     "/*/*": "/$1_$2",

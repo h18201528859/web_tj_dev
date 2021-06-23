@@ -39,7 +39,7 @@ export default {
     },
     allText: {
       type: String,
-      default: "总量/单",
+      default: "总量/亿单",
     },
     monthText: {
       type: String,
@@ -65,12 +65,12 @@ export default {
       this.currentData = newValue;
       this.upElecfeeNumber =
         this.type === "amount"
-          ? util.transferNum(newValue.total_amount.total)
-          : util.transferNum(newValue.total_number.total);
+          ? util.transferNum(newValue.total_amount / 100000000)
+          : util.transferNum(newValue.total_number / 10000);
       this.downElecfeeNumber =
         this.type === "amount"
-          ? util.transferNum(newValue.total_amount.month)
-          : util.transferNum(newValue.total_number.month);
+          ? util.transferNum(newValue.month_amount / 100000000)
+          : util.transferNum(newValue.month_number);
     },
   },
   data() {

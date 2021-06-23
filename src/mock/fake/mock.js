@@ -5,4 +5,5 @@ module.exports = {
     getImageStatistics: fakeData.getImageStatistics,
     getCheckallAmout: fakeData.getCheckallAmout,
     getElecSum: fakeData.getElecSum,
+    getElecPrvSum: fakeData.getElecPrvSum,
 };

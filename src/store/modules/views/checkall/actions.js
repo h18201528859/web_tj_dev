@@ -5,7 +5,7 @@ const actions = {
     getHeadData({ commit }, timeRange) {
         axiospost(API.getSum, timeRange).then(
             (res) => {
-                if (+res.ret_code === 10000) {
+                if (+res.ret_code === 0) {
                     commit("updateHeadData", res.ret_data);
                     commit("updateCharts", res.ret_data);
                 } else {
@@ -28,9 +28,12 @@ const actions = {
         console.log(targetParams, "===>请求参数");
         axiospost(API.getStatistics, targetParams).then(
             (res) => {
-                if (+res.ret_code === 10000) {
+                if (+res.ret_code === 0) {
                     commit("updateCheckAllTable", [res.ret_data.all_data]);
-                    commit("updateCheckAllDetail", res.ret_data.prv_data);
+                    commit("updateCheckAllDetail", {
+                        data: res.ret_data.prv_data,
+                        length: res.ret_data.prv_data_len,
+                    });
                     setTimeout(() => {
                         commit("updateDetailTableLoading", false);
                     }, 300);

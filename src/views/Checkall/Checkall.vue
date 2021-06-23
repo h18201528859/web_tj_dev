@@ -34,7 +34,7 @@
             <p>各类稽核数量对比</p>
           </div>
           <div class="pieCenter">
-            <p class="pieCenter-title">稽核总量 (万)</p>
+            <p class="pieCenter-title">稽核总量 (亿)</p>
             <p class="pieCenter-number">{{ checkallPieNumber }}</p>
           </div>
           <div id="piechart" style="height: 100%; width: 100%"></div>
@@ -57,15 +57,57 @@
           <template slot="type">
             <span>电费</span>
           </template>
-          <template slot="notpass" slot-scope="text">
-            <span class="red">{{ text }}</span>
-          </template>
-          <template slot="notpassper" slot-scope="text, all">
+
+          <template slot="ninetoten" slot-scope="text, all">
             <span>{{
-              `${(
-                (Number(all.notpass_number) / Number(all.total_amount)) *
-                100
-              ).toFixed(2)}%`
+              all.total_number
+                ? `${(text / 10000).toFixed(2)}万`
+                : `${(text / 100000000).toFixed(2)}亿`
+            }}</span>
+          </template>
+          <template slot="eighttonine" slot-scope="text, all">
+            <span>{{
+              all.total_number
+                ? `${(text / 10000).toFixed(2)}万`
+                : `${(text / 100000000).toFixed(2)}亿`
+            }}</span>
+          </template>
+          <template slot="sixtoeight" slot-scope="text, all">
+            <span>{{
+              all.total_number
+                ? `${(text / 10000).toFixed(2)}万`
+                : `${(text / 100000000).toFixed(2)}亿`
+            }}</span>
+          </template>
+
+          <template slot="zerotosix" slot-scope="text, all">
+            <span>{{
+              all.total_number
+                ? `${(text / 10000).toFixed(2)}万`
+                : `${(text / 100000000).toFixed(2)}亿`
+            }}</span>
+          </template>
+
+          <template slot="pass_number" slot-scope="text, all">
+            <span>{{
+              all.pass_number
+                ? `${(text / 10000).toFixed(2)}万`
+                : `${(all.pass_amount / 100000000).toFixed(2)}亿`
+            }}</span>
+          </template>
+          <template slot="notpass_number" slot-scope="text, all">
+            <span>{{
+              all.notpass_number
+                ? `${(text / 10000).toFixed(2)}万`
+                : `${(all.notpass_amount / 100000000).toFixed(2)}亿`
+            }}</span>
+          </template>
+
+          <template slot="total_number" slot-scope="text, all">
+            <span>{{
+              all.total_number
+                ? `${(text / 10000).toFixed(2)}万`
+                : `${(all.total_amount / 100000000).toFixed(2)}亿`
             }}</span>
           </template>
         </a-table>
@@ -98,15 +140,52 @@
           <template slot="type">
             <span>电费</span>
           </template>
-          <template slot="notpass" slot-scope="text">
-            <span class="red">{{ text }}</span>
-          </template>
-          <template slot="notpassper" slot-scope="text, all">
+          <template slot="ninetoten" slot-scope="text, all">
             <span>{{
-              `${(
-                (Number(all.notpass_number) / Number(all.total_amount)) *
-                100
-              ).toFixed(2)}%`
+              all.total_number
+                ? `${(text / 10000).toFixed(2)}万`
+                : `${(text / 100000000).toFixed(2)}亿`
+            }}</span>
+          </template>
+          <template slot="eighttonine" slot-scope="text, all">
+            <span>{{
+              all.total_number
+                ? `${(text / 10000).toFixed(2)}万`
+                : `${(text / 100000000).toFixed(2)}亿`
+            }}</span>
+          </template>
+          <template slot="sixtoeight" slot-scope="text, all">
+            <span>{{
+              all.total_number
+                ? `${(text / 10000).toFixed(2)}万`
+                : `${(text / 100000000).toFixed(2)}亿`
+            }}</span>
+          </template>
+
+          <template slot="zerotosix" slot-scope="text, all">
+            <span>{{
+              all.total_number
+                ? `${(text / 10000).toFixed(2)}万`
+                : `${(text / 100000000).toFixed(2)}亿`
+            }}</span>
+          </template>
+          <template slot="total_number" slot-scope="text, all">
+            <span>{{
+              all.total_number
+                ? `${(text / 10000).toFixed(2)}万`
+                : `${(all.total_amount / 100000000).toFixed(2)}亿`
+            }}</span>
+          </template>
+          <template slot="pass_number" slot-scope="text, all">
+            <span>{{
+              all.pass_number
+                ? `${(text / 10000).toFixed(2)}万`
+                : `${(all.pass_amount / 100000000).toFixed(2)}亿`
+            }}</span>
+          </template>
+          <template slot="notpass_number" slot-scope="text, all">
+            <span class="red">{{
+              text || `${(all.notpass_amount / 10000).toFixed(2)}万`
             }}</span>
           </template>
         </a-table>
@@ -237,7 +316,9 @@ export default {
       lineChart.setOption(this.linechartOptions);
       const piechart = this.$echarts.init(document.getElementById("piechart"));
       piechart.setOption(this.piechartOptions);
-      this.checkallPieNumber = util.transferNum(this.headData.total_amount);
+      this.checkallPieNumber = util.transferNum(
+        Number(this.headData.total_amount) / 100000000
+      );
       piechart.on("legendselectchanged", (options) => {
         let name = options.name;
         let selected = options.selected;
@@ -259,13 +340,13 @@ export default {
     handleTableData(params) {
       const paramObj = Object.assign(this.checkallParams, params);
       this.getCheckallTableData(paramObj);
-      this.totalPage = this.checkallDetail.length;
+      this.totalPage = this.detailTotal;
     },
     handleDetailPagesize(pageSize) {
-      this.handleTableData({ page: 1, pageSize: +pageSize });
+      this.handleTableData({ page: 1, page_size: +pageSize });
     },
     handlePaginationChange(page, pageSize) {
-      this.handleTableData({ page: +page, pageSize: +pageSize });
+      this.handleTableData({ page: +page, page_size: +pageSize });
     },
   },
 };

@@ -3,15 +3,16 @@ const mutations = {
         state.headData = data;
     },
     updateElecfeeTable(state, data) {
-        state.elecfeeTable = data;
-        state.detailTotal = data.length;
+        state.elecfeeTable = data.data;
+        state.detailTotal = data.total;
     },
-    updateElecfeeAllTable(state, data) {
-        state.checkElecfeeAllTable = data;
+    updatePrvTable(state, data) {
+        state.provinceTable = data.data;
+        state.detailTotal = data.total;
     },
     updateCurrentPage(state, data) {
         state.detailPage = data.page;
-        state.detailPagesize = data.pageSize;
+        state.detailPagesize = data.page_size;
     },
     updateDetailTableLoading(state, loading) {
         state.detailTableLoading = loading;
@@ -23,9 +24,9 @@ const mutations = {
         state.currentType = data;
     },
     updateCityTitle(state, oParams) {
-        let initCityTitle,oData ;
-        console.log('dssdfdfdkgfkgf',oParams)
-        if(typeof oParams == 'string'){
+        let initCityTitle, oData;
+        console.log("dssdfdfdkgfkgf", oParams);
+        if (typeof oParams == "string") {
             initCityTitle = {
                 surveyTitle: "电费稽核概况",
                 provinceTitle: "各省缴费单金额统计TOP10",
@@ -44,9 +45,9 @@ const mutations = {
                 scoreTitle,
                 tabProvinceTitle: oParams + tabProvinceTitle,
             };
-        }else{
-            console.log(oParams,'oParams')
-            initCityTitle = oParams.countryTitle
+        } else {
+            console.log(oParams, "oParams");
+            initCityTitle = oParams.countryTitle;
             const {
                 surveyTitle,
                 provinceTitle,

@@ -13,7 +13,9 @@ const state = {
         scope: "1",
         object: "0",
         page: 1,
-        pageSize: 10,
+        page_size: 10,
+        prv_array: "",
+        score: "1,2,3,4",
     },
     checkallDetail: [], //稽核详情表格数据
     detailTotal: 0, //详情表格全部记录条数

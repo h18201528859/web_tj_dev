@@ -45,7 +45,7 @@
                 <a-radio value="a"> 全部省份 </a-radio>
                 <a-radio value="b"> 自选省份 </a-radio>
               </a-radio-group>
-               <!-- <a-select
+              <!-- <a-select
                 mode="multiple"
                 :size="size"
                 placeholder="请输入或选择"
@@ -58,9 +58,13 @@
                   {{ i.name }}
                 </a-select-option>
               </a-select> -->
-              <a-select :default-value="[]"  mode="multiple"
+              <a-select
+                :default-value="[]"
+                mode="multiple"
                 :size="size"
-                style="width: 200px" @change="handleChange">
+                style="width: 200px"
+                @change="handleChange"
+              >
                 <a-select-opt-group>
                   <span slot="label">直辖市</span>
                    <a-select-option v-for="i in unitCityArr" :key="i.id" :value="i.id">
@@ -69,12 +73,8 @@
                  
                 </a-select-opt-group>
                 <a-select-opt-group label="省份">
-                  <a-select-option value="山东省">
-                    山东省
-                  </a-select-option>
-                  <a-select-option value="河南省">
-                    河南省
-                  </a-select-option>
+                  <a-select-option value="山东省"> 山东省 </a-select-option>
+                  <a-select-option value="河南省"> 河南省 </a-select-option>
                 </a-select-opt-group>
               </a-select>
             </div>
@@ -99,7 +99,7 @@
               </a-select> -->
             </div>
           </a-form-item>
-          <a-form-item label="稽核得分" default-value="vertical" >
+          <a-form-item label="稽核得分" default-value="vertical">
             <a-radio-group
               v-decorator="['radio-frationType', { initialValue: 'a' }]"
               @change="alternate"
@@ -111,7 +111,12 @@
                   <a-radio-group
                     v-decorator="[
                       'radio-childFrationType',
-                      { initialValue: '',required: true, validator:this.valtorFranction,trigger: 'change'},
+                      {
+                        initialValue: '',
+                        required: true,
+                        validator: this.valtorFranction,
+                        trigger: 'change',
+                      },
                     ]"
                      @change="alternateRadio"
                   >
@@ -127,13 +132,21 @@
                 <a-input-number
                   placeholder=""
                   class="radio-ipt"
-                  style="margin-left:20px"
-                /><span class="line-radio">-</span><a-input-number placeholder="" class="radio-ipt" style="margin-right:9px" />分
+                  style="margin-left: 20px"
+                /><span class="line-radio">-</span
+                ><a-input-number
+                  placeholder=""
+                  class="radio-ipt"
+                  style="margin-right: 9px"
+                />分
               </a-radio>
             </a-radio-group>
           </a-form-item>
           <a-form-item label="稽核时间" default-value="vertical">
-            <a-radio-group v-decorator="['radio-time', { initialValue: 'a' }]" @change="transferChange">
+            <a-radio-group
+              v-decorator="['radio-time', { initialValue: 'a' }]"
+              @change="transferChange"
+            >
               <a-radio value="a"> 不限 </a-radio>
               <a-radio value="b" class="radio-time">
                 时间段
@@ -201,7 +214,7 @@
           <template slot="notpass" slot-scope="text">
             <span class="red">{{ text }}</span>
           </template>
-            <template slot="type">
+          <template slot="type">
             <span>电费</span>
           </template>
           <template slot="notpassper" slot-scope="text, all">
@@ -251,7 +264,6 @@ import { mapState, mapActions } from "vuex";
 import moment from "moment";
 export default {
   data() {
-   
     return {
       plainOptions: ["电费(缴费单)", "电费(电表图)"],
       checkallPieNumber: 0,
@@ -290,19 +302,19 @@ export default {
     this.getCheckallDetailData({ page: 1, pageSize: 10 });
     this.totalPage = this.checkallDetail.length;
   },
-  beforeRouteEnter(to, from, next){
-      const { name } = from  
-      next((vm)=>{
-         if(name=='elecfeecitydetail'){
-              vm.extendText ="收起";
-              vm.extendIcon = "up";
-              vm.cityFlag = false;
-          }else{
-                vm.extendText ="展开";
-              vm.extendIcon = "down";
-              vm.cityFlag = true;
-          }
-      })
+  beforeRouteEnter(to, from, next) {
+    const { name } = from;
+    next((vm) => {
+      if (name == "elecfeecitydetail") {
+        vm.extendText = "收起";
+        vm.extendIcon = "up";
+        vm.cityFlag = false;
+      } else {
+        vm.extendText = "展开";
+        vm.extendIcon = "down";
+        vm.cityFlag = true;
+      }
+    });
   },
   methods: {
     ...mapActions("checkdetail", ["getCheckallDetailData"]),
@@ -320,7 +332,7 @@ export default {
       });
     },
     popupScroll() {
-      console.log('popupScroll');
+      console.log("popupScroll");
     },
     normFile(e) {
       if (Array.isArray(e)) {
@@ -332,12 +344,12 @@ export default {
     onChangeDate(date, dateString) {
       console.log(date, dateString);
     },
-    alternate(e){
-      if(e.target.value!=='b'){
+    alternate(e) {
+      if (e.target.value !== "b") {
         this.form.setFieldsValue({
-            'radio-childFrationType': ''
-          })
-       }
+          "radio-childFrationType": "",
+        });
+      }
     },
     alterTimeHandle(){
        this.form.setFieldsValue({
@@ -352,17 +364,17 @@ export default {
     transferChange(e){
       if(e.target.value!=='b'){
         this.form.setFieldsValue({
-            'radio-childTimeType': ''
-          })
-       }
+          "radio-childTimeType": "",
+        });
+      }
     },
     handleChange(value) {
         this.form.setFieldsValue({
           'radio-provice': 'b'
         })
     },
-    valtorFranction  (rule,value,callback) {
-         callback();
+    valtorFranction(rule, value, callback) {
+      callback();
     },
     onChange(checkedList) {
       this.indeterminate =
@@ -392,8 +404,8 @@ export default {
       this.getCheckallDetailData({ page: +page, pageSize: +pageSize });
     },
     onOk(value) {
-      console.log('onOk: ', value);
-    }
+      console.log("onOk: ", value);
+    },
   },
 };
 </script>
@@ -538,15 +550,15 @@ export default {
     display: inline;
     .child-fraction {
       margin-left: 25px;
-      .ant-radio-button-wrapper{
-        padding:0 18px;
+      .ant-radio-button-wrapper {
+        padding: 0 18px;
       }
     }
-    .child-fraction-time{
-        margin-left: 25px;
+    .child-fraction-time {
+      margin-left: 25px;
     }
   }
-  
+
   .reset-btn {
     margin-right: 16px;
   }
@@ -568,8 +580,8 @@ export default {
   .radio-ipt {
     width: 80px;
   }
-  .line-radio{
-    padding:0 5px;
+  .line-radio {
+    padding: 0 5px;
   }
 }
 .serach-btn {
