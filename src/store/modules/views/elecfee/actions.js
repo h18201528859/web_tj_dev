@@ -2,9 +2,9 @@ import { axiospost } from "../../../../utils/http";
 import API from "../../../../const/apis";
 const actions = {
     getHeadData({ commit }) {
-        axiospost(API.getElecSum).then(
+        axiospost(API.getElecSum, {}).then(
             (res) => {
-                if (+res.ret_code === 10000) {
+                if (+res.ret_code === 0) {
                     commit("updateHeadData", res.ret_data);
                 } else {
                     console.error("数据错了");
@@ -29,7 +29,7 @@ const actions = {
         // console.log(targetParams, "===>请求参数");
         axiospost(API.getStatistics, targetParams).then(
             (res) => {
-                if (+res.ret_code === 10000) {
+                if (+res.ret_code === 0) {
                     commit("updateElecfeeAllTable", res.ret_data.all_data);
                     commit("updateElecfeeTable", res.ret_data.prv_data);
                     setTimeout(() => {
@@ -56,7 +56,7 @@ const actions = {
         commit("updateCurrentPage", targetParams);
         axiospost(API.getImageStatistics, targetParams).then(
             (res) => {
-                if (+res.ret_code === 10000) {
+                if (+res.ret_code === 0) {
                     commit("updateElecfeeAllTable", res.ret_data.all_data);
                     commit("updateElecfeeTable", res.ret_data.prv_data);
                     setTimeout(() => {

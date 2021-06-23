@@ -23,18 +23,22 @@ const provinceCode = [
     {
         name: "北京市",
         code: "BJ",
+        isProvince: true,
     },
     {
         name: "天津市",
         code: "TJ",
+        isProvince: true,
     },
     {
         name: "上海市",
         code: "SH",
+        isProvince: true,
     },
     {
         name: "重庆市",
         code: "CQ",
+        isProvince: true,
     },
     {
         name: "河北省",

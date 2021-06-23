@@ -10,14 +10,14 @@ export const HeadCardItems = [
         headTitle: "稽核报账单",
         type: "amount",
         icon: require("./icon/1.png"),
-        allText: "总量/单",
-        monthText: "当月/单",
+        allText: "总量/亿单",
+        monthText: "当月/亿单",
     },
     {
         headTitle: "稽核金额",
         type: "number",
         icon: require("./icon/2.png"),
-        allText: "总金额/元",
+        allText: "总金额/万元",
         monthText: "当月/元",
     },
 ];
@@ -288,7 +288,7 @@ export const efecfeeTabColumns = [
         key: "type",
         width: 120,
         scopedSlots: { customRender: "type" },
-       
+
         // ellipsis: true,
     },
     {
