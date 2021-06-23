@@ -11,6 +11,16 @@ module.exports = {
             total_number: faker.random.number(),
         },
     },
+    getElecPrvSum: {
+        ret_code: 0,
+        ret_message: "操作成功",
+        ret_data: {
+            total_amount: "7303039331.495939",
+            total_number: "3054242",
+            month_amount: "116347236.49983999",
+            month_number: "43976",
+        },
+    },
     getElecSum: {
         ret_message: "请求成功",
         ret_code: "0",

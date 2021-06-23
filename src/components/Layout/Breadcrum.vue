@@ -30,7 +30,11 @@
         style="width: 120px"
         @change="handleChange"
       >
-        <a-select-option v-for="(i,index) in provinceCode" :key="index" :value="index">
+        <a-select-option
+          v-for="(i, index) in provinceCode"
+          :key="index"
+          :value="index"
+        >
           {{ i.name }}
         </a-select-option>
       </a-select>
@@ -38,14 +42,14 @@
   </div>
 </template>
 <script>
-import { provinceCode } from '../../const/constant'
+import { provinceCode } from "../../const/constant";
 import { mapActions, mapState, mapMutations } from "vuex";
 export default {
   name: "Breadcrum",
   computed: {
     ...mapState({
       breadcrumbArr: (state) => state.breadcrum.breadcrumbArr,
-       elecfeeTable: (state) => state.elecfee.elecfeeTable,
+      elecfeeTable: (state) => state.elecfee.elecfeeTable,
       cityTitle: (state) => state.elecfee.cityTitle,
       cityId: (state) => state.elecfee.cityId,
     }),
@@ -53,34 +57,36 @@ export default {
   data() {
     return {
       routes: this.breadcrumbArr,
-      provinceCode
+      provinceCode,
     };
   },
-  mounted(){
-     const { params:{ cityId = '-1' },name = 'elecfee'} = this.$route;
-     if(name=="elecfeecitydetail"){
-       setTimeout(()=>{
+  mounted() {
+    const {
+      params: { cityId = "-1" },
+      name = "elecfee",
+    } = this.$route;
+    if (name == "elecfeecitydetail") {
+      setTimeout(() => {
         const cityName = this.provinceCode[cityId].name;
         this.updateCityId(cityId);
         this.getUpdateCityTitle(cityName);
         this.$store.commit("replaceBreadcrumb", [
-            {
-              path: "/elecfee/elecfeeCityDetail",
-              breadcrumbName: `${cityName}电费稽核`,
-            },
-          ]);
-       },1000);
-       
-     }
-  },
-  watch:{
-    '$route.path':function(){
-      const { name='elecfee' } = this.$route;
-      if(name!=='elecfeecitydetail'){
-         this.updateCityId('-1');
-         this.getUpdateCityTitle('');
-      }
+          {
+            path: "/elecfee/elecfeeCityDetail",
+            breadcrumbName: `${cityName}电费稽核`,
+          },
+        ]);
+      }, 1000);
     }
+  },
+  watch: {
+    "$route.path": function () {
+      const { name = "elecfee" } = this.$route;
+      if (name !== "elecfeecitydetail") {
+        this.updateCityId("-1");
+        this.getUpdateCityTitle("");
+      }
+    },
   },
   methods: {
     ...mapMutations("elecfee", ["updateCityId"]),
@@ -105,11 +111,11 @@ export default {
       this.$store.commit("setBreadcrumb", updateBread);
     },
     handleChange(key) {
-
+      // console.log(this.elecfeeTable, key);
       const cityName = this.elecfeeTable[key].prv_name;
       this.updateCityId(key);
       this.getUpdateCityTitle(cityName);
-        this.$store.commit("replaceBreadcrumb", [
+      this.$store.commit("replaceBreadcrumb", [
         {
           path: "/elecfee/elecfeeCityDetail",
           breadcrumbName: `${cityName}电费稽核`,

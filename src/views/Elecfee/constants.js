@@ -111,7 +111,6 @@ export const piechartOptions = {
             let target = 0;
             let total = 0;
             let fraction = "";
-            console.log(pieData);
             for (let i = 0; i < pieData.length; i++) {
                 total += pieData[i].value;
                 if (pieData[i].name === name.name) {
@@ -193,38 +192,45 @@ export const checkdetailColumns = [
         title: "省份",
         dataIndex: "prv_name",
         key: "prv_name",
+        scopedSlots: { customRender: "prv_name" },
         // ellipsis: true,
     },
     {
         title: "9-10分",
         dataIndex: "ninetoten",
         key: "ninetoten",
+        scopedSlots: { customRender: "ninetoten" },
         // defaultSortOrder: "descend",
     },
     {
         title: "8-9分",
         dataIndex: "eighttonine",
         key: "eighttonine",
+        scopedSlots: { customRender: "eighttonine" },
     },
     {
         title: "6-8分",
         dataIndex: "sixtoeight",
         key: "sixtoeight",
+        scopedSlots: { customRender: "sixtoeight" },
     },
     {
         title: "0-6分",
         dataIndex: "zerotosix",
         key: "zerotosix",
+        scopedSlots: { customRender: "zerotosix" },
     },
     {
         title: "总量",
-        dataIndex: "total_amount",
-        key: "total_amount",
+        dataIndex: "total_number",
+        key: "total_number",
+        scopedSlots: { customRender: "total_number" },
     },
     {
         title: "通过数",
         dataIndex: "pass_number",
         key: "pass_number",
+        scopedSlots: { customRender: "pass_number" },
     },
     {
         title: "未通过数",
@@ -234,9 +240,9 @@ export const checkdetailColumns = [
     },
     {
         title: "未通过率",
-        dataIndex: "notpassper",
-        key: "notpassper",
-        scopedSlots: { customRender: "notpassper" },
+        dataIndex: "notpass_rate",
+        key: "notpass_rate",
+        scopedSlots: { customRender: "notpass_rate" },
     },
 ];
 export const elecfeeImgCoulmns = [
@@ -254,25 +260,27 @@ export const elecfeeImgCoulmns = [
     },
     {
         title: "总量",
-        dataIndex: "total_amount",
-        key: "total_amount",
+        dataIndex: "total_number",
+        key: "total_number",
+        scopedSlots: { customRender: "total_number" },
     },
     {
         title: "通过数",
-        dataIndex: "pass_amount",
-        key: "pass_amount",
+        dataIndex: "pass_number",
+        key: "pass_number",
+        scopedSlots: { customRender: "pass_number" },
     },
     {
         title: "未通过数",
-        dataIndex: "notpass_amount",
-        key: "notpass_amount",
-        scopedSlots: { customRender: "notpass_amount" },
+        dataIndex: "notpass_number",
+        key: "notpass_number",
+        scopedSlots: { customRender: "notpass_number" },
     },
     {
         title: "未通过率",
-        dataIndex: "notpassper",
-        key: "notpassper",
-        scopedSlots: { customRender: "notpassper" },
+        dataIndex: "notpass_rate",
+        key: "notpass_rate",
+        scopedSlots: { customRender: "notpass_rate" },
     },
 ];
 export const efecfeeTabColumns = [
@@ -328,9 +336,9 @@ export const efecfeeTabColumns = [
     },
     {
         title: "总量",
-        dataIndex: "total_amount",
-        key: "total_amount",
-        sorter: (a, b) => a.total_amount - b.total_amount,
+        dataIndex: "total_number",
+        key: "total_number",
+        sorter: (a, b) => a.total_number - b.total_number,
     },
     {
         title: "通过数",

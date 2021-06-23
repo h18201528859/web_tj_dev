@@ -11,7 +11,10 @@ export default {
         putname: "/articles",
     },
     getSum: baseUrl + "/GetSum",
-    getStatistics: baseUrl + "/GetStatistics",
-    getImageStatistics: baseUrl + "/GetImageStatistics",
     getElecSum: baseUrl + "/GetElecSum",
+    getElecPrvSum: baseUrl + "/GetElecPrvSum",
+    getStatistics: baseUrl + "/GetStatistics",
+    getPrvStatistics: baseUrl + "/GetPrvStatistics",
+    getImageStatistics: baseUrl + "/GetImageStatistics",
+    getImgPrvStatistics: baseUrl + "/GetImgPrvStatistics",
 };
