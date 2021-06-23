@@ -14,7 +14,7 @@
     </div>
     <div class="overview-section">
       <div class="overview-head">
-        <p>{{ cityTitle.surveyTitle }}</p>
+        <p>{{ cityTitle.surveyTitle }}</p >
         <div class="radio-box">
           <a-radio-group defaultValue="0" @change="handleStatistic">
             <a-radio-button value="0"> 数额统计 </a-radio-button>
@@ -35,31 +35,44 @@
       </div>
       <div class="tabs-box">
         <a-tabs default-active-key="tabsKey" @change="callback">
-          <a-tab-pane key="1" tab="缴费单"> </a-tab-pane>
-          <a-tab-pane key="2" tab="电表图" force-render> </a-tab-pane>
+          <a-tab-pane key="1" tab="缴费单">
+            <div class="overview-chart">
+                <div class="line-chart">
+                  <div class="title">
+                    <div class="title-front"></div>
+                    <p>{{ cityTitle.provinceTitle }}</p >
+                  </div>
+                  <div id="linechart" style="height: 100%; width: 80%"></div>
+                </div>
+                <div class="pie-chart">
+                  <div class="title">
+                    <div class="title-front"></div>
+                    <p>{{ cityTitle.scoreTitle }}</p >
+                  </div>
+                  <div class="pieCenter">
+                    <p class="pieCenter-title">稽核量</p >
+                    <p class="pieCenter-number">{{ checkallPieNumber }}</p >
+                  </div>
+                  <div id="piechart" style="height: 100%; width: 100%"></div>
+                </div>
+              </div>
+          </a-tab-pane>
+          <a-tab-pane key="2" tab="电表图" force-render> 
+              <div class="overview-chart">
+                  <div class="line-chart">
+                    <div class="title">
+                      <div class="title-front"></div>
+                      <p>{{ cityTitle.provinceTitle }}</p >
+                    </div>
+                    <div id="linechart1" style="height: 100%; width: 100%"></div>
+                  </div>
+                 
+                </div>
+          </a-tab-pane>
         </a-tabs>
       </div>
-      <div class="overview-chart">
-        <div class="line-chart">
-          <div class="title">
-            <div class="title-front"></div>
-            <p>{{ cityTitle.provinceTitle }}</p>
-          </div>
-          <div id="linechart" style="height: 100%; width: 80%"></div>
-        </div>
-        <div class="pie-chart">
-          <div class="title">
-            <div class="title-front"></div>
-            <p>{{ cityTitle.scoreTitle }}</p>
-          </div>
-          <div class="pieCenter">
-            <p class="pieCenter-title">稽核量</p>
-            <p class="pieCenter-number">{{ checkallPieNumber }}</p>
-          </div>
-          <div id="piechart" style="height: 100%; width: 100%"></div>
-        </div>
-      </div>
-      <div v-if="cityId == '-1'">
+      
+      <div v-if="cityId == 'QG'">
         <a-tabs
           type="card"
           default-active-key="1"
@@ -70,8 +83,8 @@
         >
           <a-tab-pane
             class="citybut"
-            v-for="(i, index) in provinceCode"
-            :key="index"
+            v-for="(i) in provinceCode"
+            :key="i.name"
             :tab="`${i.name}`"
           >
           </a-tab-pane>
@@ -154,6 +167,7 @@
   </div>
 </template>
 
+
 <script>
 import HeadCardItem from "./HeadCardItem";
 import {
@@ -166,12 +180,13 @@ import {
 import { provinceCode } from "../../const/constant";
 import { mapActions, mapState, mapMutations } from "vuex";
 import util from "../../utils/utils";
-const countryTitle = {
+let countryTitle = {
   surveyTitle: "电费稽核概况",
   provinceTitle: "各地市缴费单稽核数量统计TOP10",
   scoreTitle: "分区间占比",
   tabProvinceTitle: "各地市缴费单稽核数量详单",
 };
+
 export default {
   components: {
     HeadCardItem,
@@ -184,7 +199,7 @@ export default {
     // this.drawLines();
     const {
       name = "elecfee",
-      params: { cityId = "-1" },
+      params: { cityId = "QG" },
     } = this.$route;
     if (name == "elecfeecitydetail") {
       setTimeout(() => {
@@ -192,10 +207,11 @@ export default {
          if(+this.tabsKey==2){
             lineColor = ["rgba(71, 199, 253, 0.85)"]
           }else{
-            lineColor = ["rgba(119,114,241,0.85)"];
+            lineColor = ["rgba(119, 114, 241, 0.85)"];
+           
           }
         this.echartsColors(lineColor);
-        const cityName = this.elecfeeTable[cityId].prv_name;
+        const cityName = this.getCodeVerIndex(cityId)//this.elecfeeTable[cityId].prv_name;
         this.getUpdateCityTitle(cityName, countryTitle);
         this.updateCityId(cityId);
         const pieColor = [
@@ -270,11 +286,12 @@ export default {
     "$route.path": function () {
       const {
         name = "elecfee",
-        params: { cityId = "-1" },
+        params: { cityId = "QG" },
       } = this.$route;
-      if (name == "elecfeecitydetail" && cityId !== "-1") {
+      if (name == "elecfeecitydetail" && cityId !== "QG") {
         if (cityId !== "elecfee") {
-          const cityName = this.elecfeeTable[cityId].prv_name;
+
+          const cityName = this.getCodeVerIndex(cityId)// this.elecfeeTable[cityId].prv_name;
           this.$store.dispatch("setCurrentBread", [
             {
               name: "elecfeecitydetail",
@@ -282,7 +299,6 @@ export default {
               breadcrumbName: `${cityName}电费稽核`,
             },
           ]);
-
           this.getUpdateCityTitle({ cityName, countryTitle });
           this.updateCityId(cityId);
           this.checkdetailTableColumns[1].title = "地市";
@@ -305,7 +321,7 @@ export default {
           this.pieEchartsColor(pieColor);
         }
       } else {
-        this.updateCityId("-1");
+        this.updateCityId("QG");
         this.getUpdateCityTitle("");
          let lineColorfee;
           if(+this.tabsKey==2){
@@ -313,7 +329,6 @@ export default {
           }else{
            lineColorfee = ["rgba(91, 143, 249, 0.85)"];
           }
-          console.log('dssdjjs+++++++++d',this.tabsKey,lineColorfee)
         this.echartsColors(lineColorfee);
         this.checkdetailTableColumns[1].title = "省份";
         const pieColor = ["#5B8FF9", "#5AD8A6", "#E8684A", "#F6BD16"];
@@ -326,8 +341,10 @@ export default {
    elecfeeTable(data){
       
       let desciplineData = [],param = {},name;
-      data.forEach((item)=>{
+      data.forEach((item,index)=>{
+
            name = item.prv_name.length>=3?item.prv_name.slice(0,2):item.prv_name  
+         
            param[name] = {
               value: item.total_amount,
               ninetoten: item.ninetoten,
@@ -336,10 +353,11 @@ export default {
               zerotosix: item.zerotosix,
               total: item.total_amount,
            }      
-         desciplineData.push(item.total_amount)
+       
+       
+          desciplineData.push(item.total_amount)
       })
       this.lineData  = desciplineData
-      
        this.cityFilterData = param
       this.drawLines()
     }
@@ -353,20 +371,16 @@ export default {
       "getUpdateCityTitle",
       "getElecImgTableData",
     ]),
-    callback(key) {
+   callback(key) {
       this.updateType(key);
       this.tabsKey = key;
       const lineChart = this.$echarts.init(
         document.getElementById("linechart")
       );
-      const boxWrap =  document.getElementById("linechart")
-      const childLine = boxWrap.getElementsByTagName('div')[0]
-       const canvasBox = boxWrap.getElementsByTagName('canvas')[0]
-      console.log(childLine)
-      boxWrap.style.width="100%"
-      childLine.style.width="1000"
-      canvasBox.style.width="1000"
-    // console.log(canvasBox.setAttribute('width','100%'))
+       const lineChart1 = this.$echarts.init(
+        document.getElementById("linechart1")
+      );
+    
       const piechart = this.$echarts.init(document.getElementById("piechart"));
       const pieCharts = document.querySelector(".pie-chart");
       let lineData = [],
@@ -374,6 +388,11 @@ export default {
         colorSet = { mainSet: [], mainPieSet: [] };
       if (+key === 2) {
         this.getElecImgTableData({ page: 1 });
+          const {
+              name = "elecfee",
+              params: { cityId = "QG" },
+            } = this.$route;
+       
         lineData = [980, 760, 745, 980, 760, 745, 980, 760, 745, 980];
         this.checkdetailTableColumns = this.elecfeeImgCoulmns;
         pieData = [
@@ -402,11 +421,31 @@ export default {
             itemStyle: { normal: { color: "" } },
           },
         ];
-        colorSet.mainSet = ["rgba(71, 199, 253, 0.85)"];
+        colorSet.mainSet =["rgba(71, 199, 253, 0.85)"];
         colorSet.mainPieSet = ["#317CFF", "#47C7FD", "#F6AE16", "#5AD8A6"];
         
-        if (this.$route.name !== "elecfee") {
-          this.elecfeeImgCoulmns[1].title = "地市";
+        if (name == "elecfee") {
+          const cityName = ''
+           countryTitle ={
+                surveyTitle: "电费稽核概况",
+                provinceTitle: "各省缴费单金额统计",
+                scoreTitle: "各评分区间占比",
+                tabProvinceTitle: "各省缴费单金额统计",
+            };
+            this.getUpdateCityTitle({ cityName, countryTitle });
+          
+        }else{
+            this.elecfeeImgCoulmns[1].title = "地市";
+          console.log(this.$route,'dsdsfdgfgfgf')
+         
+            const cityName = this.getCodeVerIndex(cityId)||''
+            countryTitle =  {
+              surveyTitle: "电费稽核概况",
+              provinceTitle: "各地市缴费单稽核数量统计",
+              scoreTitle: "分区间占比",
+              tabProvinceTitle: "各地市缴费单稽核数量详单",
+            };
+            this.getUpdateCityTitle({ cityName, countryTitle });
         }
         if (this.linechartOptions && this.linechartOptions.tooltip) {
           this.linechartOptions.tooltip.formatter = (name) => {
@@ -493,14 +532,14 @@ export default {
         ];
         colorSet.mainPieSet = ["#5B8FF9", "#5AD8A6", "#E8684A", "#F6BD16"];
         if (this.$route.name == "elecfee") {
-          colorSet.mainSet = ["rgba(91, 143, 249, 0.85)"];
+          colorSet.mainSet = ["rgba(71, 199, 253, 0.85)"];
         
           pieData.map((item, index) => {
             item.itemStyle.normal.color = colorSet.mainPieSet[index];
           });
         } else {
-          
-          colorSet.mainSet = ["rgba(71, 199, 253, 0.85)"]// ["rgba(119,114,241,0.85)"];//["rgba(91, 143, 249, 0.85)"] 
+         
+            colorSet.mainSet =["rgba(119, 114, 241, 0.85)"] 
           const colornew = [
             "rgba(119, 114, 241, 0.85)",
             "rgba(206, 119, 251, 0.85)",
@@ -565,7 +604,7 @@ export default {
       }
       this.linechartOptions.series[0].data = lineData;
       this.piechartOptions.series[0].data = pieData;
-
+       lineChart1.setOption(this.linechartOptions);
       lineChart.setOption(this.linechartOptions);
       piechart.setOption(this.piechartOptions);
     },
@@ -573,6 +612,7 @@ export default {
       const lineChart = this.$echarts.init(
         document.getElementById("linechart")
       );
+      console.log(colorMain,'colorMain')
       this.linechartOptions.tooltip.formatter = (name) => {
         const cityFilterData = this.cityFilterData;
         let total = 0;
@@ -670,24 +710,51 @@ export default {
           click: () => {
             const { name = "elecfee" } = this.$route;
             if (name !== "elecfeecitydetail") {
-              this.updateCityId("-1");
+              console.log(index,'index')
+              this.updateCityId("QG");
               this.getUpdateCityTitle("");
-              this.getChangeCity(index);
+              this.getChangeCity(record.prv_name);
               sessionStorage.setItem("record", JSON.stringify(record));
             }
           },
         },
       };
     },
-    getChangeCity(key) {
-      this.updateCityId(key);
-      const cityName = this.elecfeeTable[key].prv_name;
-      this.getUpdateCityTitle(cityName, countryTitle);
+    getIndexCityId(name){
+       const index = provinceCode.findIndex(item=>item.name==name)
+       return index;
+    },
+    getCodeVerIndex(code){
+       let strName;
+        const index = provinceCode.find(item=>{
+          if(item.code==code){
+            strName = item.name.length>=3?item.name.slice(0,2):item.name
+          }
+        })
+       return strName;
+    },
+    getCodeName(name){
+
+     let codeName;
+     provinceCode.find(item=>{
+         const newName = item.name.length>=3?item.name.slice(0,2):item.name;
+          if(newName==name){
+            codeName = item.code
+          }
+        })
+       return codeName;
+    },
+    getChangeCity(name) {
+      const nowName = name.length>=3?name.slice(0,2):name;
+      const getIndex =this.getIndexCityId(name)
+      const getCodeName = this.getCodeName(nowName)
+      this.updateCityId(name);
+      this.getUpdateCityTitle(getCodeName, countryTitle);
       this.$router.push({
         name: "elecfeecitydetail",
-        path: `/elecfee/elecfeeCityDetail/:id` + key,
+        path: `/elecfee/elecfeeCityDetail/:id` + getCodeName,
         params: {
-          cityId: key,
+          cityId: getCodeName,
         },
       });
       util.jumpTop();
@@ -715,7 +782,6 @@ export default {
         document.getElementById("linechart")
       );
       const xAxisData = [];
-      // rerLineData = [];
       for (let i = 0; i < this.elecfeeTable.length; i++) {
         const name =
           this.elecfeeTable[i].prv_name.length >= 3
@@ -729,10 +795,11 @@ export default {
         params: { cityId = "-1" },
       } = this.$route;
       let lineColor;
+      
       if (name == "elecfeecitydetail" && cityId !== "-1") {
-            lineColor = ["rgba(71, 199, 253, 0.85)"]
+            lineColor = ["rgba(119, 114, 241, 0.85)"]
       }else{
-         lineColor =["rgba(71, 199, 253, 0.85)"];
+         lineColor =["rgba(91, 143, 249, 0.85)"];
       }
       this.linechartOptions.series[0].data = this.lineData;
       this.piechartOptions.series[0].data = this.pieData;

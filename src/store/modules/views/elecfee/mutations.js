@@ -62,8 +62,8 @@ const mutations = {
         }
         state.cityTitle = oData;
     },
-    updateCityId(state, id) {
-        state.cityId = id;
+    updateCityId(state, name) {
+        state.cityId = name;
     },
 };
 export default mutations;

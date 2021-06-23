@@ -15,7 +15,7 @@ const state = {
         pageSize: 10,
     },
     checkElecfeeAllTable: [],
-    cityId: "-1",
+    cityId: "QG",
     elecfeeDetail: [],
     headData: [],
     elecfeeTable: [],

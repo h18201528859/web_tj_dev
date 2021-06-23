@@ -24,13 +24,13 @@
         </span>
       </template>
     </a-breadcrumb>
-    <span class="city-wrap" v-if="cityId !== '-1'">
+    <span class="city-wrap" v-if="cityId !== 'QG'">
       <a-select
-        :defaultValue="cityId !== '-1' && elecfeeTable[cityId].prv_name"
+        :defaultValue="cityId !== 'QG' && this.getCodeVerIndex(cityId)"
         style="width: 120px"
         @change="handleChange"
       >
-        <a-select-option v-for="(i,index) in provinceCode" :key="index" :value="index">
+        <a-select-option v-for="(i) in provinceCode" :key="i.code" :value="i.code">
           {{ i.name }}
         </a-select-option>
       </a-select>
@@ -57,10 +57,11 @@ export default {
     };
   },
   mounted(){
-     const { params:{ cityId = '-1' },name = 'elecfee'} = this.$route;
+     const { params:{ cityId = 'QG' },name = 'elecfee'} = this.$route;
      if(name=="elecfeecitydetail"){
        setTimeout(()=>{
-        const cityName = this.provinceCode[cityId].name;
+
+        const cityName =this.getCodeVerIndex(cityId)// this.provinceCode[cityId].name;
         this.updateCityId(cityId);
         this.getUpdateCityTitle(cityName);
         this.$store.commit("replaceBreadcrumb", [
@@ -77,7 +78,7 @@ export default {
     '$route.path':function(){
       const { name='elecfee' } = this.$route;
       if(name!=='elecfeecitydetail'){
-         this.updateCityId('-1');
+         this.updateCityId('QG');
          this.getUpdateCityTitle('');
       }
     }
@@ -101,13 +102,32 @@ export default {
         }
       });
       this.getUpdateCityTitle("");
-      this.updateCityId("-1");
+      this.updateCityId("QG");
       this.$store.commit("setBreadcrumb", updateBread);
     },
-    handleChange(key) {
-
-      const cityName = this.elecfeeTable[key].prv_name;
-      this.updateCityId(key);
+     getCodeVerIndex(code){
+       let strName;
+        provinceCode.find(item=>{
+          if(item.code==code){
+            strName = item.name.length>=3?item.name.slice(0,2):item.name
+          }
+        })
+       return strName;
+    },
+     getCodeName(name){
+     let codeName;
+     provinceCode.find(item=>{
+         const newName = item.name.length>=3?item.name.slice(0,2):item.name;
+          if(newName==name){
+            codeName = item.code
+          }
+        })
+       return codeName;
+    },
+    handleChange(name) {
+      const cityName = this.getCodeVerIndex(name);
+      const nowUpdataCityId = this.getCodeName(name)
+      this.updateCityId(nowUpdataCityId);
       this.getUpdateCityTitle(cityName);
         this.$store.commit("replaceBreadcrumb", [
         {
@@ -117,9 +137,9 @@ export default {
       ]);
       this.$router.push({
         name: "elecfeecitydetail",
-        path: `/elecfee/elecfeeCityDetail/:cityId` + key,
+        path: `/elecfee/elecfeeCityDetail/:cityId` + name,
         params: {
-          cityId: key,
+          cityId: name,
         },
       });
     },

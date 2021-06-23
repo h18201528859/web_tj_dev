@@ -63,7 +63,7 @@
                 style="width: 200px" @change="handleChange">
                 <a-select-opt-group>
                   <span slot="label">直辖市</span>
-                   <a-select-option v-for="i in cityArr" :key="i.id" :value="i.id">
+                   <a-select-option v-for="i in unitCityArr" :key="i.id" :value="i.id">
                       {{ i.name }}
                     </a-select-option>
                  
@@ -87,7 +87,7 @@
                 <a-radio value="a"> 全部城市 </a-radio>
                 <a-radio value="b"> 自选城市 </a-radio>
               </a-radio-group>
-              <a-select
+              <!-- <a-select
                 default-value="lucy"
                 style="width: 120px"
                 @change="handleChange"
@@ -96,7 +96,7 @@
                 <a-select-option value="lucy"> Lucy </a-select-option>
                 <a-select-option value="disabled"> Disabled </a-select-option>
                 <a-select-option value="Yiminghe"> yiminghe </a-select-option>
-              </a-select>
+              </a-select> -->
             </div>
           </a-form-item>
           <a-form-item label="稽核得分" default-value="vertical" >
@@ -113,6 +113,7 @@
                       'radio-childFrationType',
                       { initialValue: '',required: true, validator:this.valtorFranction,trigger: 'change'},
                     ]"
+                     @change="alternateRadio"
                   >
                     <a-radio-button value="a"> 0-6分 </a-radio-button>
                     <a-radio-button value="b"> 6-8分 </a-radio-button>
@@ -139,6 +140,7 @@
                 <a-form-item class="child-fraction-time">
                   <a-radio-group
                     v-decorator="['radio-childTimeType', { initialValue: '' }]"
+                      @change="alterTimeHandle"
                   >
                     <a-radio-button value="a"> 近一月 </a-radio-button>
                     <a-radio-button value="b"> 近三月 </a-radio-button>
@@ -152,7 +154,7 @@
                 <a-range-picker
                 :show-time="{ format: 'HH:mm' }"
                 format="YYYY-MM-DD HH:mm"
-                :placeholder="['2020.10.25 00:00', '2020.10.25 00:00']"
+                :placeholder="[starttimeHold, starttimeHold]"
                 @change="onChange"
                 @ok="onOk"
                 class="range-date"
@@ -244,9 +246,9 @@
 </template>
 
 <script>
-import { efecfeeTabColumns, cityArr } from "./constants";
+import { efecfeeTabColumns, unitCityArr } from "../../views/Elecfee/constants";
 import { mapState, mapActions } from "vuex";
-
+import moment from "moment";
 export default {
   data() {
    
@@ -261,9 +263,10 @@ export default {
       extendText: "收起",
       extendIcon: "up",
       cityFlag: false,
-      cityArr,
+      unitCityArr,
       cityId: "0",
       size: 'default',
+      starttimeHold:moment().format("YYYY.MM.DD HH:mm:ss")
     };
   },
   beforeCreate() {
@@ -336,6 +339,16 @@ export default {
           })
        }
     },
+    alterTimeHandle(){
+       this.form.setFieldsValue({
+            'radio-time': 'b'
+          })
+    },
+    alternateRadio(){
+         this.form.setFieldsValue({
+            'radio-frationType': 'b'
+          })
+    },
     transferChange(e){
       if(e.target.value!=='b'){
         this.form.setFieldsValue({
@@ -344,7 +357,9 @@ export default {
        }
     },
     handleChange(value) {
-      console.log(`selected ${value}`);
+        this.form.setFieldsValue({
+          'radio-provice': 'b'
+        })
     },
     valtorFranction  (rule,value,callback) {
          callback();
@@ -567,6 +582,6 @@ export default {
   margin: 3px 8px 3px;
 }
 .range-date{
-  width:290px!important;
+  width:350px!important;
 }
 </style>

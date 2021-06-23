@@ -383,3 +383,10 @@ export const cityArr = [
     { name: "内蒙古", id: 24 },
     { name: "山西", id: 25 },
 ];
+export const unitCityArr = [
+    { name: "北京", id: 1 },
+    { name: "上海", id: 2 },
+    { name: "天津", id: 3 },
+    { name: "重庆", id: 4 },
+  
+];
