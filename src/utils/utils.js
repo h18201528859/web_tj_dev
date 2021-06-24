@@ -7,6 +7,9 @@ export default {
         pathstr = pathstr.replace(/\/*/g, "");
         return pathstr;
     },
+    transToLocaleString(num){
+      return  num.toLocaleString()
+    },
     getLastDaysPeriod(period) {
         let timeArr = [];
         for (let i = 0; i < period; i++) {

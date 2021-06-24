@@ -41,11 +41,41 @@ const actions = {
         );
         commit("updateParams", targetParams);
         commit("updateCurrentPage", targetParams);
-        console.log(targetParams, "===>请求参数");
         axiospost(API.getStatistics, targetParams).then(
             (res) => {
                 if (+res.ret_code === 0) {
                     commit("updateElecfeeTable", {
+                        data: res.ret_data.prv_data,
+                        alldataTable:res.ret_data.all_data,
+                        total: Number(res.ret_data.prv_data_len),
+                        
+                    });
+                    setTimeout(() => {
+                        commit("updateDetailTableLoading", false);
+                    }, 300);
+                } else {
+                    commit("updateDetailTableLoading", false);
+                    console.error("数据错了");
+                }
+            },
+            () => {
+                commit("updateDetailTableLoading", false);
+                console.error("error");
+            }
+        );
+    },
+    getEchartsEleTableData({ commit, rootState }, params) {
+        commit("updateDetailTableLoading", true);
+        const targetParams = Object.assign(
+            rootState.elecfee.checkEchartsPrvParams,
+            params
+        );
+        commit("updateParams", targetParams);
+        commit("updateCurrentPage", targetParams);
+        axiospost(API.getStatistics, targetParams).then(
+            (res) => {
+                if (+res.ret_code === 0) {
+                    commit("updateEchartsElecfeeTable", {
                         data: res.ret_data.prv_data,
                         total: Number(res.ret_data.prv_data_len),
                     });

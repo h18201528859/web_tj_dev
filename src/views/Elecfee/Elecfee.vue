@@ -51,7 +51,7 @@
                   </div>
                   <div class="pieCenter">
                     <p class="pieCenter-title">稽核量</p >
-                    <p class="pieCenter-number">{{ checkallPieNumber }}</p >
+                    <p class="pieCenter-number">{{alldataTable&&alldataTable.total_amount||0}}</p >
                   </div>
                   <div id="piechart" style="height: 100%; width: 100%"></div>
                 </div>
@@ -106,7 +106,7 @@
       <div class="table">
         <a-table
           :columns="checkdetailTableColumns"
-          :data-source="cityId == '-1' ? elecfeeTable : provinceTable"
+          :data-source="cityId == 'QG' ? elecfeeTable : provinceTable"
           :rowKey="(record, index) => index"
           :pagination="false"
           :customRow="rowHandle"
@@ -166,6 +166,7 @@
               text || `${(all.notpass_amount / 10000).toFixed(2)}万`
             }}</span>
           </template>
+          
         </a-table>
         <div class="pagination">
           <div class="left-pagination">
@@ -212,6 +213,7 @@ import {
 import { provinceCode } from "../../const/constant";
 import { mapActions, mapState, mapMutations } from "vuex";
 import util from "../../utils/utils";
+console.log(util,'util')
 let countryTitle = {
   surveyTitle: "电费稽核概况",
   provinceTitle: "各地市缴费单稽核数量统计TOP10",
@@ -226,8 +228,10 @@ export default {
   created() {
     this.handleHeadData({});
     this.handleTableData(this.initParams);
+    
   },
   mounted() {
+    
     const {
       name = "elecfee",
       params: { cityId = "QG" },
@@ -251,7 +255,7 @@ export default {
           "rgba(90, 220, 255, 0.85)",
           "rgba(71, 167, 253, 0.85)",
         ];
-        this.pieEchartsColor(pieColor);
+        this.pieEchartsColor(pieColor,this.pieData);
       }, 500);
     }
   },
@@ -259,8 +263,17 @@ export default {
     ...mapState({
       headData: (state) => state.elecfee.headData,
       elecfeeTable: (state) => state.elecfee.elecfeeTable,
+      EchartsEleTable: (state) => state.elecfee.EchartsEleTable,
       provinceTable: (state) => state.elecfee.provinceTable,
       checkallParams: (state) => state.elecfee.checkallParams,
+      alldataTable: (state) =>{
+        if(state.elecfee.alldataTable){
+        state.elecfee.alldataTable.total_amount = util.transToLocaleString(state.elecfee.alldataTable.total_amount)
+          
+        }
+        return state.elecfee.alldataTable
+      },
+      checkEchartsPrvParams: (state) => state.elecfee.checkEchartsPrvParams,
       cityTitle: (state) => state.elecfee.cityTitle,
       cityId: (state) => state.elecfee.cityId,
       detailTotal: (state) => state.elecfee.detailTotal,
@@ -281,24 +294,28 @@ export default {
           value: 2587,
           name: "电费",
           fraction: "9-10",
+          code:'ninetoten',
           itemStyle: { normal: { color: "#5B8FF9" } },
         },
         {
           value: 1626,
           name: "铁塔服务费",
           fraction: "8-9",
+           code:'eighttonine',
           itemStyle: { normal: { color: "#5AD8A6" } },
         },
         {
           value: 1062,
           name: "租费",
           fraction: "6-8",
+           code:'sixtoeight',
           itemStyle: { normal: { color: "#E8684A" } },
         },
         {
           value: 985,
           name: "稽核总量",
           fraction: "0-6",
+            code:'zerotosix',
           itemStyle: { normal: { color: "#F6BD16" } },
         },
       ],
@@ -310,6 +327,7 @@ export default {
       elecfeeImgCoulmns,
       totalPage: 0,
       mode: "top",
+      randerTotalParam:{},
       initParams: util.getAllTimeRange("all"),
     };
   },
@@ -335,7 +353,6 @@ export default {
           this.updateCityId(cityId);
           this.checkdetailTableColumns[1].title = "地市";
           let lineColor;
-          // console.log(this.tabsKey, "dssdsd");
           if (+this.tabsKey == 2) {
             lineColor = ["rgba(71, 199, 253, 0.85)"];
           } else {
@@ -350,7 +367,7 @@ export default {
           ];
           this.echartsColors(lineColor);
           this.piechartOptions.series[0].itemStyle.color = [];
-          this.pieEchartsColor(pieColor);
+          this.pieEchartsColor(pieColor,this.pieData);
         }
       } else {
         this.updateCityId("QG");
@@ -364,7 +381,7 @@ export default {
         this.echartsColors(lineColorfee);
         this.checkdetailTableColumns[1].title = "省份";
         const pieColor = ["#5B8FF9", "#5AD8A6", "#E8684A", "#F6BD16"];
-        this.pieEchartsColor(pieColor);
+        this.pieEchartsColor(pieColor,this.pieData);
       }
     },
     detailTotal(newValue) {
@@ -384,6 +401,8 @@ export default {
               sixto8:item.sixtoeight,
               zerotosix: item.zerotosix,
               total: item.total_amount,
+              pass_number:item.pass_number,
+              notpass_number:'20%'//item.notpass_number
            }      
        
        
@@ -392,6 +411,24 @@ export default {
       this.lineData  = desciplineData
        this.cityFilterData = param
       this.drawLines()
+    },
+    alldataTable(obj){
+      console.log(obj)
+    
+    console.log(this.pieData)
+      for(let i=0;i<this.pieData.length;i++){
+        let item = this.pieData[i];
+        for(let j in obj){
+          if(item.code==j){
+            item.value = obj[j]
+          }
+        }
+      }
+         console.log(this.pieData)
+
+   const colorpie =  ["#5B8FF9", "#5AD8A6", "#E8684A", "#F6BD16"];
+     this.pieEchartsColor(colorpie,this.pieData);
+     
     }
   },
 
@@ -400,6 +437,7 @@ export default {
     ...mapActions("elecfee", [
       "getHeadData",
       "getElecfeeTableData",
+      "getEchartsEleTableData",
       "getProElecfeeTableData",
       "getUpdateCityTitle",
       "getElecImgTableData",
@@ -480,9 +518,12 @@ export default {
             };
             this.getUpdateCityTitle({ cityName, countryTitle });
         }
+        const cityFilterData = JSON.parse(JSON.stringify(this.cityFilterData));
+         this.linechartOptionsOne = JSON.parse(JSON.stringify( this.linechartOptions));
+         const diffArr = ['linechartOptions','linechartOptionsOne']
         if (this.linechartOptions && this.linechartOptions.tooltip) {
-          this.linechartOptions.tooltip.formatter = (name) => {
-            const cityFilterData = this.cityFilterData;
+          for(let i=0;i<diffArr.length;i++){
+           this[diffArr[i]].tooltip.formatter = (name) => {
             let total = 0;
             let target = 0;
             let toolpitArr = "";
@@ -492,6 +533,8 @@ export default {
             let sixto8 = 0;
             let zerotosix = 0;
             let percent = 0;
+            let pass_number = 0;
+            let notpass_number = 0;
             Object.keys(cityFilterData).forEach((item, index) => {
               if (item == name.name) {
                 target = cityFilterData[item].value;
@@ -502,13 +545,31 @@ export default {
                 zerotosix = cityFilterData[item].zerotosix;
                 percent = ((target / total) * 100).toFixed(1);
                 pointColor = colorSet.mainSet[index];
+                if(diffArr[i]=='linechartOptionsOne'){
+                  pass_number =  cityFilterData[item].pass_number
+                  notpass_number =  cityFilterData[item].notpass_number
+                }
               } else {
                 pointColor = colorSet.mainSet[0];
               }
             });
+            if(diffArr[i]=='linechartOptionsOne'){
+                   toolpitArr = `<div style="font-size:12px;">
+          <div><span>未通过: ${notpass_number}</span><span>通过: ${pass_number}</span><span style="margin-left:10px">${percent}%</span></div>
+          <div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8}元</span><span>未通过: ${notpass_number}</span><span>通过: ${pass_number}</span><span style="margin-left:10px">${percent}%</span></div> 
+          <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9}元</span><span>未通过: ${notpass_number}</span><span>通过: ${pass_number}</span><span style="margin-left:10px">${percent}%</span></div>
+          <div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten}元</span><span>未通过: ${notpass_number}</span><span>通过: ${pass_number}</span><span style="margin-left:6px;position:relative;left:-2px;">${percent}%</span></div>
+             <hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/>
+             <div style="display:flex;align-items:center">
+             <div style="width:6px;height:6px;background:${pointColor};margin-right:5px"></div>
+             <div>${name.name}省 稽核条数/占比</div></div> </div>`;
+            }else{
             toolpitArr = `<div style="font-size:12px;"><div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix}元</span><span style="margin-left:10px">${percent}%</span></div><div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8}元</span><span style="margin-left:10px">${percent}%</span></div> <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9}元</span><span style="margin-left:10px">${percent}%</span></div><div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten}元</span><span style="margin-left:6px;position:relative;left:-2px;">${percent}%</span></div><hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${pointColor};margin-right:5px"></div><div>${name.name}省 稽核条数/占比</div></div> </div>`;
+            }
             return toolpitArr;
           };
+          }
+         
         }
         this.piechartOptions.tooltip.formatter = (name) => {
           const pieData = piechartOptions.series[0].data;
@@ -529,6 +590,7 @@ export default {
           return toolpitStr;
         };
         this.linechartOptions.series[0].itemStyle.color = colorSet.mainSet;
+         this.linechartOptionsOne.series[0].itemStyle.color = colorSet.mainSet;
         this.piechartOptions.series[0].itemStyle.color = colorSet.mainPieSet;
 
         pieCharts.style.display = "none";
@@ -636,8 +698,9 @@ export default {
         this.linechartOptions.series[0].itemStyle.color = colorSet.mainSet;
       }
       this.linechartOptions.series[0].data = lineData;
+       this.linechartOptionsOne.series[0].data = lineData;
       this.piechartOptions.series[0].data = pieData;
-       lineChart1.setOption(this.linechartOptions);
+       lineChart1.setOption(this.linechartOptionsOne);
       lineChart.setOption(this.linechartOptions);
       piechart.setOption(this.piechartOptions);
     },
@@ -677,11 +740,11 @@ export default {
       this.linechartOptions.series[0].itemStyle.color = colorMain;
       lineChart.setOption(this.linechartOptions);
     },
-    pieEchartsColor(colorPie) {
+    pieEchartsColor(colorPie,rendeData=[]) {
       const piechart = this.$echarts.init(document.getElementById("piechart"));
 
       this.piechartOptions.legend.formatter = (name) => {
-        const pieData = piechartOptions.series[0].data;
+        const pieData = rendeData//piechartOptions.series[0].data;
         let total = 0;
         let target = 0;
         let legendArr = [];
@@ -699,37 +762,38 @@ export default {
         // console.log("999");
         return legendArr;
       };
-      const pieData = [
-        {
-          value: 2587,
-          name: "电费",
-          fraction: "9-10",
-          itemStyle: { normal: { color: "" } },
-        },
-        {
-          value: 1626,
-          name: "铁塔服务费",
-          fraction: "8-9",
-          itemStyle: { normal: { color: "" } },
-        },
-        {
-          value: 1062,
-          name: "租费",
-          fraction: "6-8",
-          itemStyle: { normal: { color: "" } },
-        },
-        {
-          value: 985,
-          name: "稽核总量",
-          fraction: "0-6",
-          itemStyle: { normal: { color: "" } },
-        },
-      ];
+      // const pieData = [
+      //   {
+      //     value: 2587,
+      //     name: "电费",
+      //     fraction: "9-10",
+      //     itemStyle: { normal: { color: "" } },
+      //   },
+      //   {
+      //     value: 1626,
+      //     name: "铁塔服务费",
+      //     fraction: "8-9",
+      //     itemStyle: { normal: { color: "" } },
+      //   },
+      //   {
+      //     value: 1062,
+      //     name: "租费",
+      //     fraction: "6-8",
+      //     itemStyle: { normal: { color: "" } },
+      //   },
+      //   {
+      //     value: 985,
+      //     name: "稽核总量",
+      //     fraction: "0-6",
+      //     itemStyle: { normal: { color: "" } },
+      //   },
+      // ];
+      let pieData = this.pieData; 
       pieData.map((item, index) => {
         item.itemStyle.normal.color = colorPie[index];
       });
       this.piechartOptions.tooltip.formatter = (name) => {
-        const pieData = piechartOptions.series[0].data;
+        const pieData =rendeData// piechartOptions.series[0].data;
         let toolpitColor = "";
         let target = 0;
         let total = 0;
@@ -836,20 +900,19 @@ export default {
             ? this.elecfeeTable[i].prv_name.slice(0, 2)
             : this.elecfeeTable[i].prv_name;
         xAxisData.push(name);
-        // rerLineData.push()
       }
       const {
         name = "elecfee",
-        params: { cityId = "-1" },
+        params: { cityId = "QG" },
       } = this.$route;
       let lineColor;
-      
       if (name == "elecfeecitydetail" && cityId !== "-1") {
             lineColor = ["rgba(119, 114, 241, 0.85)"]
       }else{
          lineColor =["rgba(91, 143, 249, 0.85)"];
       }
       this.linechartOptions.series[0].data = this.lineData;
+      console.log('jisnss',this.pieData)
       this.piechartOptions.series[0].data = this.pieData;
       this.linechartOptions.series[0].cityFilterData = this.cityFilterData;
       this.linechartOptions.series[0].itemStyle.color = lineColor;
@@ -857,9 +920,10 @@ export default {
       lineChart.setOption(this.linechartOptions);
       const piechart = this.$echarts.init(document.getElementById("piechart"));
       piechart.setOption(this.piechartOptions);
-      this.pieData.map((pie) => {
-        this.checkallPieNumber += pie.value;
-      });
+      // this.pieData.map((pie) => {
+      //   this.checkallPieNumber += pie.value;
+      // });
+      console.log(this.alldataTable)
       this.checkallPieNumber = util.transferNum(this.checkallPieNumber);
       piechart.on("legendselectchanged", function (options) {
         const name = options.name,
@@ -903,13 +967,16 @@ export default {
     },
     handleTableData(params) {
       const paramObj = Object.assign(this.checkallParams, params);
+      const paramate = Object.assign(this.checkEchartsPrvParams, params);
+      console.log(params,'paramObj')
       this.getElecfeeTableData(paramObj);
+      this.getEchartsEleTableData(paramate)
       this.totalPage = this.detailTotal;
     },
     handleDetailPagesize(pageSize) {
-      if (+this.currentType === 1 && this.cityId === "-1") {
+      if (+this.currentType === 1 && this.cityId === "QG") {
         this.getElecfeeTableData({ page: 1, page_size: +pageSize });
-      } else if (+this.currentType === 1 && this.cityId !== "-1") {
+      } else if (+this.currentType === 1 && this.cityId !== "QG") {
         const cityName = this.elecfeeTable[this.cityId].prv_name;
         const cityId = provinceCode.filter((item) => {
           if (item.name === cityName) {

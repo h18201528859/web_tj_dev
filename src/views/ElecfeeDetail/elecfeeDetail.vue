@@ -169,6 +169,7 @@
                 format="YYYY-MM-DD HH:mm"
                 :placeholder="[starttimeHold, starttimeHold]"
                 @change="onChange"
+                @openChange="handlefouce"
                 @ok="onOk"
                 class="range-date"
                 style="margin-left:20px"
@@ -328,6 +329,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           values.radioChecked = this.checkedList;
+          console.log(values,'values')
         }
       });
     },
@@ -380,6 +382,13 @@ export default {
       this.indeterminate =
         !!checkedList.length && checkedList.length < this.plainOptions.length;
       this.checkAll = checkedList.length === this.plainOptions.length;
+       
+    },
+    handlefouce(){
+      console.log('focus')
+      this.form.setFieldsValue({
+          'radio-time': 'c'
+        })
     },
     onCheckAllChange(e) {
       Object.assign(this, {

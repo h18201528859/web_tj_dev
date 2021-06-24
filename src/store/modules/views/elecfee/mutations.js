@@ -4,7 +4,12 @@ const mutations = {
     },
     updateElecfeeTable(state, data) {
         state.elecfeeTable = data.data;
+        state.alldataTable = data.alldataTable
         state.detailTotal = data.total;
+      
+    },
+    updateEchartsElecfeeTable(state, data) {
+        state.EchartsEleTable = data.data;
     },
     updatePrvTable(state, data) {
         state.provinceTable = data.data;
