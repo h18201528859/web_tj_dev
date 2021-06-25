@@ -270,7 +270,7 @@ export default {
     this.form = this.$form.createForm(this, { name: "validate_other" });
   },
   created() {
-    const params = Object.assign({}, this.initParams, this.checkParams);
+    const params = Object.assign({}, this.checkParams, this.initParams);
     this.getCheckallDetailData({
       type: 1,
       params: params,
@@ -403,7 +403,7 @@ export default {
     },
     cancelHandle(e) {
       this.form.resetFields();
-      this.handleSubmit(e);
+      // this.handleSubmit(e);
     },
 
     handleExtend() {
