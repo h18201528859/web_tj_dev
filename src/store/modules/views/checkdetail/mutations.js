@@ -5,7 +5,7 @@ const mutations = {
     },
     updateCurrentPage(state, data) {
         state.detailPage = data.page;
-        state.detailPagesize = data.pageSize;
+        state.detailPagesize = data.page_size;
     },
     updateDetailTableLoading(state, loading) {
         state.detailTableLoading = loading;

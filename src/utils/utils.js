@@ -7,8 +7,8 @@ export default {
         pathstr = pathstr.replace(/\/*/g, "");
         return pathstr;
     },
-    transToLocaleString(num){
-      return  num.toLocaleString()
+    transToLocaleString(num) {
+        return num.toLocaleString();
     },
     getLastDaysPeriod(period) {
         let timeArr = [];
@@ -45,6 +45,16 @@ export default {
             const defaultTime = "1990-01-01 00:00:00";
             const timeParams = {
                 start_time: defaultTime,
+                end_time: current,
+            };
+            return timeParams;
+        } else if (type === "month") {
+            //获取近三个月的时间段
+            const lastMonth = moment()
+                .subtract(1, "months")
+                .format("YYYY-MM-DD HH:mm:ss");
+            const timeParams = {
+                start_time: lastMonth,
                 end_time: current,
             };
             return timeParams;

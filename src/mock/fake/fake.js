@@ -48,18 +48,20 @@ module.exports = {
                 eighttonine: faker.random.number(),
                 ninetoten: faker.random.number(),
             },
-            prv_data: _.times(10, function() {
+            prv_data: _.times(31, function() {
                 return {
                     prv_name: faker.address.state(),
                     ninetoten: faker.random.number(),
                     eighttonine: faker.random.number(),
                     sixtoeight: faker.random.number(),
                     zerotosix: faker.random.number(),
-                    total_amount: faker.random.number(),
+                    total_number: faker.random.number(),
                     pass_number: faker.random.number(),
                     notpass_number: faker.random.number(),
+                    notpass_rate: "0.02%",
                 };
             }),
+            prv_data_len: 31,
         },
     },
     getImageStatistics: {
@@ -72,7 +74,7 @@ module.exports = {
                 total_number: faker.random.number(),
                 notpass_number: faker.random.number(),
             },
-            prv_data: _.times(10, function() {
+            prv_data: _.times(22, function() {
                 return {
                     prv_name: faker.address.state(),
                     total_amount: faker.random.number(),
@@ -80,6 +82,7 @@ module.exports = {
                     pass_amount: faker.random.number(),
                 };
             }),
+            prv_data_len: 22,
         },
     },
 };
