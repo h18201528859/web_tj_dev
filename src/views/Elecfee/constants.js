@@ -81,6 +81,11 @@ export const linechartOptions = {
     },
     yAxis: {
         type: "value",
+        axisLabel: {
+            show: true,
+            interval: 0,
+            rotate: 40,
+        },
     },
 
     series: [
@@ -176,7 +181,7 @@ export const piechartOptions = {
             },
             itemStyle: {},
             data: [],
-            barwidth: 20,
+            barwidth:20,
         },
     ],
 };

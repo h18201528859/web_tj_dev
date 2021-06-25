@@ -15,27 +15,26 @@
           </a-radio-group>
         </a-form-item>
         <a-form-item label="稽核类型" name="稽核类型">
-          <a-radio-group v-decorator="['types', { initialValue: 'fee' }]">
+          <a-radio-group
+            v-decorator="['types', { initialValue: 'fee' }]"
+            @change="handleTypeChange"
+          >
             <a-radio value="fee"> 电费(缴费单）</a-radio>
             <a-radio value="image"> 电费(电表图) </a-radio>
           </a-radio-group>
         </a-form-item>
         <div class="city-box" v-if="!cityFlag">
-          <a-form-item
-            label="地区选择"
-            default-value="vertical"
-            name="地区选择"
-          >
-            <a-radio-group v-decorator="['provice', { initialValue: 'a' }]">
-              <a-radio value="a"> 全部省份 </a-radio>
-              <a-radio value="b"> 自选省份 </a-radio>
+          <a-form-item label="地区选择" name="地区选择">
+            <a-radio-group v-decorator="['areas', { initialValue: 'all' }]">
+              <a-radio value="all"> 全部省份 </a-radio>
+              <a-radio value="province"> 自选省份 </a-radio>
             </a-radio-group>
             <a-select
               :default-value="[]"
               mode="multiple"
               :size="size"
               style="width: 200px"
-              @change="handleChange"
+              @change="handleProvinceChange"
             >
               <a-select-opt-group>
                 <span slot="label">直辖市</span>
@@ -62,22 +61,18 @@
               </a-select-opt-group>
             </a-select>
           </a-form-item>
-          <a-form-item label="稽核得分" default-value="vertical">
-            <a-radio-group
-              v-decorator="['radio-frationType', { initialValue: 'a' }]"
-              @change="alternate"
-            >
-              <a-radio value="a"> 全部 </a-radio>
-              <a-radio value="b" class="radio-fraction">
+          <a-form-item label="稽核得分">
+            <a-radio-group v-decorator="['score', { initialValue: 'all' }]">
+              <a-radio value="all"> 全部 </a-radio>
+              <a-radio value="range" class="radio-fraction">
                 分数段
                 <a-form-item class="child-fraction">
                   <a-radio-group
                     v-decorator="[
-                      'radio-childFrationType',
+                      'score_range',
                       {
-                        initialValue: '',
+                        initialValue: '1',
                         required: true,
-                        validator: this.valtorFranction,
                         trigger: 'change',
                       },
                     ]"
@@ -90,32 +85,16 @@
                   </a-radio-group>
                 </a-form-item>
               </a-radio>
-              <a-radio value="c" class="radio-auto">
-                自定义
-                <a-input-number
-                  placeholder=""
-                  class="radio-ipt"
-                  style="margin-left: 20px"
-                /><span class="line-radio">-</span
-                ><a-input-number
-                  placeholder=""
-                  class="radio-ipt"
-                  style="margin-right: 9px"
-                />分
-              </a-radio>
             </a-radio-group>
           </a-form-item>
-          <a-form-item label="稽核时间" default-value="vertical">
-            <a-radio-group
-              v-decorator="['radio-time', { initialValue: 'a' }]"
-              @change="transferChange"
-            >
-              <a-radio value="a"> 不限 </a-radio>
-              <a-radio value="b" class="radio-time">
+          <a-form-item label="稽核时间">
+            <a-radio-group v-decorator="['time', { initialValue: 'all' }]">
+              <a-radio value="all"> 不限 </a-radio>
+              <a-radio value="range" class="radio-time">
                 时间段
                 <a-form-item class="child-fraction-time">
                   <a-radio-group
-                    v-decorator="['recentTime', { initialValue: '' }]"
+                    v-decorator="['recentTime', { initialValue: 'month' }]"
                     @change="handleRecentTimeRange"
                   >
                     <a-radio-button value="month"> 近一月 </a-radio-button>
@@ -125,15 +104,14 @@
                   </a-radio-group>
                 </a-form-item>
               </a-radio>
-              <a-radio value="c">
+              <a-radio value="current">
                 自定义
                 <a-range-picker
                   v-decorator="['timerange', { initialValue: null }]"
                   :show-time="{ format: 'HH:mm' }"
                   format="YYYY-MM-DD HH:mm"
                   :placeholder="[starttimeHold, starttimeHold]"
-                  @change="handlefouce"
-                  @ok="handleTimeRangeChange"
+                  @change="handleTimerangeChange"
                   class="range-date"
                   style="margin-left: 20px"
                 >
@@ -260,32 +238,44 @@
 </template>
 
 <script>
-import { checkdetailColumns } from "./constants";
+import moment from "moment";
+import { checkdetailColumns, checkdetailImgCoulmns } from "./constants";
 import { provinceCode } from "../../const/constant";
 import { mapState, mapActions } from "vuex";
-import moment from "moment";
+import util from "../../utils/utils";
+
 export default {
   data() {
     return {
       plainOptions: ["电费(缴费单)", "电费(电表图)"],
-      checkallPieNumber: 0,
       checkdetailTableColumns: checkdetailColumns,
-      checkedList: [],
+      checkdetailImgCoulmns,
+      initParams: util.getAllTimeRange("all"),
+      changedParams: {},
+      selectAreas: "",
+      selectScoreRange: "",
+      selectTimerange: "",
+      requestTypes: "",
       totalPage: 0,
       currentPageSize: 10,
-      indeterminate: true,
-      checkAll: false,
       extendText: "收起",
       extendIcon: "up",
       cityFlag: false,
       provinceCode,
-      cityId: "0",
       size: "default",
-      starttimeHold: moment().format("YYYY.MM.DD HH:mm:ss"),
+      starttimeHold: moment().format("YYYY.MM.DD HH:mm"),
     };
   },
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: "validate_other" });
+  },
+  created() {
+    const params = Object.assign({}, this.initParams, this.checkParams);
+    this.getCheckallDetailData({
+      type: 1,
+      params: params,
+    });
+    this.totalPage = this.detailTotal;
   },
   watch: {
     detailTotal(newValue) {
@@ -298,16 +288,14 @@ export default {
   computed: {
     ...mapState({
       checkallDetail: (state) => state.checkdetail.checkallDetail,
+      checkParams: (state) => state.checkdetail.checkParams,
       detailTotal: (state) => state.checkdetail.detailTotal,
       detailPage: (state) => state.checkdetail.detailPage,
       detailPagesize: (state) => state.checkdetail.detailPagesize,
       detailTableLoading: (state) => state.checkdetail.detailTableLoading,
     }),
   },
-  created() {
-    this.getCheckallDetailData({ type: 1, params: { page: 1, page_size: 10 } });
-    this.totalPage = this.checkallDetail.length;
-  },
+
   beforeRouteEnter(to, from, next) {
     const { name } = from;
     next((vm) => {
@@ -325,88 +313,99 @@ export default {
   methods: {
     ...mapActions("checkdetail", ["getCheckallDetailData"]),
 
-    cancelHandle(e) {
-      this.checkedList = [];
-      this.form.resetFields();
-      this.handleSubmit(e);
+    handleProvinceChange(e) {
+      this.form.setFieldsValue({
+        areas: "province",
+      });
+      this.selectAreas = e.join(",") || "";
     },
+    handleScoreRangeChange(e) {
+      this.form.setFieldsValue({
+        score: "range",
+      });
+      this.selectScoreRange = e.target.value;
+    },
+    handleRecentTimeRange() {
+      this.form.setFieldsValue({
+        time: "range",
+      });
+    },
+
+    handleTimerangeChange(date, dataString) {
+      this.form.setFieldsValue({
+        time: "current",
+      });
+      console.log(dataString);
+      this.selectTimerange = dataString;
+    },
+    handleTypeChange(e) {
+      this.requestTypes = e.target.value === "image" ? 2 : 1;
+    },
+
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          values.radioChecked = this.checkedList;
-          values.page = 1;
-          values.page_size = 10;
           console.log(values, "values");
+          const checkTime = values.time;
+          const checkScore = values.score;
+          const checkArea = values.areas;
+          const defaultTime = util.getAllTimeRange();
+          let params = {
+            start_time: defaultTime.start_time,
+            end_time: defaultTime.end_time,
+            page: 1,
+            page_size: 10,
+            object: values.object,
+            scope: "1",
+            prv_array: "",
+            score: "1,2,3,4",
+          };
+          //拼地区参数
+          if (checkArea === "province") {
+            params.prv_array = this.selectAreas;
+          } else {
+            params.prv_array = "";
+          }
+          //拼得分参数参数
+          console.log(checkTime, "===>checkScore");
+          if (checkScore === "range") {
+            params.score = this.selectScoreRange;
+          } else {
+            params.score = "1,2,3,4";
+          }
+          //拼时间参数
+          if (checkTime === "range") {
+            const timeParams = util.getAllTimeRange(values.recentTime);
+            params.start_time = timeParams.start_time;
+            params.end_time = timeParams.end_time;
+          } else if (checkTime === "current") {
+            params.start_time = this.selectTimerange[0];
+            params.end_time = this.selectTimerange[1];
+          } else {
+            console.log(checkTime);
+          }
+          params.scope = checkArea === "province" ? "2" : "1";
+
+          if (values.types === "image") {
+            this.checkdetailTableColumns = checkdetailImgCoulmns;
+          } else {
+            this.checkdetailTableColumns = checkdetailColumns;
+          }
+          this.changedParams = params;
+          console.log(params, "-->请求参数");
           this.getCheckallDetailData({
-            type: 1,
-            params: values,
+            type: this.requestTypes,
+            params,
           });
         }
       });
-      //type:
-      // 1：缴费单+全国
-      // 2：缴费单+省份
-      // 3：电表+全国
-      // 4：电表+省份
-      //
     },
-    popupScroll() {
-      console.log("popupScroll");
-    },
-    normFile(e) {
-      if (Array.isArray(e)) {
-        return e;
-      }
-      return e && e.fileList;
+    cancelHandle(e) {
+      this.form.resetFields();
+      this.handleSubmit(e);
     },
 
-    onChangeDate(date, dateString) {
-      console.log(date, dateString);
-    },
-    alternate(e) {
-      if (e.target.value !== "b") {
-        this.form.setFieldsValue({
-          "radio-childFrationType": "",
-        });
-      }
-    },
-    handleRecentTimeRange(e) {
-      this.form.setFieldsValue({
-        "radio-time": "b",
-      });
-      console.log(e, "---->获得确定的时间段的值");
-    },
-    handleScoreRangeChange(e) {
-      this.form.setFieldsValue({
-        "radio-frationType": "b",
-      });
-      console.log(e, "---->获得自定义分数的值");
-    },
-    transferChange(e) {
-      if (e.target.value !== "b") {
-        this.form.setFieldsValue({
-          "radio-childTimeType": "",
-        });
-      }
-    },
-    handleChange() {
-      this.form.setFieldsValue({
-        "radio-provice": "b",
-      });
-    },
-    valtorFranction(rule, value, callback) {
-      callback();
-    },
-    handlefouce() {
-      console.log("时间聚焦选项");
-      this.form.setFieldsValue({
-        "radio-time": "c",
-      });
-    },
-    handleTimeRangeChange(value) {
-      console.log(value, "---->自定义时间段的值");
-    },
     handleExtend() {
       this.extendText = this.extendText == "展开" ? "收起" : "展开";
       this.extendIcon = this.extendIcon == "down" ? "up" : "down";
@@ -417,15 +416,25 @@ export default {
     },
     handleDetailPagesize(pageSize) {
       this.currentPageSize = pageSize;
+      const params = Object.assign({}, this.checkParams, {
+        page: 1,
+        page_size: +pageSize,
+      });
+
       this.getCheckallDetailData({
-        type: 1,
-        params: { page: 1, page_size: +pageSize },
+        type: this.requestTypes,
+        params: params,
       });
     },
     handlePaginationChange(page, pageSize) {
+      console.log(page, pageSize);
+      const params = Object.assign({}, this.checkParams, {
+        page: +page,
+        page_size: +pageSize,
+      });
       this.getCheckallDetailData({
-        type: 1,
-        params: { page: +page, page_size: +pageSize },
+        type: this.requestTypes,
+        params: params,
       });
     },
   },

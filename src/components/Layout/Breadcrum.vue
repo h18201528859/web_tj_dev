@@ -61,7 +61,7 @@ export default {
      if(name=="elecfeecitydetail"){
        setTimeout(()=>{
 
-        const cityName =this.getCodeVerIndex(cityId)
+        const cityName =this.getCodeVerIndex(cityId);
         this.updateCityId(cityId);
         this.getUpdateCityTitle(cityName);
         this.$store.commit("replaceBreadcrumb", [
@@ -108,9 +108,9 @@ export default {
        let strName;
         provinceCode.find(item=>{
           if(item.code==code){
-            strName = item.name.length>=3?item.name.slice(0,2):item.name
+            strName = item.name.length>=3?item.name.slice(0,2):item.name;
           }
-        })
+        });
        return strName;
     },
      getCodeName(name){
@@ -118,14 +118,14 @@ export default {
      provinceCode.find(item=>{
          const newName = item.name.length>=3?item.name.slice(0,2):item.name;
           if(newName==name){
-            codeName = item.code
+            codeName = item.code;
           }
-        })
+        });
        return codeName;
     },
     handleChange(name) {
       const cityName = this.getCodeVerIndex(name);
-      const nowUpdataCityId = this.getCodeName(name)
+      const nowUpdataCityId = this.getCodeName(name);
       this.updateCityId(nowUpdataCityId);
       this.getUpdateCityTitle(cityName);
       this.$store.commit("replaceBreadcrumb", [

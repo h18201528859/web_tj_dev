@@ -284,6 +284,7 @@ export default {
       HeadCardItems,
       provinceCode,
       lineData: [],
+      echartsTwoData: [],
       tabsKey: "1",
       pieData: [
         {
@@ -316,6 +317,8 @@ export default {
         },
       ],
       cityFilterData: {},
+      cityTwoFilterData: {},
+      cityTwoFilterName: [],
       linechartOptions,
       piechartOptions,
       checkallPieNumber: 0,
@@ -389,6 +392,7 @@ export default {
       data.forEach((item) => {
         name =
           item.prv_name.length >= 3 ? item.prv_name.slice(0, 2) : item.prv_name;
+
         param[name] = {
           value: item.total_amount,
           ninetoten: item.ninetoten,
@@ -399,16 +403,15 @@ export default {
           pass_number: item.pass_number,
           notpass_number: "20%", //item.notpass_number
         };
+
         desciplineData.push(item.total_amount);
       });
       this.lineData = desciplineData;
       this.cityFilterData = param;
+      console.log(this.cityFilterData, "this.cityFilterData");
       this.drawLines();
     },
     alldataTable(obj) {
-      // console.log(obj);
-
-      // console.log(this.pieData);
       for (let i = 0; i < this.pieData.length; i++) {
         let item = this.pieData[i];
         for (let j in obj) {
@@ -417,10 +420,35 @@ export default {
           }
         }
       }
-      console.log(this.pieData);
 
       const colorpie = ["#5B8FF9", "#5AD8A6", "#E8684A", "#F6BD16"];
       this.pieEchartsColor(colorpie, this.pieData);
+    },
+    EchartsEleTable(data) {
+      console.log("daya", data);
+      let desciplineData = [],
+        param = {},
+        name;
+      data.forEach((item) => {
+        name =
+          item.prv_name.length >= 3 ? item.prv_name.slice(0, 2) : item.prv_name;
+
+        param[name] = {
+          value: item.total_amount,
+          ninetoten: item.ninetoten,
+          eightto9: item.eighttonine,
+          sixto8: item.sixtoeight,
+          zerotosix: item.zerotosix,
+          total: item.total_amount,
+          pass_number: item.pass_number,
+          notpass_number: "20%", //item.notpass_number
+        };
+        this.cityTwoFilterName.push(name);
+        desciplineData.push(item.total_amount);
+      });
+      this.echartsTwoData = desciplineData;
+      this.cityTwoFilterData = param;
+      console.log(this.echartsTwoData, "echartsTwoData");
     },
   },
 
@@ -498,7 +526,6 @@ export default {
           this.getUpdateCityTitle({ cityName, countryTitle });
         } else {
           this.elecfeeImgCoulmns[1].title = "地市";
-          console.log(this.$route, "dsdsfdgfgfgf");
 
           const cityName = this.getCodeVerIndex(cityId) || "";
           countryTitle = {
@@ -548,14 +575,12 @@ export default {
               });
               if (diffArr[i] == "linechartOptionsOne") {
                 toolpitArr = `<div style="font-size:12px;">
-          <div><span>未通过: ${notpass_number}</span><span>通过: ${pass_number}</span><span style="margin-left:10px">${percent}%</span></div>
-          <div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8}元</span><span>未通过: ${notpass_number}</span><span>通过: ${pass_number}</span><span style="margin-left:10px">${percent}%</span></div> 
-          <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9}元</span><span>未通过: ${notpass_number}</span><span>通过: ${pass_number}</span><span style="margin-left:10px">${percent}%</span></div>
-          <div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten}元</span><span>未通过: ${notpass_number}</span><span>通过: ${pass_number}</span><span style="margin-left:6px;position:relative;left:-2px;">${percent}%</span></div>
+          <div><span>未通过数: ${notpass_number}</span><span>未通过率: ${pass_number}</span></div>
+          <div><span>未通过数: ${notpass_number}</span><span>未通过率: ${pass_number}</span></div> 
+          <div><span>未通过数: ${notpass_number}</span><span>未通过率: ${pass_number}</span></div>
+          <div><span>未通过数: ${notpass_number}</span><span>未通过率: ${pass_number}</span></div>
              <hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/>
-             <div style="display:flex;align-items:center">
-             <div style="width:6px;height:6px;background:${pointColor};margin-right:5px"></div>
-             <div>${name.name}省 稽核条数/占比</div></div> </div>`;
+             <div style="display:flex;align-items:center">`;
               } else {
                 toolpitArr = `<div style="font-size:12px;"><div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix}元</span><span style="margin-left:10px">${percent}%</span></div><div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8}元</span><span style="margin-left:10px">${percent}%</span></div> <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9}元</span><span style="margin-left:10px">${percent}%</span></div><div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten}元</span><span style="margin-left:6px;position:relative;left:-2px;">${percent}%</span></div><hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${pointColor};margin-right:5px"></div><div>${name.name}省 稽核条数/占比</div></div> </div>`;
               }
@@ -689,7 +714,8 @@ export default {
         this.linechartOptions.series[0].itemStyle.color = colorSet.mainSet;
       }
       this.linechartOptions.series[0].data = lineData;
-      this.linechartOptionsOne.series[0].data = lineData;
+      this.linechartOptionsOne.xAxis.data = this.cityTwoFilterName;
+      this.linechartOptionsOne.series[0].data = this.echartsTwoData;
       this.piechartOptions.series[0].data = pieData;
       lineChart1.setOption(this.linechartOptionsOne);
       lineChart.setOption(this.linechartOptions);
@@ -829,15 +855,6 @@ export default {
       const index = provinceCode.findIndex((item) => item.name == name);
       return index;
     },
-    getCodeVerIndex(code) {
-      let strName;
-      const index = provinceCode.find((item) => {
-        if (item.code == code) {
-          strName = item.name.length >= 3 ? item.name.slice(0, 2) : item.name;
-        }
-      });
-      return strName;
-    },
     getCodeName(name) {
       let codeName;
       provinceCode.find((item) => {
@@ -851,7 +868,6 @@ export default {
     },
     getChangeCity(name) {
       const nowName = name.length >= 3 ? name.slice(0, 2) : name;
-      // const getIndex = this.getIndexCityId(name);
       const getCodeName = this.getCodeName(nowName);
       this.updateCityId(name);
       this.getUpdateCityTitle(getCodeName, countryTitle);
@@ -911,9 +927,6 @@ export default {
       lineChart.setOption(this.linechartOptions);
       const piechart = this.$echarts.init(document.getElementById("piechart"));
       piechart.setOption(this.piechartOptions);
-      // this.pieData.map((pie) => {
-      //   this.checkallPieNumber += pie.value;
-      // });
       console.log(this.alldataTable);
       this.checkallPieNumber = util.transferNum(this.checkallPieNumber);
       piechart.on("legendselectchanged", function (options) {
@@ -1076,7 +1089,7 @@ export default {
         .pieCenter {
           position: absolute;
           top: 47%;
-          left: 102px;
+          left: 94px;
           display: flex;
           flex-direction: column;
           justify-content: center;

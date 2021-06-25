@@ -104,3 +104,42 @@ export const checkdetailColumns = [
         scopedSlots: { customRender: "notpass_rate" },
     },
 ];
+
+export const checkdetailImgCoulmns = [
+    {
+        title: "排名",
+        dataIndex: "rank",
+        key: "rank",
+        scopedSlots: { customRender: "rank" },
+    },
+    {
+        title: "省份",
+        dataIndex: "prv_name",
+        key: "prv_name",
+        // ellipsis: true,
+    },
+    {
+        title: "总量",
+        dataIndex: "total_number",
+        key: "total_number",
+        scopedSlots: { customRender: "total_number" },
+    },
+    {
+        title: "通过数",
+        dataIndex: "pass_number",
+        key: "pass_number",
+        scopedSlots: { customRender: "pass_number" },
+    },
+    {
+        title: "未通过数",
+        dataIndex: "notpass_number",
+        key: "notpass_number",
+        scopedSlots: { customRender: "notpass_number" },
+    },
+    {
+        title: "未通过率",
+        dataIndex: "notpass_rate",
+        key: "notpass_rate",
+        scopedSlots: { customRender: "notpass_rate" },
+    },
+];

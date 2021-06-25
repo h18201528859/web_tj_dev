@@ -64,22 +64,97 @@ module.exports = {
             prv_data_len: 31,
         },
     },
-    getImageStatistics: {
+    getPrvStatistics: {
+        ret_message: "请求成功",
+        ret_code: "0",
+        ret_data: {
+            all_data: {
+                total_number: faker.random.number(),
+                zerotosix: faker.random.number(),
+                sixtoeight: faker.random.number(),
+                eighttonine: faker.random.number(),
+                ninetoten: faker.random.number(),
+            },
+            preg_data: _.times(12, function() {
+                return {
+                    preg_name: faker.address.city(),
+                    zerotosix: faker.random.number(),
+                    sixtoeight: faker.random.number(),
+                    eighttonine: faker.random.number(),
+                    ninetoten: faker.random.number(),
+                    total_number: faker.random.number(),
+                    pass_number: faker.random.number(),
+                    notpass_number: faker.random.number(),
+                    notpass_rate: "0.03%",
+                };
+            }),
+            prv_data_len: 12,
+        },
+    },
+    getEchartStatistics: {
         ret_message: "请求成功",
         ret_code: "0",
         ret_data: {
             all_data: {
                 total_amount: faker.random.number(),
-                notpass_amount: faker.random.number(),
-                total_number: faker.random.number(),
+                pass_number: faker.random.number(),
                 notpass_number: faker.random.number(),
+                zerotosix: faker.random.number(),
+                sixtoeight: faker.random.number(),
+                eighttonine: faker.random.number(),
+                ninetoten: faker.random.number(),
             },
-            prv_data: _.times(22, function() {
+            prv_data: _.times(31, function() {
                 return {
                     prv_name: faker.address.state(),
+                    ninetoten: faker.random.number(),
+                    eighttonine: faker.random.number(),
+                    sixtoeight: faker.random.number(),
+                    zerotosix: faker.random.number(),
                     total_amount: faker.random.number(),
-                    notpass_amount: faker.random.number(),
-                    pass_amount: faker.random.number(),
+                    pass_number: faker.random.number(),
+                    notpass_number: faker.random.number(),
+                };
+            }),
+        },
+    },
+    getImageStatistics: {
+        ret_message: "请求成功",
+        ret_code: "0",
+        ret_data: {
+            all_data: {
+                total_number: faker.random.number(),
+                pass_number: faker.random.number(),
+                notpass_number: faker.random.number(),
+            },
+            prv_data: _.times(31, function() {
+                return {
+                    prv_name: faker.address.state(),
+                    total_number: faker.random.number(),
+                    notpass_number: faker.random.number(),
+                    pass_number: faker.random.number(),
+                    notpass_rate: "0.00%",
+                };
+            }),
+            prv_data_len: 31,
+        },
+    },
+    getImgPrvStatistics: {
+        ret_message: "请求成功",
+        ret_code: "0",
+        ret_data: {
+            all_data: {
+                total_number: faker.random.number(),
+                notpass_number: faker.random.number(),
+                pass_number: faker.random.number(),
+            },
+            preg_data: _.times(22, function() {
+                return {
+                    preg_name: faker.address.state(),
+                    total_number: faker.random.number(),
+                    notpass_number: faker.random.number(),
+                    pass_number: faker.random.number(),
+                    notpass_rate: "0.13%",
                 };
             }),
             prv_data_len: 22,
