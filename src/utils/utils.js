@@ -8,7 +8,7 @@ export default {
         return pathstr;
     },
     transToLocaleString(num){
-      return  num.toLocaleString()
+      return  num.toLocaleString();
     },
     getLastDaysPeriod(period) {
         let timeArr = [];

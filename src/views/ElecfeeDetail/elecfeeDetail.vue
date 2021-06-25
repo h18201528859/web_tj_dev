@@ -329,7 +329,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           values.radioChecked = this.checkedList;
-          console.log(values,'values')
+          console.log(values,'values');
         }
       });
     },
@@ -356,12 +356,12 @@ export default {
     alterTimeHandle(){
        this.form.setFieldsValue({
             'radio-time': 'b'
-          })
+          });
     },
     alternateRadio(){
          this.form.setFieldsValue({
             'radio-frationType': 'b'
-          })
+          });
     },
     transferChange(e){
       if(e.target.value!=='b'){
@@ -369,11 +369,6 @@ export default {
           "radio-childTimeType": "",
         });
       }
-    },
-    handleChange(value) {
-        this.form.setFieldsValue({
-          'radio-provice': 'b'
-        })
     },
     valtorFranction(rule, value, callback) {
       callback();
@@ -385,10 +380,10 @@ export default {
        
     },
     handlefouce(){
-      console.log('focus')
+      console.log('focus');
       this.form.setFieldsValue({
           'radio-time': 'c'
-        })
+        });
     },
     onCheckAllChange(e) {
       Object.assign(this, {

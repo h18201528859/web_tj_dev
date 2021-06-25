@@ -1,5 +1,6 @@
 import { axiospost } from "../../../../utils/http";
 import API from "../../../../const/apis";
+console.log(API);
 const actions = {
     getHeadData({ commit }, params) {
         if (!params.prv_code) {
@@ -72,7 +73,7 @@ const actions = {
         );
         commit("updateParams", targetParams);
         commit("updateCurrentPage", targetParams);
-        axiospost(API.getStatistics, targetParams).then(
+        axiospost(API.getEchartStatistics, targetParams).then(
             (res) => {
                 if (+res.ret_code === 0) {
                     commit("updateEchartsElecfeeTable", {

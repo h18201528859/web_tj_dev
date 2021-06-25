@@ -6,6 +6,7 @@ module.exports = {
     ///////<-------------Checkall--------->/////
     "/POST/Payment/GetSum": "/getCheckallAmout",
     "/POST/Payment/GetStatistics": "/getStatistics",
+    "/POST/Payment/getEchartStatistics": "/getEchartStatistics",
     "/POST/Payment/GetImageStatistics": "/getImageStatistics",
     "/POST/Payment/GetElecSum": "/getElecSum",
     "/POST/Payment/GetElecPrvSum": "/getElecPrvSum",
