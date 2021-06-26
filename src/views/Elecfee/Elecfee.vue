@@ -445,6 +445,7 @@ export default {
           notpass_number: "20%", //item.notpass_number
         };
         this.cityTwoFilterName.push(name);
+
         desciplineData.push(item.total_amount);
       });
       this.echartsTwoData = desciplineData;
@@ -570,158 +571,149 @@ export default {
                     pass_number = cityFilterData[item].pass_number;
                     notpass_number = cityFilterData[item].notpass_number;
                   }
-                }
-                if (diffArr[i] == "linechartOptionsOne") {
-                  toolpitArr = `<div style="font-size:12px;">
-          <div><span>未通过数: ${notpass_number}</span><span>未通过率: ${pass_number}</span></div>
-          <div><span>未通过数: ${notpass_number}</span><span>未通过率: ${pass_number}</span></div> 
-          <div><span>未通过数: ${notpass_number}</span><span>未通过率: ${pass_number}</span></div>
-          <div><span>未通过数: ${notpass_number}</span><span>未通过率: ${pass_number}</span></div>
-             <hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/>
-             <div style="display:flex;align-items:center">`;
                 } else {
-                  toolpitArr = `<div style="font-size:12px;"><div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix}元</span><span style="margin-left:10px">${percent}%</span></div><div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8}元</span><span style="margin-left:10px">${percent}%</span></div> <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9}元</span><span style="margin-left:10px">${percent}%</span></div><div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten}元</span><span style="margin-left:6px;position:relative;left:-2px;">${percent}%</span></div><hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${pointColor};margin-right:5px"></div><div>${name.name}省 稽核条数/占比</div></div> </div>`;
+                  pointColor = colorSet.mainSet[0];
                 }
-                if (diffArr[i] == "linechartOptionsOne") {
-                  toolpitArr = `<div style="font-size:12px;">
-          <div><span>未通过数: ${notpass_number}</span><span>未通过率: ${pass_number}</span></div>
-          <div><span>未通过数: ${notpass_number}</span><span>未通过率: ${pass_number}</span></div> 
-          <div><span>未通过数: ${notpass_number}</span><span>未通过率: ${pass_number}</span></div>
-          <div><span>未通过数: ${notpass_number}</span><span>未通过率: ${pass_number}</span></div>
-             <hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/>
-             <div style="display:flex;align-items:center">`;
-                } else {
-                  toolpitArr = `<div style="font-size:12px;"><div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix}元</span><span style="margin-left:10px">${percent}%</span></div><div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8}元</span><span style="margin-left:10px">${percent}%</span></div> <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9}元</span><span style="margin-left:10px">${percent}%</span></div><div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten}元</span><span style="margin-left:6px;position:relative;left:-2px;">${percent}%</span></div><hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${pointColor};margin-right:5px"></div><div>${name.name}省 稽核条数/占比</div></div> </div>`;
-                }
-                return toolpitArr;
               });
+              if (diffArr[i] == "linechartOptionsOne") {
+                toolpitArr = `<div style="font-size:12px;">
+          <div><span>未通过数: ${notpass_number}</span><span>未通过率: ${pass_number}</span></div>
+          <div><span>未通过数: ${notpass_number}</span><span>未通过率: ${pass_number}</span></div> 
+          <div><span>未通过数: ${notpass_number}</span><span>未通过率: ${pass_number}</span></div>
+          <div><span>未通过数: ${notpass_number}</span><span>未通过率: ${pass_number}</span></div>
+             <hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/>
+             <div style="display:flex;align-items:center">`;
+              } else {
+                toolpitArr = `<div style="font-size:12px;"><div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix}元</span><span style="margin-left:10px">${percent}%</span></div><div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8}元</span><span style="margin-left:10px">${percent}%</span></div> <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9}元</span><span style="margin-left:10px">${percent}%</span></div><div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten}元</span><span style="margin-left:6px;position:relative;left:-2px;">${percent}%</span></div><hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${pointColor};margin-right:5px"></div><div>${name.name}省 稽核条数/占比</div></div> </div>`;
+              }
+              return toolpitArr;
             };
           }
-          this.piechartOptions.tooltip.formatter = (name) => {
-            const pieData = piechartOptions.series[0].data;
-            let toolpitColor = "";
-            let target = 0;
-            let total = 0;
-            let fraction = "";
-            for (let i = 0; i < pieData.length; i++) {
-              total += pieData[i].value;
-              if (pieData[i].name === name.name) {
-                toolpitColor = colorSet.mainPieSet[i];
-                target = name.value;
-                fraction = pieData[i].fraction;
-              }
-            }
-            const percent = ((target / total) * 100).toFixed(1);
-            let toolpitStr = `<div style='padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国电费缴纳单 ${fraction}分 </div></div>`;
-            return toolpitStr;
-          };
-          this.linechartOptions.series[0].itemStyle.color = colorSet.mainSet;
-          this.linechartOptionsOne.series[0].itemStyle.color = colorSet.mainSet;
-          this.piechartOptions.series[0].itemStyle.color = colorSet.mainPieSet;
-
-          pieCharts.style.display = "none";
-        } else if (+key === 1) {
-          this.getElecfeeTableData({ page: 1 });
-          this.checkdetailTableColumns = checkdetailColumns;
-          pieCharts.style.display = "block";
-          lineData = [930, 780, 720, 60, 320, 420, 530, 280, 420, 500];
-          pieData = [
-            {
-              value: 2587,
-              name: "电费",
-              fraction: "9-10",
-              itemStyle: { normal: { color: "" } },
-            },
-            {
-              value: 1626,
-              name: "铁塔服务费",
-              fraction: "8-9",
-              itemStyle: { normal: { color: "" } },
-            },
-            {
-              value: 1062,
-              name: "租费",
-              fraction: "6-8",
-              itemStyle: { normal: { color: "" } },
-            },
-            {
-              value: 985,
-              name: "稽核总量",
-              fraction: "0-6",
-              itemStyle: { normal: { color: "" } },
-            },
-          ];
-          colorSet.mainPieSet = ["#5B8FF9", "#5AD8A6", "#E8684A", "#F6BD16"];
-          if (this.$route.name == "elecfee") {
-            colorSet.mainSet = ["rgba(71, 199, 253, 0.85)"];
-
-            pieData.map((item, index) => {
-              item.itemStyle.normal.color = colorSet.mainPieSet[index];
-            });
-          } else {
-            colorSet.mainSet = ["rgba(119, 114, 241, 0.85)"];
-            const colornew = [
-              "rgba(119, 114, 241, 0.85)",
-              "rgba(206, 119, 251, 0.85)",
-              "rgba(90, 220, 255, 0.85)",
-              "rgba(71, 167, 253, 0.85)",
-            ];
-            pieData.map((item, index) => {
-              item.itemStyle.normal.color = colornew[index];
-            });
-            // this.piechartOptions.series[0].itemStyle.color = ['rgba(119, 114, 241, 0.85)', 'rgba(206, 119, 251, 0.85)', "rgba(90, 220, 255, 0.85)", "rgba(71, 167, 253, 0.85)"]
-            this.piechartOptions.series[0].color = colornew;
-          }
-
-          this.linechartOptions.tooltip.formatter = (name) => {
-            const cityFilterData = this.cityFilterData;
-            let total = 0;
-            let target = 0;
-            let toolpitArr = "";
-            let pointColor = "";
-            let ninetoten = 0;
-            let eightto9 = 0;
-            let sixto8 = 0;
-            let zerotosix = 0;
-            let percent = 0;
-            Object.keys(cityFilterData).forEach((item, index) => {
-              if (item == name.name) {
-                target = cityFilterData[item].value;
-                total = cityFilterData[item].total;
-                ninetoten = cityFilterData[item].ninetoten;
-                eightto9 = cityFilterData[item].eightto9;
-                sixto8 = cityFilterData[item].sixto8;
-                zerotosix = cityFilterData[item].zerotosix;
-                percent = ((target / total) * 100).toFixed(1);
-                pointColor = colorSet.mainSet[index];
-              } else {
-                pointColor = colorSet.mainSet[0];
-              }
-            });
-            toolpitArr = `<div style="font-size:12px;"><div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix}元</span><span style="margin-left:10px">${percent}%</span></div><div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8}元</span><span style="margin-left:10px">${percent}%</span></div> <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9}元</span><span style="margin-left:10px">${percent}%</span></div><div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten}元</span><span style="margin-left:6px;position:relative;left:-2px;">${percent}%</span></div><hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${pointColor};margin-right:5px"></div><div>${name.name}省 稽核条数/占比</div></div> </div>`;
-            return toolpitArr;
-          };
-
-          this.piechartOptions.tooltip.formatter = (name) => {
-            const pieData = piechartOptions.series[0].data;
-            let toolpitColor = "";
-            let target = 0;
-            let total = 0;
-            let fraction = "";
-            for (let i = 0; i < pieData.length; i++) {
-              total += pieData[i].value;
-              if (pieData[i].name === name.name) {
-                toolpitColor = colorSet.mainPieSet[i];
-                target = name.value;
-                fraction = pieData[i].fraction;
-              }
-            }
-            const percent = ((target / total) * 100).toFixed(1);
-            let toolpitStr = `<div style='padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国电费缴纳单 ${fraction}分 </div></div>`;
-            return toolpitStr;
-          };
-          this.linechartOptions.series[0].itemStyle.color = colorSet.mainSet;
         }
+        this.piechartOptions.tooltip.formatter = (name) => {
+          const pieData = piechartOptions.series[0].data;
+          let toolpitColor = "";
+          let target = 0;
+          let total = 0;
+          let fraction = "";
+          for (let i = 0; i < pieData.length; i++) {
+            total += pieData[i].value;
+            if (pieData[i].name === name.name) {
+              toolpitColor = colorSet.mainPieSet[i];
+              target = name.value;
+              fraction = pieData[i].fraction;
+            }
+          }
+          const percent = ((target / total) * 100).toFixed(1);
+          let toolpitStr = `<div style='padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国电费缴纳单 ${fraction}分 </div></div>`;
+          return toolpitStr;
+        };
+        this.linechartOptions.series[0].itemStyle.color = colorSet.mainSet;
+        this.linechartOptionsOne.series[0].itemStyle.color = colorSet.mainSet;
+        this.piechartOptions.series[0].itemStyle.color = colorSet.mainPieSet;
+
+        pieCharts.style.display = "none";
+      } else if (+key === 1) {
+        this.getElecfeeTableData({ page: 1 });
+        this.checkdetailTableColumns = checkdetailColumns;
+        pieCharts.style.display = "block";
+        lineData = [930, 780, 720, 60, 320, 420, 530, 280, 420, 500];
+        pieData = [
+          {
+            value: 2587,
+            name: "电费",
+            fraction: "9-10",
+            itemStyle: { normal: { color: "" } },
+          },
+          {
+            value: 1626,
+            name: "铁塔服务费",
+            fraction: "8-9",
+            itemStyle: { normal: { color: "" } },
+          },
+          {
+            value: 1062,
+            name: "租费",
+            fraction: "6-8",
+            itemStyle: { normal: { color: "" } },
+          },
+          {
+            value: 985,
+            name: "稽核总量",
+            fraction: "0-6",
+            itemStyle: { normal: { color: "" } },
+          },
+        ];
+        colorSet.mainPieSet = ["#5B8FF9", "#5AD8A6", "#E8684A", "#F6BD16"];
+        if (this.$route.name == "elecfee") {
+          colorSet.mainSet = ["rgba(71, 199, 253, 0.85)"];
+
+          pieData.map((item, index) => {
+            item.itemStyle.normal.color = colorSet.mainPieSet[index];
+          });
+        } else {
+          colorSet.mainSet = ["rgba(119, 114, 241, 0.85)"];
+          const colornew = [
+            "rgba(119, 114, 241, 0.85)",
+            "rgba(206, 119, 251, 0.85)",
+            "rgba(90, 220, 255, 0.85)",
+            "rgba(71, 167, 253, 0.85)",
+          ];
+          pieData.map((item, index) => {
+            item.itemStyle.normal.color = colornew[index];
+          });
+          // this.piechartOptions.series[0].itemStyle.color = ['rgba(119, 114, 241, 0.85)', 'rgba(206, 119, 251, 0.85)', "rgba(90, 220, 255, 0.85)", "rgba(71, 167, 253, 0.85)"]
+          this.piechartOptions.series[0].color = colornew;
+        }
+
+        this.linechartOptions.tooltip.formatter = (name) => {
+          const cityFilterData = this.cityFilterData;
+          let total = 0;
+          let target = 0;
+          let toolpitArr = "";
+          let pointColor = "";
+          let ninetoten = 0;
+          let eightto9 = 0;
+          let sixto8 = 0;
+          let zerotosix = 0;
+          let percent = 0;
+          Object.keys(cityFilterData).forEach((item, index) => {
+            if (item == name.name) {
+              target = cityFilterData[item].value;
+              total = cityFilterData[item].total;
+              ninetoten = cityFilterData[item].ninetoten;
+              eightto9 = cityFilterData[item].eightto9;
+              sixto8 = cityFilterData[item].sixto8;
+              zerotosix = cityFilterData[item].zerotosix;
+              percent = ((target / total) * 100).toFixed(1);
+              pointColor = colorSet.mainSet[index];
+            } else {
+              pointColor = colorSet.mainSet[0];
+            }
+          });
+          toolpitArr = `<div style="font-size:12px;"><div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix}元</span><span style="margin-left:10px">${percent}%</span></div><div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8}元</span><span style="margin-left:10px">${percent}%</span></div> <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9}元</span><span style="margin-left:10px">${percent}%</span></div><div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten}元</span><span style="margin-left:6px;position:relative;left:-2px;">${percent}%</span></div><hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${pointColor};margin-right:5px"></div><div>${name.name}省 稽核条数/占比</div></div> </div>`;
+          return toolpitArr;
+        };
+
+        this.piechartOptions.tooltip.formatter = (name) => {
+          const pieData = piechartOptions.series[0].data;
+          let toolpitColor = "";
+          let target = 0;
+          let total = 0;
+          let fraction = "";
+          for (let i = 0; i < pieData.length; i++) {
+            total += pieData[i].value;
+            if (pieData[i].name === name.name) {
+              toolpitColor = colorSet.mainPieSet[i];
+              target = name.value;
+              fraction = pieData[i].fraction;
+            }
+          }
+          const percent = ((target / total) * 100).toFixed(1);
+          let toolpitStr = `<div style='padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国电费缴纳单 ${fraction}分 </div></div>`;
+          return toolpitStr;
+        };
+        this.linechartOptions.series[0].itemStyle.color = colorSet.mainSet;
       }
       this.linechartOptions.series[0].data = lineData;
       this.linechartOptionsOne.xAxis.data = this.cityTwoFilterName;

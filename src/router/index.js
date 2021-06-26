@@ -17,7 +17,7 @@ import Login from "../views/Login.vue";
 //views
 import Checkall from "../views/Checkall/Checkall.vue";
 // import CheckDetail from "../views/CheckDetail/CheckDetail.vue";
-import CheckDetail from "../views/ElecfeeDetail/elecfeeDetail.vue";
+import CheckDetail from "../views/ElecfeeDetail/ElecfeeDetail.vue";
 
 Vue.use(VueRouter);
 
@@ -60,26 +60,18 @@ const routes = [
             {
                 path: "",
                 name: "elecfee",
-                component: () =>
-                    import(
-                        /* webpackChunkName: "about" */ "../views/Elecfee/Elecfee.vue"
-                    ),
+                component: () => import("../views/Elecfee/Elecfee.vue"),
             },
             {
                 path: "/elecfee/elecfeeDetail",
                 name: "elecfeeDetail",
                 component: () =>
-                    import(
-                        /* webpackChunkName: "home" */ "../views/ElecfeeDetail/elecfeeDetail.vue"
-                    ),
+                    import("../views/ElecfeeDetail/ElecfeeDetail.vue"),
             },
             {
                 path: "/elecfee/elecfeeCityDetail/:cityId",
                 name: "elecfeecitydetail",
-                component: () =>
-                    import(
-                        /* webpackChunkName: "homeabout" */ "../views/Elecfee/Elecfee.vue"
-                    ),
+                component: () => import("../views/Elecfee/Elecfee.vue"),
             },
         ],
     },

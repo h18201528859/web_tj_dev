@@ -47,9 +47,8 @@ const actions = {
                 if (+res.ret_code === 0) {
                     commit("updateElecfeeTable", {
                         data: res.ret_data.prv_data,
-                        alldataTable:res.ret_data.all_data,
+                        alldataTable: res.ret_data.all_data,
                         total: Number(res.ret_data.prv_data_len),
-                        
                     });
                     setTimeout(() => {
                         commit("updateDetailTableLoading", false);
@@ -73,7 +72,7 @@ const actions = {
         );
         commit("updateParams", targetParams);
         commit("updateCurrentPage", targetParams);
-        axiospost(API.getEchartStatistics, targetParams).then(
+        axiospost(API.getStatistics, targetParams).then(
             (res) => {
                 if (+res.ret_code === 0) {
                     commit("updateEchartsElecfeeTable", {
