@@ -869,6 +869,15 @@ export default {
         });
        return codeName;
     },
+     getCodeVerIndex(code){
+       let strName;
+        provinceCode.find(item=>{
+          if(item.code==code){
+            strName = item.name.length>=3?item.name.slice(0,2):item.name;
+          }
+        });
+       return strName;
+    },
     getChangeCity(name) {
       const nowName = name.length>=3?name.slice(0,2):name;
       const getCodeName = this.getCodeName(nowName);
