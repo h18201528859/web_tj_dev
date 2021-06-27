@@ -30,7 +30,6 @@ const mutations = {
     },
     updateCityTitle(state, oParams) {
         let initCityTitle, oData;
-        console.log("dssdfdfdkgfkgf", oParams);
         if (typeof oParams == "string") {
             initCityTitle = {
                 surveyTitle: "电费稽核概况",
@@ -51,7 +50,6 @@ const mutations = {
                 tabProvinceTitle: oParams + tabProvinceTitle,
             };
         } else {
-            console.log(oParams, "oParams");
             initCityTitle = oParams.countryTitle;
             const {
                 surveyTitle,

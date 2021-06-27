@@ -236,6 +236,7 @@ export default {
       params: { cityId = "QG" },
     } = this.$route;
     if (name == "elecfeecitydetail") {
+      this.getProElecfeeTableData()
       setTimeout(() => {
         let lineColor;
          if(+this.tabsKey==2){
@@ -263,7 +264,10 @@ export default {
       headData: (state) => state.elecfee.headData,
       elecfeeTable: (state) => state.elecfee.elecfeeTable,
       EchartsEleTable: (state) => state.elecfee.EchartsEleTable,
-      provinceTable: (state) => state.elecfee.provinceTable,
+      provinceTable: (state) => {
+        console.log(state.elecfee)
+        return  state.elecfee.provinceTable
+      },
       checkallParams: (state) => state.elecfee.checkallParams,
       alldataTable: (state) =>{
         if(state.elecfee.alldataTable){
@@ -560,6 +564,7 @@ export default {
         };
         this.linechartOptions.series[0].itemStyle.color = colorSet.mainSet;
          this.linechartOptionsOne.series[0].itemStyle.color = colorSet.mainSet;
+          this.linechartOptionsOne.series[0].barWidth = '28'
         this.piechartOptions.series[0].itemStyle.color = colorSet.mainPieSet;
 
         pieCharts.style.display = "none";
