@@ -564,7 +564,7 @@ export default {
         };
         this.linechartOptions.series[0].itemStyle.color = colorSet.mainSet;
          this.linechartOptionsOne.series[0].itemStyle.color = colorSet.mainSet;
-          this.linechartOptionsOne.series[0].barWidth = '28'
+          this.linechartOptionsOne.series[0].barWidth = '20'
         this.piechartOptions.series[0].itemStyle.color = colorSet.mainPieSet;
 
         pieCharts.style.display = "none";
