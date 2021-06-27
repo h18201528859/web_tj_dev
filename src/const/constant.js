@@ -22,8 +22,8 @@ const mockcolumns = [
 const provinceCode = [
     {
         name: "全国",
-        code: "QG",
-        isProvince: true,
+        code: "",
+        isWhole: true,
     },
     {
         name: "北京市",

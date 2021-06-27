@@ -161,7 +161,6 @@
                 : `${(text / 100000000).toFixed(2)}亿`
             }}</span>
           </template>
-
           <template slot="zerotosix" slot-scope="text, all">
             <span>{{
               all.total_number

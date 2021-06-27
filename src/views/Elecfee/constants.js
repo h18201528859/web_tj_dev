@@ -181,7 +181,7 @@ export const piechartOptions = {
             },
             itemStyle: {},
             data: [],
-            barwidth:20,
+            barwidth: 20,
         },
     ],
 };
@@ -401,5 +401,4 @@ export const unitCityArr = [
     { name: "上海", id: 2 },
     { name: "天津", id: 3 },
     { name: "重庆", id: 4 },
-  
 ];

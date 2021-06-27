@@ -9,173 +9,114 @@
         class="from-box"
       >
         <a-form-item label="统计类型" name="统计类型">
-          <a-radio-group
-            v-decorator="['radio-types', { initialValue: 'number' }]"
-          >
-            <a-radio value="number"> 数量 </a-radio>
-            <a-radio value="all"> 金额 </a-radio>
+          <a-radio-group v-decorator="['object', { initialValue: '0' }]">
+            <a-radio value="0"> 数量 </a-radio>
+            <a-radio value="1"> 金额 </a-radio>
           </a-radio-group>
         </a-form-item>
-
         <a-form-item label="稽核类型" name="稽核类型">
-          <a-checkbox
-            :indeterminate="indeterminate"
-            :checked="checkAll"
-            @change="onCheckAllChange"
+          <a-radio-group
+            v-decorator="['types', { initialValue: 'fee' }]"
+            @change="handleTypeChange"
           >
-            全部
-          </a-checkbox>
-          <a-checkbox-group
-            v-model="checkedList"
-            :options="plainOptions"
-            @change="onChange"
-          >
-          </a-checkbox-group>
+            <a-radio value="fee"> 电费(缴费单）</a-radio>
+            <a-radio value="image"> 电费(电表图) </a-radio>
+          </a-radio-group>
         </a-form-item>
         <div class="city-box" v-if="!cityFlag">
-          <a-form-item
-            label="地区选择"
-            default-value="vertical"
-            name="地区选择"
-          >
-            <div>
-              <a-radio-group
-                v-decorator="['radio-provice', { initialValue: 'a' }]"
-              >
-                <a-radio value="a"> 全部省份 </a-radio>
-                <a-radio value="b"> 自选省份 </a-radio>
-              </a-radio-group>
-              <!-- <a-select
-                mode="multiple"
-                :size="size"
-                placeholder="请输入或选择"
-                :default-value="[]"
-                style="width: 290px"
-                @change="handleChange"
-                @popupScroll="popupScroll"
-              >
-                 <a-select-option v-for="i in cityArr" :key="i.id" :value="i.id">
-                  {{ i.name }}
-                </a-select-option>
-              </a-select> -->
-              <a-select
-                :default-value="[]"
-                mode="multiple"
-                :size="size"
-                style="width: 200px"
-                @change="handleChange"
-              >
-                <a-select-opt-group>
-                  <span slot="label">直辖市</span>
-                   <a-select-option v-for="i in unitCityArr" :key="i.id" :value="i.id">
-                      {{ i.name }}
-                    </a-select-option>
-                 
-                </a-select-opt-group>
-                <a-select-opt-group label="省份">
-                  <a-select-option value="山东省"> 山东省 </a-select-option>
-                  <a-select-option value="河南省"> 河南省 </a-select-option>
-                </a-select-opt-group>
-              </a-select>
-            </div>
-          </a-form-item>
-          <a-form-item label="" style="display: none">
-            <div class="all-city">
-              <a-radio-group
-                v-decorator="['radio-city', { initialValue: 'a' }]"
-              >
-                <a-radio value="a"> 全部城市 </a-radio>
-                <a-radio value="b"> 自选城市 </a-radio>
-              </a-radio-group>
-              <!-- <a-select
-                default-value="lucy"
-                style="width: 120px"
-                @change="handleChange"
-              >
-                <a-select-option value="jack"> Jack </a-select-option>
-                <a-select-option value="lucy"> Lucy </a-select-option>
-                <a-select-option value="disabled"> Disabled </a-select-option>
-                <a-select-option value="Yiminghe"> yiminghe </a-select-option>
-              </a-select> -->
-            </div>
-          </a-form-item>
-          <a-form-item label="稽核得分" default-value="vertical">
-            <a-radio-group
-              v-decorator="['radio-frationType', { initialValue: 'a' }]"
-              @change="alternate"
+          <a-form-item label="地区选择" name="地区选择">
+            <a-radio-group v-decorator="['areas', { initialValue: 'all' }]">
+              <a-radio value="all"> 全部省份 </a-radio>
+              <a-radio value="province"> 自选省份 </a-radio>
+            </a-radio-group>
+            <a-select
+              :default-value="[]"
+              mode="multiple"
+              :size="size"
+              style="width: 200px"
+              @change="handleProvinceChange"
             >
-              <a-radio value="a"> 全部 </a-radio>
-              <a-radio value="b" class="radio-fraction">
+              <a-select-opt-group>
+                <span slot="label">直辖市</span>
+                <template v-for="i in provinceCode">
+                  <a-select-option
+                    v-if="i.isProvince"
+                    :key="i.code"
+                    :value="i.code"
+                  >
+                    {{ i.name }}
+                  </a-select-option>
+                </template>
+              </a-select-opt-group>
+              <a-select-opt-group label="省份">
+                <template v-for="i in provinceCode">
+                  <a-select-option
+                    v-if="!i.isProvince && !i.isWhole"
+                    :key="i.code"
+                    :value="i.code"
+                  >
+                    {{ i.name }}
+                  </a-select-option>
+                </template>
+              </a-select-opt-group>
+            </a-select>
+          </a-form-item>
+          <a-form-item label="稽核得分">
+            <a-radio-group v-decorator="['score', { initialValue: 'all' }]">
+              <a-radio value="all"> 全部 </a-radio>
+              <a-radio value="range" class="radio-fraction">
                 分数段
                 <a-form-item class="child-fraction">
                   <a-radio-group
                     v-decorator="[
-                      'radio-childFrationType',
+                      'score_range',
                       {
-                        initialValue: '',
+                        initialValue: '1',
                         required: true,
-                        validator: this.valtorFranction,
                         trigger: 'change',
                       },
                     ]"
-                     @change="alternateRadio"
+                    @change="handleScoreRangeChange"
                   >
-                    <a-radio-button value="a"> 0-6分 </a-radio-button>
-                    <a-radio-button value="b"> 6-8分 </a-radio-button>
-                    <a-radio-button value="c"> 8-9分 </a-radio-button>
-                    <a-radio-button value="d"> 9-10分 </a-radio-button>
+                    <a-radio-button value="1"> 0-6分 </a-radio-button>
+                    <a-radio-button value="2"> 6-8分 </a-radio-button>
+                    <a-radio-button value="3"> 8-9分 </a-radio-button>
+                    <a-radio-button value="4"> 9-10分 </a-radio-button>
                   </a-radio-group>
                 </a-form-item>
-              </a-radio>
-              <a-radio value="c" class="radio-auto">
-                自定义
-                <a-input-number
-                  placeholder=""
-                  class="radio-ipt"
-                  style="margin-left: 20px"
-                /><span class="line-radio">-</span
-                ><a-input-number
-                  placeholder=""
-                  class="radio-ipt"
-                  style="margin-right: 9px"
-                />分
               </a-radio>
             </a-radio-group>
           </a-form-item>
-          <a-form-item label="稽核时间" default-value="vertical">
-            <a-radio-group
-              v-decorator="['radio-time', { initialValue: 'a' }]"
-              @change="transferChange"
-            >
-              <a-radio value="a"> 不限 </a-radio>
-              <a-radio value="b" class="radio-time">
+          <a-form-item label="稽核时间">
+            <a-radio-group v-decorator="['time', { initialValue: 'all' }]">
+              <a-radio value="all"> 不限 </a-radio>
+              <a-radio value="range" class="radio-time">
                 时间段
                 <a-form-item class="child-fraction-time">
                   <a-radio-group
-                    v-decorator="['radio-childTimeType', { initialValue: '' }]"
-                      @change="alterTimeHandle"
+                    v-decorator="['recentTime', { initialValue: 'month' }]"
+                    @change="handleRecentTimeRange"
                   >
-                    <a-radio-button value="a"> 近一月 </a-radio-button>
-                    <a-radio-button value="b"> 近三月 </a-radio-button>
-                    <a-radio-button value="c"> 近半年 </a-radio-button>
-                    <a-radio-button value="d"> 近一年 </a-radio-button>
+                    <a-radio-button value="month"> 近一月 </a-radio-button>
+                    <a-radio-button value="three"> 近三月 </a-radio-button>
+                    <a-radio-button value="six"> 近半年 </a-radio-button>
+                    <a-radio-button value="year"> 近一年 </a-radio-button>
                   </a-radio-group>
                 </a-form-item>
               </a-radio>
-              <a-radio value="c">
+              <a-radio value="current">
                 自定义
                 <a-range-picker
-                :show-time="{ format: 'HH:mm' }"
-                format="YYYY-MM-DD HH:mm"
-                :placeholder="[starttimeHold, starttimeHold]"
-                @change="onChange"
-                @openChange="handlefouce"
-                @ok="onOk"
-                class="range-date"
-                style="margin-left:20px"
-              >
-                 <a-icon slot="suffixIcon" type="calendar" />
-              </a-range-picker>
+                  v-decorator="['timerange', { initialValue: null }]"
+                  :show-time="{ format: 'HH:mm' }"
+                  format="YYYY-MM-DD HH:mm"
+                  :placeholder="[starttimeHold, starttimeHold]"
+                  @change="handleTimerangeChange"
+                  class="range-date"
+                  style="margin-left: 20px"
+                >
+                  <a-icon slot="suffixIcon" type="calendar" />
+                </a-range-picker>
               </a-radio>
             </a-radio-group>
           </a-form-item>
@@ -184,7 +125,7 @@
           <a-button class="reset-btn" @click="cancelHandle"> 清空 </a-button>
           <a-button type="primary" html-type="submit"> 搜索 </a-button>
         </a-form-item>
-        <a-form-item class="btn-wrap" v-if="extendIcon == 'up'">
+        <a-form-item class="btn-wrap" v-else-if="extendIcon == 'up'">
           <a-button type="primary" html-type="submit" class="serach-btn">
             搜索
           </a-button>
@@ -212,18 +153,54 @@
           <template slot="rank" slot-scope="text, all, i">
             <span>{{ i + 1 }}</span>
           </template>
-          <template slot="notpass" slot-scope="text">
-            <span class="red">{{ text }}</span>
-          </template>
           <template slot="type">
             <span>电费</span>
           </template>
-          <template slot="notpassper" slot-scope="text, all">
+          <template slot="ninetoten" slot-scope="text, all">
             <span>{{
-              `${(
-                (Number(all.notpass_number) / Number(all.total_amount)) *
-                100
-              ).toFixed(2)}%`
+              all.total_number
+                ? `${(text / 10000).toFixed(2)}万`
+                : `${(text / 100000000).toFixed(2)}亿`
+            }}</span>
+          </template>
+          <template slot="eighttonine" slot-scope="text, all">
+            <span>{{
+              all.total_number
+                ? `${(text / 10000).toFixed(2)}万`
+                : `${(text / 100000000).toFixed(2)}亿`
+            }}</span>
+          </template>
+          <template slot="sixtoeight" slot-scope="text, all">
+            <span>{{
+              all.total_number
+                ? `${(text / 10000).toFixed(2)}万`
+                : `${(text / 100000000).toFixed(2)}亿`
+            }}</span>
+          </template>
+          <template slot="zerotosix" slot-scope="text, all">
+            <span>{{
+              all.total_number
+                ? `${(text / 10000).toFixed(2)}万`
+                : `${(text / 100000000).toFixed(2)}亿`
+            }}</span>
+          </template>
+          <template slot="total_number" slot-scope="text, all">
+            <span>{{
+              all.total_number
+                ? `${(text / 10000).toFixed(2)}万`
+                : `${(all.total_amount / 100000000).toFixed(2)}亿`
+            }}</span>
+          </template>
+          <template slot="pass_number" slot-scope="text, all">
+            <span>{{
+              all.pass_number
+                ? `${(text / 10000).toFixed(2)}万`
+                : `${(all.pass_amount / 100000000).toFixed(2)}亿`
+            }}</span>
+          </template>
+          <template slot="notpass_number" slot-scope="text, all">
+            <span class="red">{{
+              text || `${(all.notpass_amount / 10000).toFixed(2)}万`
             }}</span>
           </template>
         </a-table>
@@ -236,6 +213,7 @@
                 default-value="10"
                 style="min-width: 50px; margin: 0 5px"
                 @change="handleDetailPagesize"
+                :value="currentPageSize"
               >
                 <a-select-option value="5"> 5</a-select-option>
                 <a-select-option value="10"> 10 </a-select-option>
@@ -260,49 +238,64 @@
 </template>
 
 <script>
-import { efecfeeTabColumns, unitCityArr } from "../../views/Elecfee/constants";
-import { mapState, mapActions } from "vuex";
 import moment from "moment";
+import { checkdetailColumns, checkdetailImgCoulmns } from "./constants";
+import { provinceCode } from "../../const/constant";
+import { mapState, mapActions } from "vuex";
+import util from "../../utils/utils";
+
 export default {
   data() {
     return {
       plainOptions: ["电费(缴费单)", "电费(电表图)"],
-      checkallPieNumber: 0,
-      checkdetailTableColumns: efecfeeTabColumns,
-      checkedList: [],
+      checkdetailTableColumns: checkdetailColumns,
+      checkdetailImgCoulmns,
+      initParams: util.getAllTimeRange("all"),
+      changedParams: {},
+      selectAreas: "",
+      selectScoreRange: "",
+      selectTimerange: "",
+      requestTypes: "",
       totalPage: 0,
-      indeterminate: true,
-      checkAll: false,
+      currentPageSize: 10,
       extendText: "收起",
       extendIcon: "up",
       cityFlag: false,
-      unitCityArr,
-      cityId: "0",
-      size: 'default',
-      starttimeHold:moment().format("YYYY.MM.DD HH:mm:ss")
+      provinceCode,
+      size: "default",
+      starttimeHold: moment().format("YYYY.MM.DD HH:mm"),
     };
   },
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: "validate_other" });
   },
+  created() {
+    const params = Object.assign({}, this.checkParams, this.initParams);
+    this.getCheckallDetailData({
+      type: 1,
+      params: params,
+    });
+    this.totalPage = this.detailTotal;
+  },
   watch: {
     detailTotal(newValue) {
       this.totalPage = newValue;
+    },
+    detailPagesize(newValue) {
+      this.currentPageSize = newValue;
     },
   },
   computed: {
     ...mapState({
       checkallDetail: (state) => state.checkdetail.checkallDetail,
+      checkParams: (state) => state.checkdetail.checkParams,
       detailTotal: (state) => state.checkdetail.detailTotal,
       detailPage: (state) => state.checkdetail.detailPage,
       detailPagesize: (state) => state.checkdetail.detailPagesize,
       detailTableLoading: (state) => state.checkdetail.detailTableLoading,
     }),
   },
-  created() {
-    this.getCheckallDetailData({ page: 1, pageSize: 10 });
-    this.totalPage = this.checkallDetail.length;
-  },
+
   beforeRouteEnter(to, from, next) {
     const { name } = from;
     next((vm) => {
@@ -320,78 +313,99 @@ export default {
   methods: {
     ...mapActions("checkdetail", ["getCheckallDetailData"]),
 
-    cancelHandle() {
-      this.checkedList = [];
-      this.form.resetFields();
+    handleProvinceChange(e) {
+      this.form.setFieldsValue({
+        areas: "province",
+      });
+      this.selectAreas = e.join(",") || "";
     },
+    handleScoreRangeChange(e) {
+      this.form.setFieldsValue({
+        score: "range",
+      });
+      this.selectScoreRange = e.target.value;
+    },
+    handleRecentTimeRange() {
+      this.form.setFieldsValue({
+        time: "range",
+      });
+    },
+
+    handleTimerangeChange(date, dataString) {
+      this.form.setFieldsValue({
+        time: "current",
+      });
+      console.log(dataString);
+      this.selectTimerange = dataString;
+    },
+    handleTypeChange(e) {
+      this.requestTypes = e.target.value === "image" ? 2 : 1;
+    },
+
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          values.radioChecked = this.checkedList;
-          console.log(values,'values');
+          console.log(values, "values");
+          const checkTime = values.time;
+          const checkScore = values.score;
+          const checkArea = values.areas;
+          const defaultTime = util.getAllTimeRange();
+          let params = {
+            start_time: defaultTime.start_time,
+            end_time: defaultTime.end_time,
+            page: 1,
+            page_size: 10,
+            object: values.object,
+            scope: "1",
+            prv_array: "",
+            score: "1,2,3,4",
+          };
+          //拼地区参数
+          if (checkArea === "province") {
+            params.prv_array = this.selectAreas;
+          } else {
+            params.prv_array = "";
+          }
+          //拼得分参数参数
+          console.log(checkTime, "===>checkScore");
+          if (checkScore === "range") {
+            params.score = this.selectScoreRange;
+          } else {
+            params.score = "1,2,3,4";
+          }
+          //拼时间参数
+          if (checkTime === "range") {
+            const timeParams = util.getAllTimeRange(values.recentTime);
+            params.start_time = timeParams.start_time;
+            params.end_time = timeParams.end_time;
+          } else if (checkTime === "current") {
+            params.start_time = this.selectTimerange[0];
+            params.end_time = this.selectTimerange[1];
+          } else {
+            console.log(checkTime);
+          }
+          params.scope = checkArea === "province" ? "2" : "1";
+
+          if (values.types === "image") {
+            this.checkdetailTableColumns = checkdetailImgCoulmns;
+          } else {
+            this.checkdetailTableColumns = checkdetailColumns;
+          }
+          this.changedParams = params;
+          console.log(params, "-->请求参数");
+          this.getCheckallDetailData({
+            type: this.requestTypes,
+            params,
+          });
         }
       });
     },
-    popupScroll() {
-      console.log("popupScroll");
-    },
-    normFile(e) {
-      if (Array.isArray(e)) {
-        return e;
-      }
-      return e && e.fileList;
+    cancelHandle() {
+      this.form.resetFields();
+      // this.handleSubmit(e);
     },
 
-    onChangeDate(date, dateString) {
-      console.log(date, dateString);
-    },
-    alternate(e) {
-      if (e.target.value !== "b") {
-        this.form.setFieldsValue({
-          "radio-childFrationType": "",
-        });
-      }
-    },
-    alterTimeHandle(){
-       this.form.setFieldsValue({
-            'radio-time': 'b'
-          });
-    },
-    alternateRadio(){
-         this.form.setFieldsValue({
-            'radio-frationType': 'b'
-          });
-    },
-    transferChange(e){
-      if(e.target.value!=='b'){
-        this.form.setFieldsValue({
-          "radio-childTimeType": "",
-        });
-      }
-    },
-    valtorFranction(rule, value, callback) {
-      callback();
-    },
-    onChange(checkedList) {
-      this.indeterminate =
-        !!checkedList.length && checkedList.length < this.plainOptions.length;
-      this.checkAll = checkedList.length === this.plainOptions.length;
-       
-    },
-    handlefouce(){
-      console.log('focus');
-      this.form.setFieldsValue({
-          'radio-time': 'c'
-        });
-    },
-    onCheckAllChange(e) {
-      Object.assign(this, {
-        checkedList: e.target.checked ? this.plainOptions : [],
-        indeterminate: false,
-        checkAll: e.target.checked,
-      });
-    },
     handleExtend() {
       this.extendText = this.extendText == "展开" ? "收起" : "展开";
       this.extendIcon = this.extendIcon == "down" ? "up" : "down";
@@ -401,14 +415,27 @@ export default {
         this.extendText == "展开" ? "inline-block" : "block";
     },
     handleDetailPagesize(pageSize) {
-      console.log(pageSize);
-      this.getCheckallDetailData({ page: 1, pageSize: +pageSize });
+      this.currentPageSize = pageSize;
+      const params = Object.assign({}, this.checkParams, {
+        page: 1,
+        page_size: +pageSize,
+      });
+
+      this.getCheckallDetailData({
+        type: this.requestTypes,
+        params: params,
+      });
     },
     handlePaginationChange(page, pageSize) {
-      this.getCheckallDetailData({ page: +page, pageSize: +pageSize });
-    },
-    onOk(value) {
-      console.log("onOk: ", value);
+      console.log(page, pageSize);
+      const params = Object.assign({}, this.checkParams, {
+        page: +page,
+        page_size: +pageSize,
+      });
+      this.getCheckallDetailData({
+        type: this.requestTypes,
+        params: params,
+      });
     },
   },
 };
@@ -597,7 +624,7 @@ export default {
   background: #0068ff;
   margin: 3px 8px 3px;
 }
-.range-date{
-  width:350px!important;
+.range-date {
+  width: 350px !important;
 }
 </style>
