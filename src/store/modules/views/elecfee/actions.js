@@ -1,6 +1,5 @@
 import { axiospost } from "../../../../utils/http";
 import API from "../../../../const/apis";
-console.log(API);
 const actions = {
     getHeadData({ commit }, params) {
         if (!params.prv_code) {
@@ -72,7 +71,7 @@ const actions = {
         );
         commit("updateParams", targetParams);
         commit("updateCurrentPage", targetParams);
-        axiospost(API.getStatistics, targetParams).then(
+        axiospost(API.getImageStatistics, targetParams).then(
             (res) => {
                 if (+res.ret_code === 0) {
                     commit("updateEchartsElecfeeTable", {
@@ -102,7 +101,7 @@ const actions = {
         commit("updateParams", targetParams);
         commit("updateCurrentPage", targetParams);
         console.log(targetParams, "===>请求参数");
-        axiospost(API.getPrvStatistics, targetParams).then(
+        axiospost(API.getImgPrvStatistics, targetParams).then(
             (res) => {
                 if (+res.ret_code === 0) {
                     commit("updatePrvTable", {

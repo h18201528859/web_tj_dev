@@ -43,6 +43,10 @@ export const linechartOptions = {
             let sixto8 = 0;
             let zerotosix = 0;
             let percent = 0;
+            let percentZerotosix = 0;
+            let percentNinetoten = 0;
+            let percentEightto9 = 0;
+            let percentSixto8 = 0;
             Object.keys(cityFilterData).forEach((item, index) => {
                 if (item == name.name) {
                     target = cityFilterData[item].value;
@@ -51,17 +55,20 @@ export const linechartOptions = {
                     eightto9 = cityFilterData[item].eightto9;
                     sixto8 = cityFilterData[item].sixto8;
                     zerotosix = cityFilterData[item].zerotosix;
-                    percent = ((target / total) * 100).toFixed(1);
-                    pointColor = colorSet.mainSet[index];
+                    percentZerotosix = ((zerotosix / total)*100).toFixed(2);
+                    percentNinetoten =  ((ninetoten / total)*100).toFixed(2);
+                    percentEightto9 =  ((eightto9 / total)*100).toFixed(2);
+                    percentSixto8 =  ((sixto8 / total)*100).toFixed(2);
+                    pointColor = colorSet.mainSet[index||0];
                 } else {
                     pointColor = colorSet.mainSet[0];
                 }
             });
             toolpitArr = `<div style="font-size:12px;">
-          <div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix}元</span><span style="margin-left:10px">${percent}%</span></div>
-          <div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8}元</span><span style="margin-left:10px">${percent}%</span></div> 
-          <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9}元</span><span style="margin-left:10px">${percent}%</span></div>
-          <div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten}元</span><span style="margin-left:6px;position:relative;left:-2px;">${percent}%</span></div>
+          <div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix}元</span><span style="margin-left:10px">${percentZerotosix}%</span></div>
+          <div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8}元</span><span style="margin-left:10px">${percentSixto8}%</span></div> 
+          <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9}元</span><span style="margin-left:10px">${percentEightto9}%</span></div>
+          <div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten}元</span><span style="margin-left:6px;position:relative;left:-2px;">${percentNinetoten}%</span></div>
              <hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/>
              <div style="display:flex;align-items:center">
              <div style="width:6px;height:6px;background:${pointColor};margin-right:5px"></div>
