@@ -5,7 +5,7 @@ const state = {
         scoreTitle: "各评分区间占比",
         tabProvinceTitle: "各省缴费单金额统计TOP10",
     },
-    alldataTable:{
+    alldataTable: {
         total_amount: 0,
         pass_number: 0,
         notpass_number: 0,
@@ -22,6 +22,16 @@ const state = {
         prv_array: "",
         object: "0",
         score: "1,2,3,4",
+        page: 1,
+        page_size: 10,
+    },
+    checkImgParams: {
+        start_time: "",
+        end_time: "",
+        scope: "0",
+        prv_array: "",
+        object: "0",
+
         page: 1,
         page_size: 10,
     },
@@ -51,7 +61,7 @@ const state = {
 
     headData: [],
     elecfeeTable: [],
-    EchartsEleTable:[],
+    EchartsEleTable: [],
     provinceTable: [],
     detailTotal: 0,
     detailPage: 1,

@@ -2,6 +2,7 @@ import { axiospost } from "../../../../utils/http";
 import API from "../../../../const/apis";
 const actions = {
     getHeadData({ commit }, params) {
+        console.log(params, "---");
         axiospost(API.getElecPrvSum, params).then(
             (res) => {
                 if (+res.ret_code === 0) {
@@ -17,36 +18,6 @@ const actions = {
     },
     getUpdateCityTitle({ commit }, title) {
         commit("updateCityTitle", title);
-    },
-    getElecfeeTableData({ commit, rootState }, params) {
-        commit("updateDetailTableLoading", true);
-        const targetParams = Object.assign(
-            rootState.elecfee.checkallParams,
-            params
-        );
-        commit("updateParams", targetParams);
-        commit("updateCurrentPage", targetParams);
-        axiospost(API.getPrvStatistics, targetParams).then(
-            (res) => {
-                if (+res.ret_code === 0) {
-                    commit("updateElecfeeTable", {
-                        data: res.ret_data.prv_data,
-                        alldataTable: res.ret_data.all_data,
-                        total: Number(res.ret_data.prv_data_len),
-                    });
-                    setTimeout(() => {
-                        commit("updateDetailTableLoading", false);
-                    }, 300);
-                } else {
-                    commit("updateDetailTableLoading", false);
-                    console.error("数据错了");
-                }
-            },
-            () => {
-                commit("updateDetailTableLoading", false);
-                console.error("error");
-            }
-        );
     },
     getEchartsEleTableData({ commit, rootState }, params) {
         commit("updateDetailTableLoading", true);
@@ -80,13 +51,13 @@ const actions = {
     getProElecfeeTableData({ commit, rootState }, params) {
         commit("updateDetailTableLoading", true);
         const targetParams = Object.assign(
-            rootState.elecfee.checkPrvParams,
+            rootState.provincefee.checkPrvParams,
             params
         );
         commit("updateParams", targetParams);
         commit("updateCurrentPage", targetParams);
         console.log(targetParams, "===>请求参数");
-        axiospost(API.getImgPrvStatistics, targetParams).then(
+        axiospost(API.getPrvStatistics, targetParams).then(
             (res) => {
                 if (+res.ret_code === 0) {
                     commit("updatePrvTable", {
@@ -110,12 +81,12 @@ const actions = {
     getElecImgTableData({ commit, rootState }, params) {
         commit("updateDetailTableLoading", true);
         const targetParams = Object.assign(
-            rootState.elecfee.checkallParams,
+            rootState.provincefee.checkallParams,
             params
         );
         commit("updateParams", targetParams);
         commit("updateCurrentPage", targetParams);
-        axiospost(API.getImageStatistics, targetParams).then(
+        axiospost(API.getImgPrvStatistics, targetParams).then(
             (res) => {
                 if (+res.ret_code === 0) {
                     commit("updateElecfeeTable", {

@@ -73,7 +73,12 @@ export default {
   },
   methods: {
     ...mapMutations("elecfee", ["updateCityId"]),
-    ...mapActions("elecfee", ["getUpdateCityTitle"]),
+    ...mapActions("provincefee", [
+      "getHeadData",
+      "getUpdateCityTitle",
+      "getProElecfeeTableData",
+      "getElecImgTableData",
+    ]),
     JumptobreadLink(e) {
       let hashStr = e.target.hash.substr(2);
       const matchedStr = hashStr.match(/\/(\S*)/);
@@ -120,19 +125,27 @@ export default {
       const nowUpdataCityId = this.getCodeName(name);
       this.updateCityId(nowUpdataCityId);
       this.getUpdateCityTitle(cityName);
-      this.$store.commit("replaceBreadcrumb", [
-        {
-          path: "/provincefee",
-          breadcrumbName: `${cityName}电费稽核`,
-        },
-      ]);
-      this.$router.push({
-        path: `/provincefee`,
-        query: {
-          cityId: name,
-          cityName: cityName,
-        },
-      });
+      if (name !== "") {
+        const searchParam = { prv_code: name };
+        this.getHeadData(searchParam);
+        this.getProElecfeeTableData(searchParam);
+        this.getElecImgTableData(searchParam);
+        this.$store.commit("replaceBreadcrumb", [
+          {
+            path: "/provincefee",
+            breadcrumbName: `${cityName}电费稽核`,
+          },
+        ]);
+        this.$router.push({
+          path: `/provincefee`,
+          query: {
+            cityId: name,
+            cityName: cityName,
+          },
+        });
+      } else {
+        window.location.hash = "/elecfee";
+      }
     },
   },
 };

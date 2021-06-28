@@ -30,9 +30,6 @@ const actions = {
             );
         }
     },
-    getUpdateCityTitle({ commit }, title) {
-        commit("updateCityTitle", title);
-    },
     getElecfeeTableData({ commit, rootState }, params) {
         commit("updateDetailTableLoading", true);
         const targetParams = Object.assign(
@@ -92,40 +89,10 @@ const actions = {
             }
         );
     },
-    getProElecfeeTableData({ commit, rootState }, params) {
-        commit("updateDetailTableLoading", true);
-        const targetParams = Object.assign(
-            rootState.elecfee.checkPrvParams,
-            params
-        );
-        commit("updateParams", targetParams);
-        commit("updateCurrentPage", targetParams);
-        console.log(targetParams, "===>请求参数");
-        axiospost(API.getImgPrvStatistics, targetParams).then(
-            (res) => {
-                if (+res.ret_code === 0) {
-                    commit("updatePrvTable", {
-                        data: res.ret_data.preg_data,
-                        total: Number(res.ret_data.preg_data_len),
-                    });
-                    setTimeout(() => {
-                        commit("updateDetailTableLoading", false);
-                    }, 300);
-                } else {
-                    commit("updateDetailTableLoading", false);
-                    console.error("数据错了");
-                }
-            },
-            () => {
-                commit("updateDetailTableLoading", false);
-                console.error("error");
-            }
-        );
-    },
     getElecImgTableData({ commit, rootState }, params) {
         commit("updateDetailTableLoading", true);
         const targetParams = Object.assign(
-            rootState.elecfee.checkallParams,
+            rootState.elecfee.checkImgParams,
             params
         );
         commit("updateParams", targetParams);

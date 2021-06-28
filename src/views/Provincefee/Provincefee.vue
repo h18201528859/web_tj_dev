@@ -72,25 +72,6 @@
           </a-tab-pane>
         </a-tabs>
       </div>
-
-      <div v-if="cityId == 'QG'">
-        <a-tabs
-          type="card"
-          default-active-key="1"
-          @change="getChangeCity"
-          @prevClick="callbackhandle"
-          @nextClick="callbackhandle"
-          class="cityTab"
-        >
-          <a-tab-pane
-            class="citybut"
-            v-for="i in provinceCode"
-            :key="i.name"
-            :tab="`${i.name}`"
-          >
-          </a-tab-pane>
-        </a-tabs>
-      </div>
     </div>
     <div class="detail-section">
       <div class="header">
@@ -224,7 +205,8 @@ export default {
     HeadCardItem,
   },
   created() {
-    this.handleHeadData({});
+    const cityId = this.$route.query.cityId;
+    this.getHeadData({ prv_code: cityId });
     this.handleTableData(this.initParams);
     this.$store.commit("setProvince", true);
   },
@@ -261,14 +243,14 @@ export default {
   },
   computed: {
     ...mapState({
-      headData: (state) => state.elecfee.headData,
-      elecfeeTable: (state) => state.elecfee.elecfeeTable,
+      headData: (state) => state.provincefee.headData,
+      elecfeeTable: (state) => state.provincefee.elecfeeTable,
       EchartsEleTable: (state) => state.elecfee.EchartsEleTable,
       provinceTable: (state) => {
         console.log(state.elecfee);
         return state.elecfee.provinceTable;
       },
-      checkallParams: (state) => state.elecfee.checkallParams,
+      checkallParams: (state) => state.provincefee.checkallParams,
       alldataTable: (state) => {
         if (state.elecfee.alldataTable) {
           state.elecfee.alldataTable.total_amount = util.transToLocaleString(
@@ -467,7 +449,7 @@ export default {
     ...mapMutations("elecfee", ["updateCityId", "updateType"]),
     ...mapActions("provincefee", [
       "getHeadData",
-      "getElecfeeTableData",
+      "getProElecfeeTableData",
       "getEchartsEleTableData",
       "getProElecfeeTableData",
       "getUpdateCityTitle",
@@ -577,7 +559,7 @@ export default {
 
         pieCharts.style.display = "none";
       } else if (+key === 1) {
-        this.getElecfeeTableData({ page: 1 });
+        this.getProElecfeeTableData({ page: 1 });
         this.checkdetailTableColumns = checkdetailColumns;
         pieCharts.style.display = "block";
 
@@ -880,9 +862,7 @@ export default {
       });
       util.jumpTop();
     },
-    handleHeadData() {
-      this.getHeadData({});
-    },
+
     filterHandle() {
       this.$store.commit("replaceBreadcrumb", [
         {
@@ -947,7 +927,7 @@ export default {
       const timeRange = e.target.value;
       const timeParams = util.getAllTimeRange(timeRange);
       if (+this.currentType === 1) {
-        this.getElecfeeTableData(Object.assign(timeParams, { page: 1 }));
+        this.getProElecfeeTableData(Object.assign(timeParams, { page: 1 }));
       } else {
         this.getElecImgTableData(
           Object.assign(timeParams, { page: 1, scope: "1" })
@@ -956,7 +936,7 @@ export default {
     },
     handleStatistic(e) {
       if (+this.currentType === 1) {
-        this.getElecfeeTableData(
+        this.getProElecfeeTableData(
           Object.assign({ object: e.target.value }, { page: 1 })
         );
       } else {
@@ -968,13 +948,13 @@ export default {
     handleTableData(params) {
       const paramObj = Object.assign(this.checkallParams, params);
       const paramate = Object.assign(this.checkEchartsPrvParams, params);
-      this.getElecfeeTableData(paramObj);
+      this.getProElecfeeTableData(paramObj);
       this.getEchartsEleTableData(paramate);
       this.totalPage = this.detailTotal;
     },
     handleDetailPagesize(pageSize) {
       if (+this.currentType === 1 && this.cityId === "QG") {
-        this.getElecfeeTableData({ page: 1, page_size: +pageSize });
+        this.getProElecfeeTableData({ page: 1, page_size: +pageSize });
       } else if (+this.currentType === 1 && this.cityId !== "QG") {
         const cityName = this.elecfeeTable[this.cityId].prv_name;
         const cityId = provinceCode.filter((item) => {
@@ -995,7 +975,7 @@ export default {
     },
     handlePaginationChange(page, pageSize) {
       if (+this.currentType === 1 && this.cityId === "-1") {
-        this.getElecfeeTableData({ page: +page, page_size: +pageSize });
+        this.getProElecfeeTableData({ page: +page, page_size: +pageSize });
       } else if (+this.currentType === 1 && this.cityId !== "-1") {
         const cityName = this.elecfeeTable[this.cityId].prv_name;
         const cityId = provinceCode.filter((item) => {
