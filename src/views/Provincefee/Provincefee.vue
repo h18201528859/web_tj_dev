@@ -72,6 +72,7 @@
           </a-tab-pane>
         </a-tabs>
       </div>
+
       <div v-if="cityId == 'QG'">
         <a-tabs
           type="card"
@@ -109,7 +110,6 @@
           :data-source="cityId == 'QG' ? elecfeeTable : provinceTable"
           :rowKey="(record, index) => index"
           :pagination="false"
-          :customRow="rowHandle"
           :loading="detailTableLoading"
         >
           <template slot="rank" slot-scope="text, all, i">
@@ -226,6 +226,7 @@ export default {
   created() {
     this.handleHeadData({});
     this.handleTableData(this.initParams);
+    this.$store.commit("setProvince", true);
   },
   mounted() {
     const {
@@ -254,6 +255,9 @@ export default {
         this.pieEchartsColor(pieColor, this.pieData);
       }, 500);
     }
+  },
+  destroyed() {
+    this.$store.commit("setProvince", false);
   },
   computed: {
     ...mapState({
@@ -461,7 +465,7 @@ export default {
 
   methods: {
     ...mapMutations("elecfee", ["updateCityId", "updateType"]),
-    ...mapActions("elecfee", [
+    ...mapActions("provincefee", [
       "getHeadData",
       "getElecfeeTableData",
       "getEchartsEleTableData",
@@ -614,6 +618,10 @@ export default {
             "rgba(90, 220, 255, 0.85)",
             "rgba(71, 167, 253, 0.85)",
           ];
+          // pieData.map((item, index) => {
+          //   item.itemStyle.normal.color = colornew[index];
+          // });
+          // this.piechartOptions.series[0].itemStyle.color = ['rgba(119, 114, 241, 0.85)', 'rgba(206, 119, 251, 0.85)', "rgba(90, 220, 255, 0.85)", "rgba(71, 167, 253, 0.85)"]
           this.piechartOptions.series[0].color = colornew;
         }
 
@@ -819,13 +827,17 @@ export default {
     callbackhandle(value) {
       console.log(value);
     },
-    rowHandle(record) {
+    rowHandle(record, index) {
       return {
         on: {
           click: () => {
             const { name = "elecfee" } = this.$route;
-            this.getChangeCity(record.prv_name);
-            sessionStorage.setItem("record", JSON.stringify(record));
+            if (name !== "elecfeecitydetail") {
+              this.updateCityId("QG");
+              this.getUpdateCityTitle("");
+              this.getChangeCity(record.prv_name);
+              sessionStorage.setItem("record", JSON.stringify(record));
+            }
           },
         },
       };
@@ -859,19 +871,11 @@ export default {
       const getCodeName = this.getCodeName(nowName);
       this.updateCityId(name);
       this.getUpdateCityTitle(getCodeName, countryTitle);
-      this.$store.commit("setProvince", true);
-      this.$store.commit("updateBreadcrumb", [
-        {
-          path: "provincefee",
-          breadcrumbName: `${name}电费稽核`,
-        },
-      ]);
-
       this.$router.push({
-        path: `/provincefee`,
-        query: {
+        name: "elecfeecitydetail",
+        path: `/elecfee/elecfeeCityDetail/:id` + getCodeName,
+        params: {
           cityId: getCodeName,
-          cityName: name,
         },
       });
       util.jumpTop();
@@ -880,14 +884,14 @@ export default {
       this.getHeadData({});
     },
     filterHandle() {
-      this.$store.commit("updateBreadcrumb", [
+      this.$store.commit("replaceBreadcrumb", [
         {
-          path: "/checkdetail",
+          path: "/elecfee/elecfeeDetai",
           breadcrumbName: "稽核详情",
         },
       ]);
       this.$router.push({
-        path: "/checkdetail",
+        path: "/elecfee/elecfeeDetail",
       });
       util.jumpTop();
     },

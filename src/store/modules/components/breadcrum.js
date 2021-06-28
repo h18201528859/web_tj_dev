@@ -2,8 +2,12 @@ const router = {
     state: {
         breadcrumbArr: [],
         currentMenu: [],
+        isProvince: false,
     },
     mutations: {
+        setProvince(state, data) {
+            state.isProvince = data;
+        },
         setBreadcrumb(state, data) {
             state.breadcrumbArr = data;
         },

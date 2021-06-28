@@ -1,4 +1,5 @@
 import moment from "moment";
+import { provinceCode } from "../const/constant";
 
 export default {
     // change the menu key to router path
@@ -95,5 +96,26 @@ export default {
             num = Number(num);
         }
         return num.toLocaleString();
+    },
+    getCodeName(name) {
+        let codeName;
+        provinceCode.find((item) => {
+            const newName =
+                item.name.length >= 3 ? item.name.slice(0, 2) : item.name;
+            if (newName == name) {
+                codeName = item.code;
+            }
+        });
+        return codeName;
+    },
+    getCodeVerIndex(code) {
+        let strName;
+        provinceCode.find((item) => {
+            if (item.code == code) {
+                strName =
+                    item.name.length >= 3 ? item.name.slice(0, 2) : item.name;
+            }
+        });
+        return strName;
     },
 };
