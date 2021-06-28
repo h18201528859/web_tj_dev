@@ -346,6 +346,7 @@ export default {
         params: { cityId = "QG" },
       } = this.$route;
       if (name == "elecfeecitydetail" && cityId !== "QG") {
+        this.getProElecfeeTableData()
         if (cityId !== "elecfee") {
 
           const cityName = this.getCodeVerIndex(cityId);// this.elecfeeTable[cityId].prv_name;
