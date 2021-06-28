@@ -20,7 +20,7 @@
           </a>
           <!-- <a @click="JumptobreadLink" :href="`#/${JSON.stringify(paths)}`">
           {{ route.breadcrumbName }}
-        </a> -->
+        </ a> -->
         </span>
       </template>
     </a-breadcrumb>
@@ -49,19 +49,20 @@ export default {
       cityTitle: (state) => state.elecfee.cityTitle,
       cityId: (state) => state.elecfee.cityId,
     }),
+    
   },
   data() {
     return {
       routes: this.breadcrumbArr,
       provinceCode,
+     
     };
   },
   mounted(){
      const { params:{ cityId = 'QG' },name = 'elecfee'} = this.$route;
      if(name=="elecfeecitydetail"){
        setTimeout(()=>{
-
-        const cityName =this.getCodeVerIndex(cityId);
+        const cityName =this.getCodeVerIndex(cityId);     
         this.updateCityId(cityId);
         this.getUpdateCityTitle(cityName);
         this.$store.commit("replaceBreadcrumb", [
@@ -81,6 +82,9 @@ export default {
          this.getUpdateCityTitle('');
       }
     },
+    getCodeVerIndex(cityId){
+      console.log(cityId,'dsdsds')
+    }
   },
   methods: {
     ...mapMutations("elecfee", ["updateCityId"]),
@@ -105,12 +109,14 @@ export default {
       this.$store.commit("setBreadcrumb", updateBread);
     },
      getCodeVerIndex(code){
+       console.log(code,'code')
        let strName;
         provinceCode.find(item=>{
           if(item.code==code){
             strName = item.name.length>=3?item.name.slice(0,2):item.name;
           }
         });
+        console.log(strName,'strName')
        return strName;
     },
      getCodeName(name){
