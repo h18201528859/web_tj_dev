@@ -35,21 +35,19 @@ export const linechartOptions = {
         formatter: function(name) {
             const cityFilterData = linechartOptions.series[0].cityFilterData;
             let total = 0;
-            let target = 0;
+
             let toolpitArr = "";
             let pointColor = "";
             let ninetoten = 0;
             let eightto9 = 0;
             let sixto8 = 0;
             let zerotosix = 0;
-            let percent = 0;
             let percentZerotosix = 0;
             let percentNinetoten = 0;
             let percentEightto9 = 0;
             let percentSixto8 = 0;
             Object.keys(cityFilterData).forEach((item, index) => {
                 if (item == name.name) {
-                    target = cityFilterData[item].value;
                     total = cityFilterData[item].total;
                     ninetoten = cityFilterData[item].ninetoten;
                     eightto9 = cityFilterData[item].eightto9;
@@ -201,10 +199,10 @@ export const checkdetailColumns = [
         scopedSlots: { customRender: "rank" },
     },
     {
-        title: "省份",
-        dataIndex: "prv_name",
-        key: "prv_name",
-        scopedSlots: { customRender: "prv_name" },
+        title: "地市",
+        dataIndex: "preg_name",
+        key: "preg_name",
+        scopedSlots: { customRender: "preg_name" },
         // ellipsis: true,
     },
     {
@@ -265,9 +263,9 @@ export const elecfeeImgCoulmns = [
         scopedSlots: { customRender: "rank" },
     },
     {
-        title: "省份",
-        dataIndex: "prv_name",
-        key: "prv_name",
+        title: "地市",
+        dataIndex: "preg_name",
+        key: "preg_name",
         // ellipsis: true,
     },
     {
@@ -374,38 +372,4 @@ export const efecfeeTabColumns = [
         sorter: (a, b) => a.notpassper - b.notpassper,
         scopedSlots: { customRender: "notpassper" },
     },
-];
-export const cityArr = [
-    { name: "全国", id: 0 },
-    { name: "北京", id: 1 },
-    { name: "上海", id: 2 },
-    { name: "广州", id: 3 },
-    { name: "深圳", id: 4 },
-    { name: "河北", id: 5 },
-    { name: "河南", id: 6 },
-    { name: "湖南", id: 7 },
-    { name: "江苏", id: 8 },
-    { name: "湖北", id: 9 },
-    { name: "广西", id: 10 },
-    { name: "广东", id: 11 },
-    { name: "四川", id: 12 },
-    { name: "云南", id: 13 },
-    { name: "西藏", id: 14 },
-    { name: "新疆", id: 15 },
-    { name: "甘肃", id: 16 },
-    { name: "海南", id: 17 },
-    { name: "山东", id: 18 },
-    { name: "福建", id: 19 },
-    { name: "合肥", id: 20 },
-    { name: "浙江", id: 21 },
-    { name: "黑龙江", id: 22 },
-    { name: "辽宁", id: 23 },
-    { name: "内蒙古", id: 24 },
-    { name: "山西", id: 25 },
-];
-export const unitCityArr = [
-    { name: "北京", id: 1 },
-    { name: "上海", id: 2 },
-    { name: "天津", id: 3 },
-    { name: "重庆", id: 4 },
 ];

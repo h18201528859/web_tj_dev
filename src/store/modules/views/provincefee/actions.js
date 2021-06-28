@@ -2,7 +2,6 @@ import { axiospost } from "../../../../utils/http";
 import API from "../../../../const/apis";
 const actions = {
     getHeadData({ commit }, params) {
-        console.log(params, "---");
         axiospost(API.getElecPrvSum, params).then(
             (res) => {
                 if (+res.ret_code === 0) {
@@ -19,35 +18,7 @@ const actions = {
     getUpdateCityTitle({ commit }, title) {
         commit("updateCityTitle", title);
     },
-    getEchartsEleTableData({ commit, rootState }, params) {
-        commit("updateDetailTableLoading", true);
-        const targetParams = Object.assign(
-            rootState.elecfee.checkEchartsPrvParams,
-            params
-        );
-        commit("updateParams", targetParams);
-        commit("updateCurrentPage", targetParams);
-        axiospost(API.getImgPrvStatistics, targetParams).then(
-            (res) => {
-                if (+res.ret_code === 0) {
-                    commit("updateEchartsElecfeeTable", {
-                        data: res.ret_data.prv_data,
-                        total: Number(res.ret_data.prv_data_len),
-                    });
-                    setTimeout(() => {
-                        commit("updateDetailTableLoading", false);
-                    }, 300);
-                } else {
-                    commit("updateDetailTableLoading", false);
-                    console.error("数据错了");
-                }
-            },
-            () => {
-                commit("updateDetailTableLoading", false);
-                console.error("error");
-            }
-        );
-    },
+
     getProElecfeeTableData({ commit, rootState }, params) {
         commit("updateDetailTableLoading", true);
         const targetParams = Object.assign(
@@ -62,7 +33,7 @@ const actions = {
                 if (+res.ret_code === 0) {
                     commit("updatePrvTable", {
                         data: res.ret_data.preg_data,
-                        total: Number(res.ret_data.preg_data_len),
+                        total: Number(res.ret_data.prv_data_len),
                     });
                     setTimeout(() => {
                         commit("updateDetailTableLoading", false);
@@ -81,7 +52,7 @@ const actions = {
     getElecImgTableData({ commit, rootState }, params) {
         commit("updateDetailTableLoading", true);
         const targetParams = Object.assign(
-            rootState.provincefee.checkallParams,
+            rootState.provincefee.checkEchartsPrvParams,
             params
         );
         commit("updateParams", targetParams);
@@ -89,8 +60,12 @@ const actions = {
         axiospost(API.getImgPrvStatistics, targetParams).then(
             (res) => {
                 if (+res.ret_code === 0) {
+                    commit("updateEchartsElecfeeTable", {
+                        data: res.ret_data.preg_data,
+                    });
                     commit("updateElecfeeTable", {
-                        data: res.ret_data.prv_data,
+                        alldataTable: res.ret_data.all_data,
+                        data: res.ret_data.preg_data,
                         total: Number(res.ret_data.prv_data_len),
                     });
                     setTimeout(() => {

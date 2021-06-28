@@ -63,7 +63,6 @@ export default {
   watch: {
     currentData(newValue) {
       this.currentData = newValue;
-      console.log(this.currentData);
       this.upElecfeeNumber =
         this.type === "amount"
           ? util.transferNum(newValue.total_amount / 100000000)

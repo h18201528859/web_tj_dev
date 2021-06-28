@@ -5,7 +5,7 @@ const state = {
         scoreTitle: "各评分区间占比",
         tabProvinceTitle: "各省缴费单金额统计TOP10",
     },
-    alldataTable:{
+    alldataTable: {
         total_amount: 0,
         pass_number: 0,
         notpass_number: 0,
@@ -15,20 +15,10 @@ const state = {
         ninetoten: 0,
     },
     currentType: "1",
-    checkallParams: {
-        start_time: "",
-        end_time: "",
-        scope: "0",
-        prv_array: "",
-        object: "0",
-        score: "1,2,3,4",
-        page: 1,
-        page_size: 10,
-    },
     checkPrvParams: {
         start_time: "",
         end_time: "",
-        scope: "2",
+        scope: "0",
         prv_code: "",
         object: "0",
         score: "1,2,3,4",
@@ -38,7 +28,7 @@ const state = {
     checkEchartsPrvParams: {
         start_time: "",
         end_time: "",
-        scope: "2",
+        scope: "1",
         prv_code: "",
         object: "0",
         score: "1,2,3,4",
@@ -48,10 +38,9 @@ const state = {
     checkElecfeeAllTable: [],
     cityId: "QG",
     elecfeeDetail: [],
-
     headData: [],
     elecfeeTable: [],
-    EchartsEleTable:[],
+    EchartsEleTable: [],
     provinceTable: [],
     detailTotal: 0,
     detailPage: 1,

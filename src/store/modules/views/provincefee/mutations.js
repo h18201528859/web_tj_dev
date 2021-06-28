@@ -4,9 +4,9 @@ const mutations = {
     },
     updateElecfeeTable(state, data) {
         state.elecfeeTable = data.data;
+        state.EchartsEleTable = data.data;
         state.alldataTable = data.alldataTable;
         state.detailTotal = data.total;
-      
     },
     updateEchartsElecfeeTable(state, data) {
         state.EchartsEleTable = data.data;
@@ -23,7 +23,7 @@ const mutations = {
         state.detailTableLoading = loading;
     },
     updateParams(state, data) {
-        state.checkallParams = data;
+        state.checkPrvParams = data;
     },
     updateType(state, data) {
         state.currentType = data;

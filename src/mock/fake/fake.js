@@ -120,7 +120,7 @@ module.exports = {
             },
             preg_data: _.times(22, function() {
                 return {
-                    preg_name: faker.address.state(),
+                    preg_name: faker.address.city(),
                     total_number: faker.random.number(),
                     notpass_number: faker.random.number(),
                     pass_number: faker.random.number(),
