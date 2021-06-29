@@ -731,8 +731,8 @@ export default {
         }
         .pieCenter {
           position: absolute;
-          top: 47%;
-          left: 19%;
+          top: 44%;
+          left: 97px;
           display: flex;
           flex-direction: column;
           justify-content: center;
