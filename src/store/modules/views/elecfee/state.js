@@ -31,7 +31,7 @@ const state = {
         scope: "0",
         prv_array: "",
         object: "0",
-
+        score: "1,2,3,4",
         page: 1,
         page_size: 10,
     },

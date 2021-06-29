@@ -22,8 +22,13 @@ export const HeadCardItems = [
     },
 ];
 const colorSet = {
-    mainSet: ["rgba(91, 143, 249, 0.85)"],
-    mainPieSet: ["#5B8FF9", "#5AD8A6", "#E8684A", "#F6BD16"],
+    mainSet: ["rgba(119, 114, 241, 0.85)"],
+    mainPieSet: [
+        "rgba(119, 114, 241, 0.85)",
+        "rgba(206, 119, 251, 0.85)",
+        "rgba(90, 220, 255, 0.85)",
+        "rgba(71, 167, 253, 0.85)",
+    ],
 };
 
 export const linechartOptions = {
@@ -122,15 +127,15 @@ export const piechartOptions = {
             let total = 0;
             let fraction = "";
             for (let i = 0; i < pieData.length; i++) {
-                total += pieData[i].value;
+                total += Number(pieData[i].value);
                 if (pieData[i].name === name.name) {
                     toolpitColor = colorSet.mainPieSet[i];
-                    target = name.value;
+                    target = Number(name.value);
                     fraction = pieData[i].fraction;
                 }
             }
             const percent = ((target / total) * 100).toFixed(1);
-            let toolpitStr = `<div style='border:none;padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国电费缴纳单 ${fraction}分 </div></div>`;
+            let toolpitStr = `<div style='border:none;padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>电费缴纳单 ${fraction}分 </div></div>`;
             return toolpitStr;
         },
     },
@@ -153,14 +158,20 @@ export const piechartOptions = {
             let legendArr = [];
             let fraction = "";
             for (let i = 0; i < pieData.length; i++) {
-                total += pieData[i].value;
+                total += Number(pieData[i].value);
                 if (pieData[i].name === name) {
-                    target = pieData[i].value;
+                    target = Number(pieData[i].value);
                     fraction = pieData[i].fraction;
                 }
             }
-            let percent = ((target / total) * 100).toFixed(1);
-            legendArr.push(`${fraction}分   ${target}条  ${percent}%`);
+            let percent = ((target / total) * 100).toFixed(2);
+            legendArr.push(
+                `${fraction}分   ${
+                    target > 1000000
+                        ? `${(target / 100000000).toFixed(2)}亿`
+                        : target
+                }条  ${percent}%`
+            );
             return legendArr;
         },
     },

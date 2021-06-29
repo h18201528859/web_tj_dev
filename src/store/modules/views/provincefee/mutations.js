@@ -8,10 +8,11 @@ const mutations = {
         state.alldataTable = data.alldataTable;
         state.detailTotal = data.total;
     },
-    updateEchartsElecfeeTable(state, data) {
-        state.EchartsEleTable = data.data;
-    },
+
     updatePrvTable(state, data) {
+        console.log("--->mutation", data.alldataTable);
+        state.alldataTable = data.alldataTable;
+        state.EchartsEleTable = data.data;
         state.provinceTable = data.data;
         state.detailTotal = data.total;
     },
@@ -26,6 +27,7 @@ const mutations = {
         state.checkPrvParams = data;
     },
     updateType(state, data) {
+        console.log(data, "mutation");
         state.currentType = data;
     },
     updateCityTitle(state, oParams) {

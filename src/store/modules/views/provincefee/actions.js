@@ -32,8 +32,9 @@ const actions = {
             (res) => {
                 if (+res.ret_code === 0) {
                     commit("updatePrvTable", {
+                        alldataTable: res.ret_data.all_data,
                         data: res.ret_data.preg_data,
-                        total: Number(res.ret_data.prv_data_len),
+                        total: Number(res.ret_data.preg_data_len),
                     });
                     setTimeout(() => {
                         commit("updateDetailTableLoading", false);
@@ -60,13 +61,10 @@ const actions = {
         axiospost(API.getImgPrvStatistics, targetParams).then(
             (res) => {
                 if (+res.ret_code === 0) {
-                    commit("updateEchartsElecfeeTable", {
-                        data: res.ret_data.preg_data,
-                    });
                     commit("updateElecfeeTable", {
                         alldataTable: res.ret_data.all_data,
                         data: res.ret_data.preg_data,
-                        total: Number(res.ret_data.prv_data_len),
+                        total: Number(res.ret_data.preg_data_len),
                     });
                     setTimeout(() => {
                         commit("updateDetailTableLoading", false);

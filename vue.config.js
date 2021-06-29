@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 const devProxy = ["/api"]; // proxy route
-const proEnv = require("./config/pro.env");
+// const proEnv = require("./config/pro.env");
 const devEnv = require("./config/dev.env");
 const env = process.env.NODE_ENV;
 const lessToJs = require("less-vars-to-js");
@@ -22,9 +22,10 @@ if (env === "development") {
             },
         };
     });
-} else if (env === "production") {
-    proxyObj = proEnv.hosturl;
 }
+// else if (env === "production") {
+//     proxyObj = proEnv.hosturl;
+// }
 
 module.exports = {
     publicPath: "./",

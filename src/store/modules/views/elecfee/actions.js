@@ -1,34 +1,19 @@
 import { axiospost } from "../../../../utils/http";
 import API from "../../../../const/apis";
 const actions = {
-    getHeadData({ commit }, params) {
-        if (!params.prv_code) {
-            axiospost(API.getElecSum, {}).then(
-                (res) => {
-                    if (+res.ret_code === 0) {
-                        commit("updateHeadData", res.ret_data);
-                    } else {
-                        console.error("数据错了");
-                    }
-                },
-                () => {
-                    console.error("error");
+    getHeadData({ commit }) {
+        axiospost(API.getElecSum, {}).then(
+            (res) => {
+                if (+res.ret_code === 0) {
+                    commit("updateHeadData", res.ret_data);
+                } else {
+                    console.error("数据错了");
                 }
-            );
-        } else {
-            axiospost(API.getElecPrvSum, params).then(
-                (res) => {
-                    if (+res.ret_code === 0) {
-                        commit("updateHeadData", res.ret_data);
-                    } else {
-                        console.error("数据错了");
-                    }
-                },
-                () => {
-                    console.error("error");
-                }
-            );
-        }
+            },
+            () => {
+                console.error("error");
+            }
+        );
     },
     getElecfeeTableData({ commit, rootState }, params) {
         commit("updateDetailTableLoading", true);
@@ -102,6 +87,7 @@ const actions = {
                 if (+res.ret_code === 0) {
                     commit("updateElecfeeTable", {
                         data: res.ret_data.prv_data,
+                        alldataTable: res.ret_data.all_data,
                         total: Number(res.ret_data.prv_data_len),
                     });
                     setTimeout(() => {

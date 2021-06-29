@@ -50,9 +50,17 @@
                   <p>各评分区间占比</p>
                 </div>
                 <div class="pieCenter">
-                  <p class="pieCenter-title">稽核量</p>
+                  <p class="pieCenter-title">
+                    {{
+                      `稽核量${alldataTable.total_amount ? "（亿）" : "（万）"}`
+                    }}
+                  </p>
                   <p class="pieCenter-number">
-                    {{ (alldataTable && alldataTable.total_amount) || 0 }}
+                    {{
+                      alldataTable && alldataTable.total_amount
+                        ? (alldataTable.total_amount / 100000000).toFixed(2)
+                        : (alldataTable.total_number / 10000).toFixed(2)
+                    }}
                   </p>
                 </div>
                 <div id="piechart" style="height: 100%; width: 100%"></div>
@@ -228,14 +236,7 @@ export default {
       EchartsEleTable: (state) => state.elecfee.EchartsEleTable,
       checkallParams: (state) => state.elecfee.checkallParams,
       checkImgParams: (state) => state.elecfee.checkImgParams,
-      alldataTable: (state) => {
-        if (state.elecfee.alldataTable) {
-          state.elecfee.alldataTable.total_amount = util.transToLocaleString(
-            state.elecfee.alldataTable.total_amount
-          );
-        }
-        return state.elecfee.alldataTable;
-      },
+      alldataTable: (state) => state.elecfee.alldataTable,
       checkEchartsPrvParams: (state) => state.elecfee.checkEchartsPrvParams,
       cityTitle: (state) => state.elecfee.cityTitle,
       cityId: (state) => state.elecfee.cityId,
@@ -313,18 +314,18 @@ export default {
         name =
           item.prv_name.length >= 3 ? item.prv_name.slice(0, 2) : item.prv_name;
         param[name] = {
-          value: item.total_number,
+          value: item.total_number || item.total_amount,
           ninetoten: item.ninetoten,
           eightto9: item.eighttonine,
           sixto8: item.sixtoeight,
           zerotosix: item.zerotosix,
-          total: item.total_number,
-          pass_number: item.pass_number,
-          notpass_number: "20%", //item.notpass_number
+          total: item.total_number || item.total_amount,
+          pass_number: item.pass_number || item.pass_amount,
+          notpass_number: item.notpass_number || item.notpass_amount, //item.notpass_number
         };
 
         this.cityOneFilterName.push(name);
-        desciplineData.push(item.total_number);
+        desciplineData.push(item.total_number || item.total_amount);
       });
       this.lineData = desciplineData;
       this.cityFilterData = param;
@@ -351,13 +352,13 @@ export default {
         name =
           item.prv_name.length >= 3 ? item.prv_name.slice(0, 2) : item.prv_name;
         param[name] = {
-          value: item.total_number,
-          total: item.total_number,
-          pass_number: item.pass_number,
-          notpass_number: "20%", //item.notpass_number
+          value: item.total_number || item.total_amount,
+          total: item.total_number || item.total_amount,
+          pass_number: item.pass_number || item.pass_amount,
+          notpass_number: item.notpass_number || item.notpass_amount,
         };
         this.cityTwoFilterName.push(name);
-        desciplineData.push(item.total_number);
+        desciplineData.push(item.total_number || item.total_amount);
       });
       this.echartsTwoData = desciplineData;
       this.cityTwoFilterData = param;
@@ -390,32 +391,6 @@ export default {
         this.tableTitle = "各省电表图稽核数量统计";
         this.getElecImgTableData({ page: 1, page_size: 10 });
         this.checkdetailTableColumns = this.elecfeeImgCoulmns;
-        pieData = [
-          {
-            value: 1020,
-            name: "电费",
-            fraction: "9-10",
-            itemStyle: { normal: { color: "" } },
-          },
-          {
-            value: 1300,
-            name: "铁塔服务费",
-            fraction: "4-9",
-            itemStyle: { normal: { color: "" } },
-          },
-          {
-            value: 1340,
-            name: "租费",
-            fraction: "2-8",
-            itemStyle: { normal: { color: "" } },
-          },
-          {
-            value: 650,
-            name: "稽核总量",
-            fraction: "0-6",
-            itemStyle: { normal: { color: "" } },
-          },
-        ];
         colorSet.mainSet = ["rgba(71, 199, 253, 0.85)"];
         colorSet.mainPieSet = ["#317CFF", "#47C7FD", "#F6AE16", "#5AD8A6"];
         let cityTwoFilterData = JSON.parse(
@@ -439,6 +414,7 @@ export default {
               fraction = pieData[i].fraction;
             }
           }
+          console.log(pieData);
           const percent = ((target / total) * 100).toFixed(1);
           let toolpitStr = `<div style='padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国电费缴纳单 ${fraction}分 </div></div>`;
           return toolpitStr;
@@ -463,36 +439,25 @@ export default {
           },
           {
             value: 0,
-            name: "铁塔服务费",
+            name: "电费",
             fraction: "8-9",
             itemStyle: { normal: { color: "" } },
           },
           {
             value: 0,
-            name: "租费",
+            name: "电费",
             fraction: "6-8",
             itemStyle: { normal: { color: "" } },
           },
           {
             value: 0,
-            name: "稽核总量",
+            name: "电费",
             fraction: "0-6",
             itemStyle: { normal: { color: "" } },
           },
         ];
         colorSet.mainPieSet = ["#5B8FF9", "#5AD8A6", "#E8684A", "#F6BD16"];
-        if (this.$route.name == "elecfee") {
-          colorSet.mainSet = ["rgba(71, 199, 253, 0.85)"];
-        } else {
-          colorSet.mainSet = ["rgba(119, 114, 241, 0.85)"];
-          const colornew = [
-            "rgba(119, 114, 241, 0.85)",
-            "rgba(206, 119, 251, 0.85)",
-            "rgba(90, 220, 255, 0.85)",
-            "rgba(71, 167, 253, 0.85)",
-          ];
-          this.piechartOptions.series[0].color = colornew;
-        }
+        colorSet.mainSet = ["rgba(71, 199, 253, 0.85)"];
 
         this.linechartOptions.tooltip.formatter = (name) => {
           const cityFilterData = this.cityFilterData;
@@ -541,6 +506,7 @@ export default {
           let target = 0;
           let total = 0;
           let fraction = "";
+          console.log(pieData, "-----");
           for (let i = 0; i < pieData.length; i++) {
             total += pieData[i].value;
             if (pieData[i].name === name.name) {
@@ -581,8 +547,10 @@ export default {
           if (item == name.name) {
             if (id == "linechartOptionsOne") {
               total = cityFilterData[item].total;
-              pass_number = cityFilterData[item].pass_number;
-              notpass_number_percent = ((pass_number / total) * 100).toFixed(2);
+              pass_number =
+                cityFilterData[item].pass_number ||
+                cityFilterData[item].pass_amount;
+              notpass_number_percent = cityFilterData[item].notpass_rate;
             } else {
               target = cityFilterData[item].value;
               total = cityFilterData[item].total;
@@ -704,10 +672,12 @@ export default {
       const timeRange = e.target.value;
       const timeParams = util.getAllTimeRange(timeRange);
       if (+this.currentType === 1) {
-        this.getElecfeeTableData(Object.assign(timeParams, { page: 1 }));
+        this.getElecfeeTableData(
+          Object.assign(timeParams, { page: 1, page_size: 10, scope: "0" })
+        );
       } else {
         this.getElecImgTableData(
-          Object.assign(timeParams, { page: 1, scope: "1" })
+          Object.assign(timeParams, { page: 1, page_size: 10, scope: "1" })
         );
       }
     },
