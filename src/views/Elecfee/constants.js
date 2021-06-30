@@ -8,17 +8,17 @@ provinceCode.filter((item, index) => {
 export const HeadCardItems = [
     {
         headTitle: "稽核报账单",
-        type: "amount",
+        type: "number",
         icon: require("./icon/1.png"),
-        allText: "总量/亿单",
-        monthText: "当月/亿单",
+        allText: "总量/万单",
+        monthText: "当月/万单",
     },
     {
         headTitle: "稽核金额",
-        type: "number",
+        type: "amount",
         icon: require("./icon/2.png"),
-        allText: "总金额/万元",
-        monthText: "当月/元",
+        allText: "总金额/亿元",
+        monthText: "当月/亿元",
     },
 ];
 const colorSet = {

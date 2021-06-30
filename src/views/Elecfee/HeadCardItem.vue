@@ -70,7 +70,7 @@ export default {
       this.downElecfeeNumber =
         this.type === "amount"
           ? util.transferNum(newValue.month_amount / 100000000)
-          : util.transferNum(newValue.month_number);
+          : util.transferNum(newValue.month_number / 10000);
     },
   },
   data() {
