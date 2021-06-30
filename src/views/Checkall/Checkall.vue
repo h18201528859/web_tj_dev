@@ -34,7 +34,9 @@
             <p>各类稽核数量对比</p>
           </div>
           <div class="pieCenter">
-            <p class="pieCenter-title">稽核总量 (亿)</p>
+            <p class="pieCenter-title">
+              {{ `稽核总量${currentType === "0" ? "（万)" : "（亿)"}` }}
+            </p>
             <p class="pieCenter-number">{{ checkallPieNumber }}</p>
           </div>
           <div id="piechart" style="height: 100%; width: 100%"></div>
@@ -117,7 +119,11 @@
       <div class="header">
         <p>稽核详情</p>
         <div class="operations">
-          <a-radio-group class="radio" defaultValue="0" @change="handleType">
+          <a-radio-group
+            class="radio"
+            :value="currentType"
+            @change="handleType"
+          >
             <a-radio-button value="0"> 数量 </a-radio-button>
             <a-radio-button value="1"> 金额 </a-radio-button>
           </a-radio-group>
@@ -247,7 +253,7 @@ export default {
     detailTotal(newValue) {
       this.totalPage = newValue;
     },
-    headData() {
+    checkallDetail() {
       this.drawLines();
     },
   },
@@ -271,6 +277,7 @@ export default {
       linechartOptions: linechartOptions,
       piechartOptions: piechartOptions,
       checkallPieNumber: 0,
+      currentType: "0",
       checkallTableColumns: checkallColumns,
       checkdetailTableColumns: checkdetailColumns,
       totalPage: 0,
@@ -299,9 +306,11 @@ export default {
       const timeRange = e.target.value;
       const timeParams = util.getAllTimeRange(timeRange);
       this.getCheckallTableData(Object.assign(timeParams, { page: 1 }));
+      this.drawLines();
     },
     handleType(e) {
       const type = e.target.value;
+      this.currentType = type;
       this.getCheckallTableData({ object: type, page: 1 });
     },
     handleChart() {
@@ -312,29 +321,16 @@ export default {
       const lineChart = this.$echarts.init(
         document.getElementById("linechart")
       );
-      lineChart.setOption(this.linechartOptions);
       const piechart = this.$echarts.init(document.getElementById("piechart"));
+      this.handleChart();
+      lineChart.setOption(this.linechartOptions);
       piechart.setOption(this.piechartOptions);
+      console.log(this.pieData[0].value, this.currentType);
       this.checkallPieNumber = util.transferNum(
-        Number(this.headData.total_amount) / 100000000
+        this.currentType === "0"
+          ? (Number(this.pieData[0].value) / 10000).toFixed(2)
+          : (Number(this.pieData[0].value) / 100000000).toFixed(2)
       );
-      piechart.on("legendselectchanged", (options) => {
-        let name = options.name;
-        let selected = options.selected;
-        let option = piechart.getOption();
-        let selectKey = [];
-        for (let prop in selected) {
-          if (hasOwnProperty.call(selected, prop)) selectKey.push(prop);
-        }
-        if (
-          !selectKey.filter(function (key) {
-            return selected[key];
-          }).length
-        ) {
-          option.legend[0].selected[name] = true;
-        }
-        piechart.setOption(option);
-      });
     },
     handleTableData(params) {
       const paramObj = Object.assign(this.checkallParams, params);

@@ -6,7 +6,10 @@ const mutations = {
         state.elecfeeTable = data.data;
         state.alldataTable = data.alldataTable;
         state.detailTotal = data.total;
-      
+    },
+    updateTopTen(state, data) {
+        console.log(data);
+        state.toptenTable = data.data;
     },
     updateEchartsElecfeeTable(state, data) {
         state.EchartsEleTable = data.data;

@@ -58,9 +58,9 @@ const state = {
     checkElecfeeAllTable: [],
     cityId: "QG",
     elecfeeDetail: [],
-
     headData: [],
     elecfeeTable: [],
+    toptenTable: [],
     EchartsEleTable: [],
     provinceTable: [],
     detailTotal: 0,

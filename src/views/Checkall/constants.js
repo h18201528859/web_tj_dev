@@ -311,15 +311,18 @@ export const checkdetailColumns = [
         title: "未通过数",
         dataIndex: "notpass_number",
         key: "notpass_number",
-        sorter: (a, b) => a.notpass_number - b.notpass_number,
+        sorter: (a, b) =>
+            a.notpass_number
+                ? a.notpass_number - b.notpass_number
+                : a.notpass_amount - b.notpass_amount,
+
         scopedSlots: { customRender: "notpass_number" },
     },
     {
         title: "未通过率",
         dataIndex: "notpass_rate",
-        // width: 120,
         key: "notpass_rate",
-        sorter: (a, b) => a.notpass_rate - b.notpass_rate,
+        // sorter: (a, b) => a.notpass_rate - b.notpass_rate,
         scopedSlots: { customRender: "notpass_rate" },
     },
 ];

@@ -29,6 +29,7 @@ const actions = {
         axiospost(API.getStatistics, targetParams).then(
             (res) => {
                 if (+res.ret_code === 0) {
+                    commit("updateCharts", res.ret_data.all_data);
                     commit("updateCheckAllTable", [res.ret_data.all_data]);
                     commit("updateCheckAllDetail", {
                         data: res.ret_data.prv_data,

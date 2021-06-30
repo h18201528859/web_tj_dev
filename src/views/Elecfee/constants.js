@@ -22,13 +22,13 @@ export const HeadCardItems = [
     },
 ];
 const colorSet = {
-    mainSet: ["rgba(91, 143, 249, 0.85)"],
+    mainLineSet: "rgba(91, 143, 249, 0.85)",
     mainPieSet: ["#5B8FF9", "#5AD8A6", "#E8684A", "#F6BD16"],
 };
 
 export const linechartOptions = {
     height: 240,
-    color: colorSet.mainSet,
+    color: colorSet.mainLineSet,
     tooltip: {
         trigger: "item",
         borderWidth: "0",
@@ -46,21 +46,17 @@ export const linechartOptions = {
             let percentNinetoten = 0;
             let percentEightto9 = 0;
             let percentSixto8 = 0;
-            Object.keys(cityFilterData).forEach((item, index) => {
-                if (item == name.name) {
-                    total = cityFilterData[item].total;
-                    ninetoten = cityFilterData[item].ninetoten;
-                    eightto9 = cityFilterData[item].eightto9;
-                    sixto8 = cityFilterData[item].sixto8;
-                    zerotosix = cityFilterData[item].zerotosix;
-                    percentZerotosix = ((zerotosix / total) * 100).toFixed(2);
-                    percentNinetoten = ((ninetoten / total) * 100).toFixed(2);
-                    percentEightto9 = ((eightto9 / total) * 100).toFixed(2);
-                    percentSixto8 = ((sixto8 / total) * 100).toFixed(2);
-                    pointColor = colorSet.mainSet[index || 0];
-                } else {
-                    pointColor = colorSet.mainSet[0];
-                }
+            Object.keys(cityFilterData).forEach((item) => {
+                total = cityFilterData[item].total;
+                ninetoten = cityFilterData[item].ninetoten;
+                eightto9 = cityFilterData[item].eightto9;
+                sixto8 = cityFilterData[item].sixto8;
+                zerotosix = cityFilterData[item].zerotosix;
+                percentZerotosix = ((zerotosix / total) * 100).toFixed(2);
+                percentNinetoten = ((ninetoten / total) * 100).toFixed(2);
+                percentEightto9 = ((eightto9 / total) * 100).toFixed(2);
+                percentSixto8 = ((sixto8 / total) * 100).toFixed(2);
+                pointColor = colorSet.mainLineSet;
             });
             toolpitArr = `<div style="font-size:12px;">
           <div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix}元</span><span style="margin-left:10px">${percentZerotosix}%</span></div>
@@ -159,7 +155,7 @@ export const piechartOptions = {
                     fraction = pieData[i].fraction;
                 }
             }
-            console.log(total, "===>total");
+            // console.log(total, "===>total");
             let percent = (((target * 10000) / total) * 100).toFixed(1);
             legendArr.push(`${fraction}分   ${target}万条  ${percent}%`);
             return legendArr;

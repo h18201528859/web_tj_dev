@@ -3,8 +3,8 @@ const mutations = {
         state.headData = data;
     },
     updateCharts(state, data) {
-        state.lineData[0] = data.total_number;
-        state.pieData[0].value = data.total_number;
+        state.lineData[0] = data.total_number || data.total_amount;
+        state.pieData[0].value = data.total_number || data.total_amount;
     },
     updateCheckAllTable(state, data) {
         state.checkallTable = data;

@@ -225,6 +225,7 @@ export default {
       echartsTwoData: [],
       tabsKey: "1",
       totalCheckAmount: 0,
+      statisticType: "0",
       pieData: [
         {
           value: 0,
@@ -262,8 +263,12 @@ export default {
       linechartOptions,
       piechartOptions,
       checkallPieNumber: 0,
-      chartTitle: `${this.$route.query.cityName}各地市缴费单稽核数量统计TOP10`,
-      tableTitle: `${this.$route.query.cityName}各地市缴费单稽核数量详单`,
+      chartTitle: `${this.$route.query.cityName}各地市缴费单稽核${
+        this.statisticType === "0" ? "数量" : "金额"
+      }统计TOP10`,
+      tableTitle: `${this.$route.query.cityName}各地市缴费单稽核${
+        this.statisticType === "0" ? "数量" : "金额"
+      }详单`,
       checkdetailTableColumns: checkdetailColumns,
       elecfeeImgCoulmns,
       totalPage: 0,
@@ -277,6 +282,23 @@ export default {
     "$route.path": function () {
       this.getHeadData(this.initParams);
       this.getProElecfeeTableData(this.initParams);
+    },
+    statisticType(newValue) {
+      if (this.currentType === "1") {
+        (this.chartTitle = `${this.$route.query.cityName}各地市缴费单稽核${
+          newValue === "0" ? "数量" : "金额"
+        }统计TOP10`),
+          (this.tableTitle = `${this.$route.query.cityName}各地市缴费单稽核${
+            newValue === "0" ? "数量" : "金额"
+          }详单`);
+      } else {
+        this.chartTitle = `${this.$route.query.cityName}各地市电表图稽核${
+          this.statisticType === "0" ? "数量" : "金额"
+        }统计`;
+        this.tableTitle = `${this.$route.query.cityName}各地市电表图稽核${
+          this.statisticType === "0" ? "数量" : "金额"
+        }统计`;
+      }
     },
     detailTotal(newValue) {
       this.totalPage = newValue;
@@ -380,8 +402,12 @@ export default {
         colorSet = { mainSet: [], mainPieSet: [] };
       if (+key === 2) {
         pieCharts.style.display = "none";
-        this.chartTitle = `${currentCity}各地市电表图稽核数量统计`;
-        this.tableTitle = `${currentCity}各地市电表图稽核数量统计`;
+        this.chartTitle = `${this.$route.query.cityName}各地市电表图稽核${
+          this.statisticType === "0" ? "数量" : "金额"
+        }统计`;
+        this.tableTitle = `${this.$route.query.cityName}各地市电表图稽核${
+          this.statisticType === "0" ? "数量" : "金额"
+        }统计`;
         this.getElecImgTableData({ page: 1, page_size: 10 });
         this.checkdetailTableColumns = this.elecfeeImgCoulmns;
         colorSet.mainSet = ["rgba(71, 199, 253, 0.85)"];
@@ -409,25 +435,25 @@ export default {
             value: 0,
             name: "9-10",
             fraction: "9-10",
-            itemStyle: { normal: { color: "" } },
+            itemStyle: { normal: { color: "rgba(71, 167, 253, 0.85)" } },
           },
           {
             value: 0,
             name: "8-9",
             fraction: "8-9",
-            itemStyle: { normal: { color: "" } },
+            itemStyle: { normal: { color: "rgba(90, 220, 255, 0.85)" } },
           },
           {
             value: 0,
             name: "6-8",
             fraction: "6-8",
-            itemStyle: { normal: { color: "" } },
+            itemStyle: { normal: { color: "rgba(206, 119, 251, 0.85)" } },
           },
           {
             value: 0,
             name: "0-6",
             fraction: "0-6",
-            itemStyle: { normal: { color: "" } },
+            itemStyle: { normal: { color: "rgba(119, 114, 241, 0.85)" } },
           },
         ];
         colorSet.mainPieSet = [
@@ -626,6 +652,7 @@ export default {
       }
     },
     handleStatistic(e) {
+      this.statisticType = e.target.value;
       if (+this.currentType === 1) {
         this.getProElecfeeTableData(
           Object.assign({ object: e.target.value }, { page: 1, page_size: 10 })
