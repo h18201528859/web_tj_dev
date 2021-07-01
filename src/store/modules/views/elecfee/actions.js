@@ -91,24 +91,14 @@ const actions = {
         axiospost(API.getImageStatistics, targetParams).then(
             (res) => {
                 if (+res.ret_code === 0) {
-                    if (+targetParams.page_size === 31) {
-                        console.log(
-                            targetParams.page_size,
-                            res.ret_data.prv_data,
-                            "++++++"
-                        );
-                        commit("updateEchartsElecfeeTable", {
-                            data: res.ret_data.prv_data,
-                            total: Number(res.ret_data.prv_data_len),
-                        });
-                    } else {
-                        commit("updateElecfeeTable", {
-                            data: res.ret_data.prv_data,
-                            alldataTable: res.ret_data.all_data,
-                            total: Number(res.ret_data.prv_data_len),
-                        });
-                    }
-
+                    commit("updateElecfeeTable", {
+                        data: res.ret_data.prv_data,
+                        alldataTable: res.ret_data.all_data,
+                        total: Number(res.ret_data.prv_data_len),
+                    });
+                    commit("updateEchartsElecfeeTable", {
+                        data: res.ret_data.prv_data,
+                    });
                     setTimeout(() => {
                         commit("updateDetailTableLoading", false);
                     }, 300);

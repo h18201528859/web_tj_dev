@@ -8,7 +8,6 @@ const mutations = {
         state.detailTotal = data.total;
     },
     updateTopTen(state, data) {
-        console.log(data);
         state.toptenTable = data.data;
     },
     updateEchartsElecfeeTable(state, data) {

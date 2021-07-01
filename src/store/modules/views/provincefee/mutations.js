@@ -10,7 +10,6 @@ const mutations = {
     },
 
     updatePrvTable(state, data) {
-        console.log("--->mutation", data.alldataTable);
         state.alldataTable = data.alldataTable;
         state.EchartsEleTable = data.data;
         state.provinceTable = data.data;

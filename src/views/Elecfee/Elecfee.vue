@@ -343,54 +343,33 @@ export default {
           Object.assign(this.checkImgParams, this.initParams, {
             page: 1,
             page_size: 10,
+            scope: "1",
           })
         );
-        this.getElecImgTableData({ page: 1, page_size: 31, scope: "1" });
-
         this.handleChartData("all", this.EchartsEleTable);
         this.drawLines("line1");
       }
     },
-    tooltipsFormat(id, cityFilterData, colorSet) {
+    tooltipsFormat(id, cityFilterData) {
       this[id].tooltip.formatter = (name) => {
-        let total = 0;
-        let target = 0;
         let toolpitArr = "";
-        let pointColor = colorSet;
-        let ninetoten = 0;
-        let eightto9 = 0;
-        let sixto8 = 0;
-        let zerotosix = 0;
-        let percent = 0;
         let pass_number = 0;
-        let notpass_number_percent = 0;
+        let pass_number_percent = 0;
+        console.log(cityFilterData);
         Object.keys(cityFilterData).forEach((item) => {
-          if (id == "linechartOptionsOne") {
-            total = Number(cityFilterData[item].total);
-            pass_number =
-              (cityFilterData[item].pass_number / 10000).toFixed(2) ||
-              (cityFilterData[item].pass_amount / 10000).toFixed(2);
-            notpass_number_percent = cityFilterData[item].notpass_amount
-              ? Number(cityFilterData[item].notpass_amount) / Number(total)
-              : Number(cityFilterData[item].notpass_number) / Number(total);
-          } else {
-            target = cityFilterData[item].value;
-            total = cityFilterData[item].total;
-            ninetoten = cityFilterData[item].ninetoten;
-            eightto9 = cityFilterData[item].eightto9;
-            sixto8 = cityFilterData[item].sixto8;
-            zerotosix = cityFilterData[item].zerotosix;
-            percent = ((target / total) * 100).toFixed(2);
+          if (item === name.name) {
+            if (id == "linechartOptionsOne") {
+              pass_number =
+                (cityFilterData[item].pass_number / 10000).toFixed(2) ||
+                (cityFilterData[item].pass_amount / 10000).toFixed(2);
+              pass_number_percent = cityFilterData[item].pass_percent * 100;
+            }
           }
         });
         if (id == "linechartOptionsOne") {
           toolpitArr = `<div style="font-size:12px;">
-                <div><span style="margin-right:16px;">通过数: ${pass_number}万</span><span>未通过率: ${
-            notpass_number_percent + "%"
-          }</span></div>              
+                <div><span style="margin-right:16px;">通过数: ${pass_number}万</span><span>通过率: ${pass_number_percent}%</span></div>              
                 </div>`;
-        } else {
-          toolpitArr = `<div style="font-size:12px;"><div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix}元</span><span style="margin-left:10px">${percent}%</span></div><div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8}元</span><span style="margin-left:10px">${percent}%</span></div> <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9}元</span><span style="margin-left:10px">${percent}%</span></div><div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten}元</span><span style="margin-left:6px;position:relative;left:-2px;">${percent}%</span></div><hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${pointColor};margin-right:5px"></div><div>${name.name}省 稽核条数/占比</div></div> </div>`;
         }
         return toolpitArr;
       };
@@ -452,6 +431,10 @@ export default {
             total: item.total_number || item.total_amount,
             pass_number: item.pass_number || item.pass_amount,
             notpass_number: item.notpass_number || item.notpass_amount,
+            notpass_number_percent: item.notpass_rate,
+            pass_percent:
+              (item.pass_number || item.pass_amount) /
+              (item.total_number || item.total_amount),
           };
 
           this.cityTwoFilterName.push(name);
@@ -500,14 +483,8 @@ export default {
         this.linechartOptionsOne = JSON.parse(
           JSON.stringify(this.linechartOptions)
         );
-
-        this.tooltipsFormat(
-          "linechartOptionsOne",
-          cityTwoFilterData,
-          lineColor
-        );
+        this.tooltipsFormat("linechartOptionsOne", cityTwoFilterData);
         this.linechartOptionsOne.series[0].itemStyle.color = lineColor;
-        this.linechartOptionsOne.series[0].barWidth = "20";
         this.linechartOptionsOne.xAxis.data = this.cityTwoFilterName;
         this.linechartOptionsOne.series[0].data = this.echartsTwoData;
         lineChart1.setOption(this.linechartOptionsOne);
@@ -568,9 +545,6 @@ export default {
         this.getElecImgTableData(
           Object.assign(timeParams, { page: 1, page_size: 10, scope: "1" })
         );
-        this.getElecImgTableData(
-          Object.assign(timeParams, { page_size: 31, scope: "1" })
-        );
       }
     },
     handleStatistic(e) {
@@ -591,9 +565,11 @@ export default {
             : "各省电表图稽核金额统计";
         this.chartTitle = this.tableTitle;
         this.getElecImgTableData(
-          Object.assign({ object: e.target.value }, { page: 1, scope: "1" })
+          Object.assign(
+            { object: e.target.value },
+            { page: 1, page_size: 10, scope: "1" }
+          )
         );
-        this.getElecImgTableData({ page_size: 31, scope: "1" });
       }
     },
     handleTableData(params) {

@@ -419,7 +419,6 @@ export default {
         this.tooltipsFormat("linechartOptionsOne", cityTwoFilterData, colorSet);
         this.linechartOptions.series[0].itemStyle.color = colorSet.mainSet;
         this.linechartOptionsOne.series[0].itemStyle.color = colorSet.mainSet;
-        this.linechartOptionsOne.series[0].barWidth = "20";
         this.linechartOptionsOne.xAxis.data = this.cityTwoFilterName;
         this.linechartOptionsOne.series[0].data = this.echartsTwoData;
         lineChart1.setOption(this.linechartOptionsOne);
@@ -480,11 +479,11 @@ export default {
           let percentSixto8 = 0;
           Object.keys(cityFilterData).forEach((item, index) => {
             if (item == name.name) {
-              total = cityFilterData[item].total;
-              ninetoten = cityFilterData[item].ninetoten;
-              eightto9 = cityFilterData[item].eightto9;
-              sixto8 = cityFilterData[item].sixto8;
-              zerotosix = cityFilterData[item].zerotosix;
+              total = cityFilterData[item].total / 10000;
+              ninetoten = cityFilterData[item].ninetoten / 10000;
+              eightto9 = cityFilterData[item].eightto9 / 10000;
+              sixto8 = cityFilterData[item].sixto8 / 10000;
+              zerotosix = cityFilterData[item].zerotosix / 10000;
               percentZerotosix = ((zerotosix / total) * 100).toFixed(2);
               percentNinetoten = ((ninetoten / total) * 100).toFixed(2);
               percentEightto9 = ((eightto9 / total) * 100).toFixed(2);
@@ -495,10 +494,18 @@ export default {
             }
           });
           toolpitArr = `<div style="font-size:12px;">
-          <div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix}元</span><span style="margin-left:10px">${percentZerotosix}%</span></div>
-          <div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8}元</span><span style="margin-left:10px">${percentSixto8}%</span></div> 
-          <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9}元</span><span style="margin-left:10px">${percentEightto9}%</span></div>
-          <div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten}元</span><span style="margin-left:6px;position:relative;left:-2px;">${percentNinetoten}%</span></div>
+          <div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix.toFixed(
+            2
+          )}万</span><span style="margin-left:10px">${percentZerotosix}%</span></div>
+          <div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8.toFixed(
+            2
+          )}万</span><span style="margin-left:10px">${percentSixto8}%</span></div> 
+          <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9.toFixed(
+            2
+          )}万</span><span style="margin-left:10px">${percentEightto9}%</span></div>
+          <div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten.toFixed(
+            2
+          )}万</span><span style="margin-left:6px;position:relative;left:-2px;">${percentNinetoten}%</span></div>
              <hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/>
              <div style="display:flex;align-items:center">
              <div style="width:6px;height:6px;background:${pointColor};margin-right:5px"></div>
@@ -568,13 +575,14 @@ export default {
         let zerotosix = 0;
         let percent = 0;
         let pass_number = 0;
-        let notpass_number_percent = 0;
-        Object.keys(cityFilterData).forEach((item, index) => {
+        let pass_number_percent = 0;
+        Object.keys(cityFilterData).forEach((item) => {
           if (item == name.name) {
             if (id == "linechartOptionsOne") {
-              total = cityFilterData[item].total;
-              pass_number = cityFilterData[item].pass_number;
-              notpass_number_percent = ((pass_number / total) * 100).toFixed(2);
+              console.log(cityFilterData[item]);
+              total = Number(cityFilterData[item].total);
+              pass_number = Number(cityFilterData[item].pass_number);
+              pass_number_percent = ((pass_number / total) * 100).toFixed(2);
             } else {
               target = cityFilterData[item].value;
               total = cityFilterData[item].total;
@@ -583,7 +591,7 @@ export default {
               sixto8 = cityFilterData[item].sixto8;
               zerotosix = cityFilterData[item].zerotosix;
               percent = ((target / total) * 100).toFixed(2);
-              pointColor = colorSet.mainSet[index];
+              pointColor = colorSet.mainSet[0];
             }
           } else {
             pointColor = colorSet.mainSet[0];
@@ -591,8 +599,8 @@ export default {
         });
         if (id == "linechartOptionsOne") {
           toolpitArr = `<div style="font-size:12px;">
-                <div><span style="margin-right:16px;">未通过数: ${pass_number}</span><span>未通过率: ${
-            notpass_number_percent + "%"
+                <div><span style="margin-right:16px;">通过数: ${pass_number}</span><span>通过率: ${
+            pass_number_percent + "%"
           }</span></div>              
                 </div>`;
         } else {
@@ -631,7 +639,6 @@ export default {
       this.lineData.map((item) => {
         formatData.push(Number(item) / 10000);
       });
-      console.log(formatData);
       this.linechartOptions.series[0].data = formatData;
       this.linechartOptions.type = this.currentType;
       this.piechartOptions.series[0].data = this.pieData;
