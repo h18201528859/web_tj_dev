@@ -54,7 +54,6 @@ export default {
   },
   watch: {
     currentData(newValue) {
-      console.log(newValue, "---newValue");
       if (this.headTitle === "电费") {
         this.upNumber = util.transferNum(Number(newValue.total_number) / 10000);
         this.downNumber = util.transferNum(

@@ -145,7 +145,6 @@ export default {
     cursor: pointer;
   }
 }
-
 #components-layout-demo-custom-trigger .trigger {
   font-size: 18px;
   line-height: 64px;

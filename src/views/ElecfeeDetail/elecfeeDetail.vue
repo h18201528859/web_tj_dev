@@ -23,17 +23,18 @@
             <a-radio value="image"> 电费(电表图) </a-radio>
           </a-radio-group>
         </a-form-item>
-        <div class="city-box" v-if="!cityFlag">
+        <div class="city-box" v-if="cityFlag">
           <a-form-item label="地区选择" name="地区选择">
             <a-radio-group v-decorator="['areas', { initialValue: 'all' }]">
               <a-radio value="all"> 全部省份 </a-radio>
               <a-radio value="province"> 自选省份 </a-radio>
             </a-radio-group>
             <a-select
-              :default-value="[]"
+              :value="selectAreas"
+              :maxTagCount="11"
               mode="multiple"
               :size="size"
-              style="width: 200px"
+              style="width: 400px"
               @change="handleProvinceChange"
             >
               <a-select-opt-group>
@@ -125,7 +126,7 @@
           <a-button class="reset-btn" @click="cancelHandle"> 清空 </a-button>
           <a-button type="primary" html-type="submit"> 搜索 </a-button>
         </a-form-item>
-        <a-form-item class="btn-wrap" v-else-if="extendIcon == 'up'">
+        <a-form-item class="btn-wrap" v-else>
           <a-button type="primary" html-type="submit" class="serach-btn">
             搜索
           </a-button>
@@ -252,14 +253,14 @@ export default {
       checkdetailImgCoulmns,
       initParams: util.getAllTimeRange("all"),
       changedParams: {},
-      selectAreas: "",
+      selectAreas: [],
       selectScoreRange: "",
       selectTimerange: "",
       requestTypes: "",
       totalPage: 0,
       currentPageSize: 10,
-      extendText: "收起",
-      extendIcon: "up",
+      extendText: "展开",
+      extendIcon: "down",
       cityFlag: false,
       provinceCode,
       size: "default",
@@ -269,8 +270,31 @@ export default {
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: "validate_other" });
   },
-  created() {
-    const params = Object.assign({}, this.checkParams, this.initParams);
+  mounted() {
+    const isProvince = this.$route.query.isProvince;
+    const cityId = this.$route.query.provinceId;
+    let params = {};
+    if (isProvince === "true") {
+      this.selectAreas.push(cityId);
+      this.$nextTick(() => {
+        this.form.setFieldsValue({
+          areas: "province",
+        });
+      });
+      this.handleExtend();
+      params = Object.assign(
+        {},
+        this.checkParams,
+        this.initParams,
+        {
+          prv_array: this.selectAreas.join(","),
+        },
+        { scope: "2" }
+      );
+    } else {
+      params = Object.assign({}, this.checkParams, this.initParams);
+    }
+
     this.getCheckallDetailData({
       type: 1,
       params: params,
@@ -296,20 +320,6 @@ export default {
     }),
   },
 
-  beforeRouteEnter(to, from, next) {
-    const { name } = from;
-    next((vm) => {
-      if (name == "elecfeecitydetail") {
-        vm.extendText = "收起";
-        vm.extendIcon = "up";
-        vm.cityFlag = false;
-      } else {
-        vm.extendText = "展开";
-        vm.extendIcon = "down";
-        vm.cityFlag = true;
-      }
-    });
-  },
   methods: {
     ...mapActions("checkdetail", ["getCheckallDetailData"]),
 
@@ -317,7 +327,7 @@ export default {
       this.form.setFieldsValue({
         areas: "province",
       });
-      this.selectAreas = e.join(",") || "";
+      this.selectAreas = e;
     },
     handleScoreRangeChange(e) {
       this.form.setFieldsValue({
@@ -335,7 +345,6 @@ export default {
       this.form.setFieldsValue({
         time: "current",
       });
-      console.log(dataString);
       this.selectTimerange = dataString;
     },
     handleTypeChange(e) {
@@ -346,7 +355,6 @@ export default {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log(values, "values");
           const checkTime = values.time;
           const checkScore = values.score;
           const checkArea = values.areas;
@@ -363,12 +371,11 @@ export default {
           };
           //拼地区参数
           if (checkArea === "province") {
-            params.prv_array = this.selectAreas;
+            params.prv_array = this.selectAreas.join(",") || "";
           } else {
             params.prv_array = "";
           }
           //拼得分参数参数
-          console.log(checkTime, "===>checkScore");
           if (checkScore === "range") {
             params.score = this.selectScoreRange;
           } else {
@@ -383,7 +390,7 @@ export default {
             params.start_time = this.selectTimerange[0];
             params.end_time = this.selectTimerange[1];
           } else {
-            console.log(checkTime);
+            console.info(checkTime);
           }
           params.scope = checkArea === "province" ? "2" : "1";
 
@@ -393,7 +400,7 @@ export default {
             this.checkdetailTableColumns = checkdetailColumns;
           }
           this.changedParams = params;
-          console.log(params, "-->请求参数");
+          // console.log(params, this.requestTypes, "-->请求参数");
           this.getCheckallDetailData({
             type: this.requestTypes,
             params,
@@ -403,16 +410,16 @@ export default {
     },
     cancelHandle() {
       this.form.resetFields();
-      // this.handleSubmit(e);
+      this.selectAreas = [];
+      this.requestTypes = 1;
     },
 
     handleExtend() {
-      this.extendText = this.extendText == "展开" ? "收起" : "展开";
-      this.extendIcon = this.extendIcon == "down" ? "up" : "down";
       this.cityFlag = !this.cityFlag;
+      this.extendText = this.cityFlag ? "收起" : "展开";
+      this.extendIcon = this.cityFlag ? "up" : "down";
       let btnWrap = document.querySelector(".btn-wrap");
-      btnWrap.style.display =
-        this.extendText == "展开" ? "inline-block" : "block";
+      btnWrap.style.display = this.cityFlag ? "block" : "inline-block";
     },
     handleDetailPagesize(pageSize) {
       this.currentPageSize = pageSize;
@@ -427,7 +434,6 @@ export default {
       });
     },
     handlePaginationChange(page, pageSize) {
-      console.log(page, pageSize);
       const params = Object.assign({}, this.checkParams, {
         page: +page,
         page_size: +pageSize,
@@ -441,9 +447,9 @@ export default {
 };
 </script>
 
-
 <style lang="less" scoped>
 .jump-wrap {
+  height: 100vh;
   .header-section {
     display: flex;
     justify-content: space-between;

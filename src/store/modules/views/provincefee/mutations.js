@@ -26,7 +26,6 @@ const mutations = {
         state.checkPrvParams = data;
     },
     updateType(state, data) {
-        console.log(data, "mutation");
         state.currentType = data;
     },
     updateCityTitle(state, oParams) {

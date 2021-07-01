@@ -355,7 +355,6 @@ export default {
         let toolpitArr = "";
         let pass_number = 0;
         let pass_number_percent = 0;
-        console.log(cityFilterData);
         Object.keys(cityFilterData).forEach((item) => {
           if (item === name.name) {
             if (id == "linechartOptionsOne") {

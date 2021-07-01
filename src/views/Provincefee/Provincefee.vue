@@ -579,7 +579,6 @@ export default {
         Object.keys(cityFilterData).forEach((item) => {
           if (item == name.name) {
             if (id == "linechartOptionsOne") {
-              console.log(cityFilterData[item]);
               total = Number(cityFilterData[item].total);
               pass_number = Number(cityFilterData[item].pass_number);
               pass_number_percent = ((pass_number / total) * 100).toFixed(2);
@@ -619,8 +618,9 @@ export default {
       ]);
       this.$router.push({
         path: "/checkdetail",
-        params: {
+        query: {
           isProvince: true,
+          provinceId: this.$route.query.cityId,
         },
       });
       util.jumpTop();

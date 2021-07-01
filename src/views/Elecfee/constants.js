@@ -167,7 +167,6 @@ export const piechartOptions = {
                     fraction = pieData[i].fraction;
                 }
             }
-            // console.log(total, "===>total");
             let percent = (((target * 10000) / total) * 100).toFixed(1);
             legendArr.push(`${fraction}分   ${target}万条  ${percent}%`);
             return legendArr;

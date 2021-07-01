@@ -27,7 +27,7 @@ const actions = {
         );
         commit("updateParams", targetParams);
         commit("updateCurrentPage", targetParams);
-        console.log(targetParams, "===>请求参数");
+        // console.log(targetParams, "===>请求参数");
         axiospost(API.getPrvStatistics, targetParams).then(
             (res) => {
                 if (+res.ret_code === 0) {
