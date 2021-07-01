@@ -67,7 +67,7 @@
               </div>
             </div>
           </a-tab-pane>
-          <a-tab-pane key="2" tab="电表图" force-render>
+          <a-tab-pane key="2" tab="电表图" forceRender>
             <div class="overview-chart">
               <div class="line-chart">
                 <div class="title">
@@ -113,7 +113,6 @@
           <template slot="sixtoeight" slot-scope="text">
             <span>{{ `${(text / 10000).toFixed(2)}万` }}</span>
           </template>
-
           <template slot="zerotosix" slot-scope="text">
             <span>{{ `${(text / 10000).toFixed(2)}万` }}</span>
           </template>
@@ -312,8 +311,8 @@ export default {
       if (newValue) {
         newValue.forEach((item) => {
           name =
-            item.preg_name.length >= 3
-              ? item.preg_name.slice(0, 2)
+            item.preg_name.length >= 4
+              ? item.preg_name.slice(0, 4)
               : item.preg_name;
           param[name] = {
             value: item.total_number || item.total_amount,
@@ -503,7 +502,7 @@ export default {
              <hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/>
              <div style="display:flex;align-items:center">
              <div style="width:6px;height:6px;background:${pointColor};margin-right:5px"></div>
-             <div>${name.name}省 稽核条数/占比</div></div> </div>`;
+             <div>${name.name} 稽核条数/占比</div></div> </div>`;
           return toolpitArr;
         };
         this.piechartOptions.tooltip.formatter = (name) => {
@@ -628,7 +627,13 @@ export default {
         +this.currentType === 2
           ? ["rgba(71, 199, 253, 0.85)"]
           : ["rgba(119, 114, 241, 0.85)"];
-      this.linechartOptions.series[0].data = this.lineData;
+      let formatData = [];
+      this.lineData.map((item) => {
+        formatData.push(Number(item) / 10000);
+      });
+      console.log(formatData);
+      this.linechartOptions.series[0].data = formatData;
+      this.linechartOptions.type = this.currentType;
       this.piechartOptions.series[0].data = this.pieData;
       this.linechartOptions.series[0].cityFilterData = this.cityFilterData;
       this.linechartOptions.series[0].itemStyle.color = lineColor;

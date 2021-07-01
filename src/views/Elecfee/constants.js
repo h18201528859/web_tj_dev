@@ -47,22 +47,32 @@ export const linechartOptions = {
             let percentEightto9 = 0;
             let percentSixto8 = 0;
             Object.keys(cityFilterData).forEach((item) => {
-                total = cityFilterData[item].total;
-                ninetoten = cityFilterData[item].ninetoten;
-                eightto9 = cityFilterData[item].eightto9;
-                sixto8 = cityFilterData[item].sixto8;
-                zerotosix = cityFilterData[item].zerotosix;
-                percentZerotosix = ((zerotosix / total) * 100).toFixed(2);
-                percentNinetoten = ((ninetoten / total) * 100).toFixed(2);
-                percentEightto9 = ((eightto9 / total) * 100).toFixed(2);
-                percentSixto8 = ((sixto8 / total) * 100).toFixed(2);
-                pointColor = colorSet.mainLineSet;
+                if (item === name.name) {
+                    total = cityFilterData[item].total / 10000;
+                    ninetoten = cityFilterData[item].ninetoten / 10000;
+                    eightto9 = cityFilterData[item].eightto9 / 10000;
+                    sixto8 = cityFilterData[item].sixto8 / 10000;
+                    zerotosix = cityFilterData[item].zerotosix / 10000;
+                    percentZerotosix = ((zerotosix / total) * 100).toFixed(2);
+                    percentNinetoten = ((ninetoten / total) * 100).toFixed(2);
+                    percentEightto9 = ((eightto9 / total) * 100).toFixed(2);
+                    percentSixto8 = ((sixto8 / total) * 100).toFixed(2);
+                    pointColor = colorSet.mainLineSet;
+                }
             });
             toolpitArr = `<div style="font-size:12px;">
-          <div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix}元</span><span style="margin-left:10px">${percentZerotosix}%</span></div>
-          <div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8}元</span><span style="margin-left:10px">${percentSixto8}%</span></div> 
-          <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9}元</span><span style="margin-left:10px">${percentEightto9}%</span></div>
-          <div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten}元</span><span style="margin-left:6px;position:relative;left:-2px;">${percentNinetoten}%</span></div>
+          <div>0-6分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${zerotosix.toFixed(
+              2
+          )}万元</span><span style="margin-left:10px">${percentZerotosix}%</span></div>
+          <div>6-8分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${sixto8.toFixed(
+              2
+          )}万元</span><span style="margin-left:10px">${percentSixto8}%</span></div> 
+          <div>8-9分<span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important"> ${eightto9.toFixed(
+              2
+          )}万元</span><span style="margin-left:10px">${percentEightto9}%</span></div>
+          <div><span style="position:relative;left:-4px;">9-10分</span><span style="min-width:100px;padding:3px 16px;display:inline-block;text-align:right!important;position:relative;left:-4px;"> ${ninetoten.toFixed(
+              2
+          )}万元</span><span style="margin-left:6px;position:relative;left:-2px;">${percentNinetoten}%</span></div>
              <hr style='margin:4px 0px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/>
              <div style="display:flex;align-items:center">
              <div style="width:6px;height:6px;background:${pointColor};margin-right:5px"></div>
@@ -126,7 +136,9 @@ export const piechartOptions = {
                 }
             }
             const percent = (((target * 10000) / total) * 100).toFixed(2);
-            let toolpitStr = `<div style='border:none;padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target}</span><span style='font-size:12px'>万条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国电费缴纳单 ${fraction}分 </div></div>`;
+            let toolpitStr = `<div style='border:none;padding:8px;text-align:left;margin-top:-4px'><span style='font-size:16px'>${target.toFixed(
+                2
+            )}</span><span style='font-size:12px'>万条</span><span style='color:#585A69;font-size:12px;margin-left:28px'>${percent}%占比</span></div><hr style='margin:-4px 4px 8px;background: rgba(0, 5, 18, 0.06);height:1px;border:none;'/><div style="display:flex;align-items:center"><div style="width:6px;height:6px;background:${toolpitColor};margin:0 5px"></div><div style='text-align:center;margin:0px'>全国电费缴纳单 ${fraction}分 </div></div>`;
             return toolpitStr;
         },
     },

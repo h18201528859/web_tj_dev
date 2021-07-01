@@ -127,34 +127,18 @@
           <template slot="prv_name" slot-scope="text, all">
             <span>{{ text ? text : all.preg_name }}</span>
           </template>
-          <template slot="ninetoten" slot-scope="text, all">
-            <span>{{
-              all.total_number
-                ? `${(text / 10000).toFixed(2)}万`
-                : `${(text / 100000000).toFixed(2)}亿`
-            }}</span>
+          <template slot="ninetoten" slot-scope="text">
+            <span>{{ `${(text / 10000).toFixed(2)}万` }}</span>
           </template>
-          <template slot="eighttonine" slot-scope="text, all">
-            <span>{{
-              all.total_number
-                ? `${(text / 10000).toFixed(2)}万`
-                : `${(text / 100000000).toFixed(2)}亿`
-            }}</span>
+          <template slot="eighttonine" slot-scope="text">
+            <span>{{ `${(text / 10000).toFixed(2)}万` }}</span>
           </template>
-          <template slot="sixtoeight" slot-scope="text, all">
-            <span>{{
-              all.total_number
-                ? `${(text / 10000).toFixed(2)}万`
-                : `${(text / 100000000).toFixed(2)}亿`
-            }}</span>
+          <template slot="sixtoeight" slot-scope="text">
+            <span>{{ `${(text / 10000).toFixed(2)}万` }}</span>
           </template>
 
-          <template slot="zerotosix" slot-scope="text, all">
-            <span>{{
-              all.total_number
-                ? `${(text / 10000).toFixed(2)}万`
-                : `${(text / 100000000).toFixed(2)}亿`
-            }}</span>
+          <template slot="zerotosix" slot-scope="text">
+            <span>{{ `${(text / 10000).toFixed(2)}万` }}</span>
           </template>
           <template slot="total_number" slot-scope="text, all">
             <span>{{
@@ -334,7 +318,7 @@ export default {
       this.handleTableData(this.initParams);
       this.updateType("1"); //更新this.currentType的
       this.initChart();
-      this.handleTabsChange("1");
+      this.handleTabChange("1");
     },
     initChart() {
       this.handleChartData("ten", this.toptenTable);
@@ -435,7 +419,9 @@ export default {
           };
 
           this.cityOneFilterName.push(name);
-          desciplineData.push(item.total_number || item.total_amount);
+          desciplineData.push(
+            item.total_number / 10000 || item.total_amount / 10000
+          );
         });
         this.lineData = desciplineData;
         this.cityFilterData = param;

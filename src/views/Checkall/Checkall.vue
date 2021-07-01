@@ -314,7 +314,17 @@ export default {
       this.getCheckallTableData({ object: type, page: 1 });
     },
     handleChart() {
-      this.linechartOptions.series[0].data = this.lineData;
+      let formData = [];
+      this.linechartOptions.type = this.currentType;
+      this.piechartOptions.type = this.currentType;
+      this.lineData.map((item) => {
+        if (this.currentType === "0") {
+          formData.push(item / 10000).toFixed(2);
+        } else {
+          formData.push(item / 100000000).toFixed(2);
+        }
+      });
+      this.linechartOptions.series[0].data = formData;
       this.piechartOptions.series[0].data = this.pieData;
     },
     drawLines() {
@@ -325,7 +335,6 @@ export default {
       this.handleChart();
       lineChart.setOption(this.linechartOptions);
       piechart.setOption(this.piechartOptions);
-      console.log(this.pieData[0].value, this.currentType);
       this.checkallPieNumber = util.transferNum(
         this.currentType === "0"
           ? (Number(this.pieData[0].value) / 10000).toFixed(2)
